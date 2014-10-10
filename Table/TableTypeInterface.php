@@ -4,8 +4,8 @@ namespace Nours\TableBundle\Table;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Nours\TableBundle\Table\Factory\TableFactoryInterface;
-use Nours\TableBundle\Table\Builder\TableBuilderInterface;
+use Nours\TableBundle\Factory\TableFactoryInterface;
+use Nours\TableBundle\Builder\TableBuilderInterface;
 
 /**
  * 

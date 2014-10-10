@@ -5,10 +5,9 @@ namespace Nours\TableBundle\Table;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Nours\TableBundle\Table\Builder\TableBuilder;
-use Nours\TableBundle\Table\Builder\TableBuilderInterface;
-use Nours\TableBundle\Table\Factory\TableFactoryInterface;
-use Symfony\Component\OptionsResolver\Options;
+use Nours\TableBundle\Builder\TableBuilder;
+use Nours\TableBundle\Builder\TableBuilderInterface;
+use Nours\TableBundle\Factory\TableFactoryInterface;
 
 /**
  * Abstract type for tables.
