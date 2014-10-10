@@ -1,0 +1,75 @@
+
+{% block table_html %}
+    <table class="table table-stripped" id="table_{{ table.name }}">
+        <thead>
+        {% for field in table.fields %}
+            <th {{ block('header_attributes') -}}>{{ field.label|trans }}</th>
+        {% endfor %}
+        </thead>
+    </table>
+{% endblock %}
+
+
+{% block table_javascript %}
+    <script type="text/javascript">
+        {% for field in table.fields %}
+            formatter_{{ field.name }} = {{ table_field(field, 'formatter') }}
+        {% endfor %}
+        $(function() {
+            $('#table_{{ table.name }}').bootstrapTable({
+                pagination: true,
+                sidePagination: 'server',
+                {#data: {{ table.data|serialize|raw }},#}
+                totalRows: {{ table.total }},
+                pageNumber: {{ table.page }},
+                pageSize: {{ table.limit }},
+                search: true,
+                queryParams: function(params) {
+                    return {
+                        page: params.pageNumber,
+                        limit: params.pageSize,
+                        q: params.searchText,
+                        orderBy: params.sortName,
+                        order: params.sortName ? params.sortOrder : null
+                    };
+                },
+                url: '{{ table.url }}'
+                {%- if row_style %},
+                rowStyle: {{ row_style|raw }}
+                {% endif %}
+            });
+        });
+    </script>
+{% endblock %}
+
+
+{% block header_attributes %}
+    data-field="{{ field.path }}" data-formatter="formatter_{{ field.name }}"
+    {%- if field.width %} data-width="{{ field.width }}"{% endif %}
+    {%- if field.sortable %} data-sortable="true"{% endif %}
+{% endblock %}
+
+
+{% block field_text %}
+    function (value) {
+    return value
+    }
+{% endblock %}
+
+{% block field_boolean %}
+    function (value) {
+    return value ? '<i class="fa fa-fw fa-check"></i>' : '<i class="fa fa-fw fa-times"></i>'
+    }
+{% endblock %}
+
+
+{% block field_date %}
+    function (value) {
+    var date = Date.parse(value)
+    if (!isNaN(date)) {
+    date = new Date(date)
+    return date.toLocaleString()
+    }
+    return null;
+    }
+{% endblock %}
