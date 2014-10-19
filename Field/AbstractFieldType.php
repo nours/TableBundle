@@ -20,6 +20,7 @@ abstract class AbstractFieldType implements FieldTypeInterface
         $resolver->setDefaults(array(
             'label'    => null,
             'sortable' => false,
+            'searchable' => false,
             'width' => null
         ));
 

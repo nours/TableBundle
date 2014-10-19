@@ -95,4 +95,11 @@ class Field implements FieldInterface
     {
         return $this->options['sortable'];
     }
+
+    /**
+     */
+    public function isSearchable()
+    {
+        return $this->options['searchable'];
+    }
 }

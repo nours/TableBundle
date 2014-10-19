@@ -3,7 +3,6 @@
 namespace Nours\TableBundle\Tests\Renderer;
 
 
-use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Tests\TableTestCase;
 use Nours\TableBundle\Twig\Table\TwigRenderer;
 

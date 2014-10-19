@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Factory;
 
+use Nours\TableBundle\Table\ExtensionInterface;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
 
@@ -18,8 +19,12 @@ class TableFactory implements TableFactoryInterface
     private $fieldTypes = array();
 
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Factory\TableFactory::addTableType()
+     * @var array
+     */
+    private $extensions = array();
+
+    /**
+     * {@inheritdoc}
      */
     public function addTableType(TableTypeInterface $type)
     {
@@ -27,17 +32,23 @@ class TableFactory implements TableFactoryInterface
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Factory\TableFactory::addFieldType()
+     * {@inheritdoc}
      */
     public function addFieldType(FieldTypeInterface $type)
     {
         $this->fieldTypes[$type->getName()] = $type;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addTableExtension(ExtensionInterface $extension)
+    {
+        $this->extensions[] = $extension;
+    }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Factory\TableFactory::createTable()
+     * {@inheritdoc}
      */
     public function createTable($type, array $options = array())
     {
@@ -55,8 +66,7 @@ class TableFactory implements TableFactoryInterface
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Factory\TableFactory::createField()
+     * {@inheritdoc}
      */
     public function createField($name, $type, array $options = array())
     {
@@ -69,5 +79,13 @@ class TableFactory implements TableFactoryInterface
         }
         
         return $type->createField($name, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
     }
 }

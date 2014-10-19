@@ -7,6 +7,7 @@ use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Tests\Fixtures\TableTestType;
 use Prophecy\PhpUnit\ProphecyTestCase;
 
 class TableTestCase extends ProphecyTestCase
@@ -33,9 +34,8 @@ class TableTestCase extends ProphecyTestCase
         $this->factory = new TableFactory();
         $this->factory->addFieldType(new TextType());
 
-        $this->builder = new TableBuilder('test', $this->factory);
-        $this->builder->add('id', 'text');
+        $this->factory->addTableType(new TableTestType());
 
-        $this->table = $this->builder->getTable();
+        $this->table = $this->factory->createTable('test');
     }
 } 

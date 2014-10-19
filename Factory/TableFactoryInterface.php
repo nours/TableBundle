@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Factory;
 
+use Nours\TableBundle\Table\ExtensionInterface;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
 use Nours\TableBundle\Table\TableInterface;
@@ -10,7 +11,7 @@ interface TableFactoryInterface
 {
     /**
      * Adds a table type into the factory.
-     * 
+     *
      * @param TableTypeInterface $type
      */
     public function addTableType(TableTypeInterface $type);
@@ -21,6 +22,13 @@ interface TableFactoryInterface
      * @param FieldTypeInterface $type
      */
     public function addFieldType(FieldTypeInterface $type);
+
+    /**
+     * Adds a table type into the factory.
+     *
+     * @param ExtensionInterface $extension
+     */
+    public function addTableExtension(ExtensionInterface $extension);
 
     /**
      * Creates a new table.
@@ -38,4 +46,9 @@ interface TableFactoryInterface
      * @param array $options
      */
     public function createField($name, $type, array $options = array());
+
+    /**
+     * @return ExtensionInterface[]
+     */
+    public function getExtensions();
 }

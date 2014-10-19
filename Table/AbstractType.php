@@ -23,15 +23,22 @@ abstract class AbstractType implements TableTypeInterface
      */
     public function createBuilder($name, TableFactoryInterface $factory, array $options = array())
     {
-	    // Options resolver
+	    // Configure options resolver
         $resolver = $this->getOptionsResolver();
 	    
 	    $this->setDefaultOptions($resolver);
-	    $options = $resolver->resolve($options);
-	    
-		$builder = new TableBuilder($name, $factory, $options);
+        foreach ($factory->getExtensions() as $extension) {
+            $extension->setDefaultOptions($resolver);
+        }
+
+		$builder = new TableBuilder($name, $factory, $resolver, $options);
 		
 		$this->buildTable($builder, $options);
+
+        // Extensions
+        foreach ($factory->getExtensions() as $extension) {
+            $extension->buildTable($builder, $options);
+        }
 		
 		return $builder;
     }
@@ -42,8 +49,9 @@ abstract class AbstractType implements TableTypeInterface
         $resolver = new OptionsResolver();
         
         $resolver->setDefaults(array(
-            'page'  => null,
-            'limit' => null,
+            'fields'  => null,
+            'page'  => 1,
+            'limit' => 10,
             'pages' => null,
             'total' => null,
             'data'  => null,

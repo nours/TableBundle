@@ -15,11 +15,11 @@ interface TableTypeInterface
 {
     /**
      * The name of the table type, should be unique in application.
-     * 
+     *
      * @return string
      */
     public function getName();
-    
+
     /**
      * Creates a builder ready to construct this table.
      * 
