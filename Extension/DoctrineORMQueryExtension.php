@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Builds a pager upon query.
  *
- * Implements search filters.
+ * Implements search filter, and sorting.
  *
  * @author David Coudrier <david.coudrier@gmail.com>
  */
@@ -30,6 +30,8 @@ class DoctrineORMQueryExtension extends PagerfantaExtension
         $resolver->setDefaults(array(
             'query_builder' => null,
             'search' => null,
+            'sort' => null,
+            'order' => null,
             'pager' => function(Options $options) {
                 /** @var QueryBuilder $builder */
                 if ($builder = $options['query_builder']) {
@@ -37,6 +39,11 @@ class DoctrineORMQueryExtension extends PagerfantaExtension
                     // Filter the query
                     if ($search = $options['search']) {
                         $this->filterQueryBuilder($builder, $search, $options['fields']);
+                    }
+
+                    // Order by
+                    if ($sort = $options['sort']) {
+                        $this->orderByQueryBuilder($builder, $sort, $options['order']);
                     }
 
                     // Make the pagerfanta
@@ -55,7 +62,7 @@ class DoctrineORMQueryExtension extends PagerfantaExtension
     }
 
 
-    private function filterQueryBuilder(QueryBuilder $builder, $search, $fields)
+    protected function filterQueryBuilder(QueryBuilder $builder, $search, $fields)
     {
         $alias  = $builder->getRootAliases()[0];
 
@@ -69,5 +76,13 @@ class DoctrineORMQueryExtension extends PagerfantaExtension
         }
 
         $builder->setParameter('search', "%$search%");
+    }
+
+
+    protected function orderByQueryBuilder(QueryBuilder $builder, $sort, $order)
+    {
+        $alias  = $builder->getRootAliases()[0];
+
+        $builder->orderBy("$alias.$sort", $order);
     }
 } 
