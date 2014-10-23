@@ -11,8 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class AbstractFieldType implements FieldTypeInterface
 {
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Field\FieldTypeInterface::createField()
+     * {@inheritdoc}
      */
     public function createField($name, array $options)
     {

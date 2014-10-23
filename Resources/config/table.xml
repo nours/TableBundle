@@ -9,7 +9,8 @@
         <parameter key="nours_table.table_field.text.class">Nours\TableBundle\Field\Type\TextType</parameter>
         <parameter key="nours_table.table_field.boolean.class">Nours\TableBundle\Field\Type\BooleanType</parameter>
         <parameter key="nours_table.table_field.date.class">Nours\TableBundle\Field\Type\DateType</parameter>
-        
+        <parameter key="nours_table.table_field.label.class">Nours\TableBundle\Field\Type\LabelType</parameter>
+
         <parameter key="nours_table.twig.table_renderer.class">Nours\TableBundle\Twig\Table\TwigRenderer</parameter>
         <parameter key="nours_table.twig.table_extension.class">Nours\TableBundle\Twig\Extension\TableExtension</parameter>
     </parameters>
@@ -27,6 +28,9 @@
             <tag name="nours_table.table_field" />
         </service>
         <service id="nours_table.table_field.date" class="%nours_table.table_field.date.class%">
+            <tag name="nours_table.table_field" />
+        </service>
+        <service id="nours_table.table_field.label" class="%nours_table.table_field.label.class%">
             <tag name="nours_table.table_field" />
         </service>
         

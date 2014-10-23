@@ -73,3 +73,19 @@
     return null;
     }
 {% endblock %}
+
+
+{% block field_label %}
+    function (value) {
+    var style = 'default', label = ''
+    switch (value) {
+    {% for t, d in labels %}
+        case '{{ t }}':
+        style = '{{ d.style }}'
+        label = '{{ d.label|trans }}'
+        break;
+    {% endfor %}
+    }
+    return '<span class="label label-'+style+'">'+label+'</span>'
+    }
+{% endblock %}
