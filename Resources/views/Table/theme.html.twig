@@ -1,6 +1,6 @@
 
 {% block table_html %}
-    <table class="table table-stripped" id="table_{{ table.name }}">
+    <table class="table table-stripped bootstrap-table" id="table_{{ table.name }}">
         <thead>
         {% for field in table.fields %}
             <th {{ block('header_attributes') -}}>{{ field.label|trans }}</th>
