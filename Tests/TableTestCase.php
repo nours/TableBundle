@@ -3,7 +3,7 @@
 namespace Nours\TableBundle\Tests;
 
 
-use Nours\TableBundle\Builder\TableBuilder;
+use Nours\TableBundle\Table\Builder\TableBuilder;
 use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\TableInterface;

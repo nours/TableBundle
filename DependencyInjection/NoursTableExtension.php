@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -26,6 +25,21 @@ class NoursTableExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('table.xml');
 
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yml');
+
         $container->setParameter('nours_table.default_templates', array($config['table_template']));
+
+        if ($config['extensions']['pagerfanta']) {
+            $container
+                ->getDefinition('nours_table.extension.pagerfanta')
+                ->addTag('nours_table.extension', array('priority' => 40));
+        }
+
+        if ($config['extensions']['orm']) {
+            $container
+                ->getDefinition('nours_table.extension.orm')
+                ->addTag('nours_table.extension', array('priority' => 20));
+        }
     }
 }

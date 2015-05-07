@@ -3,7 +3,7 @@
 namespace Nours\TableBundle\Tests\Factory;
 
 
-use Nours\TableBundle\Extension\DoctrineORMQueryExtension;
+use Nours\TableBundle\Extension\DoctrineORMExtension;
 use Nours\TableBundle\Extension\PagerfantaExtension;
 use Nours\TableBundle\Tests\TableTestCase;
 
@@ -18,7 +18,7 @@ class DoctrineORMQueryExtensionTest extends TableTestCase
     {
         parent::setUp();
 
-        $this->extension = new DoctrineORMQueryExtension();
+        $this->extension = new DoctrineORMExtension();
         $this->factory->addTableExtension($this->extension);
     }
 

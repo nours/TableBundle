@@ -22,6 +22,13 @@ class Configuration implements ConfigurationInterface
         
         $rootNode
             ->children()
+                ->arrayNode('extensions')
+                ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('pagerfanta')->defaultFalse()->end()
+                        ->booleanNode('orm')->defaultFalse()->end()
+                    ->end()
+                ->end()
                 ->scalarNode('table_template')->defaultValue('NoursTableBundle:Table:theme.html.twig')->end()
                 ->scalarNode('translation_domain')->defaultValue('messages')->end()
             ->end()

@@ -3,9 +3,8 @@
 namespace Nours\TableBundle\Extension;
 
 
-use Nours\TableBundle\Table\AbstractExtension;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Enables the use of Pagerfanta pagers.
@@ -19,7 +18,7 @@ class PagerfantaExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'pager' => null,

@@ -1,10 +1,10 @@
 <?php
 
-namespace Nours\TableBundle\Builder;
+namespace Nours\TableBundle\Table\Builder;
 
 use Nours\TableBundle\Factory\TableFactoryInterface;
 use Nours\TableBundle\Table\Table;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TableBuilder implements TableBuilderInterface
 {
@@ -14,7 +14,7 @@ class TableBuilder implements TableBuilderInterface
     private $name;
 
     /**
-     * @var TableFactory
+     * @var TableFactoryInterface
      */
     private $factory;
 
@@ -36,10 +36,10 @@ class TableBuilder implements TableBuilderInterface
     /**
      * @param $name
      * @param TableFactoryInterface $factory
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      * @param array $options
      */
-    public function __construct($name, TableFactoryInterface $factory, OptionsResolverInterface $resolver, array $options = array())
+    public function __construct($name, TableFactoryInterface $factory, OptionsResolver $resolver, array $options = array())
     {
         $this->name     = $name;
         $this->factory  = $factory;
@@ -53,6 +53,8 @@ class TableBuilder implements TableBuilderInterface
     public function add($name, $type = null, array $options = array())
     {
         $this->fields[$name] = $this->factory->createField($name, $type, $options);
+
+        return $this;
     }
 
     /**

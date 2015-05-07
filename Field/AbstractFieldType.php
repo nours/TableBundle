@@ -29,4 +29,11 @@ abstract class AbstractFieldType implements FieldTypeInterface
         
         return new Field($name, $this->getName(), $options);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolver $resolver)
+    {
+    }
 }

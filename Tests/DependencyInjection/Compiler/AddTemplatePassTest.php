@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nours
- * Date: 30/08/14
- * Time: 15:06
- */
 
 namespace Nours\TableBundle\Tests\DependencyInjection\Compiler;
 
@@ -15,6 +9,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AddTemplatePassTest extends ProphecyTestCase
 {
+    /**
+     * @var ContainerBuilder
+     */
+    private $container;
+
     public function setUp()
     {
         parent::setUp();

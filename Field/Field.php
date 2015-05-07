@@ -38,8 +38,7 @@ class Field implements FieldInterface
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\TableBundle\Field\FieldInterface::getType()
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -47,8 +46,7 @@ class Field implements FieldInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Nours\TableBundle\Field\FieldInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -56,8 +54,7 @@ class Field implements FieldInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Nours\TableBundle\Field\FieldInterface::getPath()
+     * {@inheritdoc}
      */
     public function getPath()
     {
@@ -65,17 +62,23 @@ class Field implements FieldInterface
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\TableBundle\Field\FieldInterface::getLabel()
+     * {@inheritdoc}
      */
     public function getLabel()
     {
-        return $this->options['label'] ?: $this->name;
+        return $this->getOption('label', $this->name);
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\TableBundle\Field\FieldInterface::getOptions()
+     * {@inheritdoc}
+     */
+    public function getOption($name, $default = null)
+    {
+        return isset($this->options[$name]) ? $this->options[$name] : $default;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getOptions()
     {

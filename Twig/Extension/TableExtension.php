@@ -18,7 +18,7 @@ class TableExtension extends \Twig_Extension
 	private $renderer;
 	
 	/**
-	 * @param TableRenderer $renderer
+	 * @param TwigRendererInterface $renderer
 	 */
 	public function __construct(TwigRendererInterface $renderer)
 	{
@@ -26,8 +26,7 @@ class TableExtension extends \Twig_Extension
 	}
 	
 	/**
-	 * (non-PHPdoc)
-	 * @see Twig_Extension::initRuntime()
+     * {@inheritdoc}
 	 */
 	public function initRuntime(\Twig_Environment $environment)
 	{
@@ -35,8 +34,7 @@ class TableExtension extends \Twig_Extension
 	}
 	
 	/**
-	 * (non-PHPdoc)
-	 * @see Twig_ExtensionInterface::getName()
+     * {@inheritdoc}
 	 */
 	public function getName()
 	{
@@ -44,8 +42,7 @@ class TableExtension extends \Twig_Extension
 	}
 	
     /**
-     * (non-PHPdoc)
-     * @see Twig_Extension::getFunctions()
+     * {@inheritdoc}
      */
     public function getFunctions()
     {
@@ -59,7 +56,7 @@ class TableExtension extends \Twig_Extension
     /**
      * Réalise le rendu d'une grid.
      *
-     * @param Table $table
+     * @param TableInterface $table
      * @return string
      */
     public function renderTable(TableInterface $table)
@@ -69,7 +66,7 @@ class TableExtension extends \Twig_Extension
     
     /**
      *
-     * @param Table $table
+     * @param TableInterface $table
      * @return string
      */
     public function renderJavascript(TableInterface $table)
@@ -79,7 +76,7 @@ class TableExtension extends \Twig_Extension
     
     /**
      *
-     * @param Table $table
+     * @param TableInterface $table
      * @return string
      */
     public function renderField(FieldInterface $field)

@@ -3,7 +3,6 @@
 namespace Nours\TableBundle\Tests\Factory;
 
 
-use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Extension\PagerfantaExtension;
 use Nours\TableBundle\Tests\TableTestCase;
 use Pagerfanta\Adapter\FixedAdapter;

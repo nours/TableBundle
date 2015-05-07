@@ -2,7 +2,7 @@
 
 namespace Nours\TableBundle\Factory;
 
-use Nours\TableBundle\Table\ExtensionInterface;
+use Nours\TableBundle\Extension\ExtensionInterface;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
 use Nours\TableBundle\Table\TableInterface;

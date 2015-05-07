@@ -1,10 +1,9 @@
 <?php
 
-namespace Nours\TableBundle\Table;
+namespace Nours\TableBundle\Extension;
 
-
-use Nours\TableBundle\Builder\TableBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Nours\TableBundle\Table\Builder\TableBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class AbstractExtension
@@ -24,7 +23,7 @@ class AbstractExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
 
     }

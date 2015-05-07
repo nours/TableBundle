@@ -2,11 +2,10 @@
 
 namespace Nours\TableBundle\Table;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Nours\TableBundle\Builder\TableBuilder;
-use Nours\TableBundle\Builder\TableBuilderInterface;
+use Nours\TableBundle\Table\Builder\TableBuilder;
+use Nours\TableBundle\Table\Builder\TableBuilderInterface;
 use Nours\TableBundle\Factory\TableFactoryInterface;
 
 /**
@@ -65,7 +64,7 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         
     }

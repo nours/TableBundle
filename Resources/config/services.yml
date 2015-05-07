@@ -1,0 +1,6 @@
+services:
+  nours_table.extension.pagerfanta:
+    class: Nours\TableBundle\Extension\PagerfantaExtension
+
+  nours_table.extension.orm:
+    class: Nours\TableBundle\Extension\DoctrineORMExtension

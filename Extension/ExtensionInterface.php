@@ -1,10 +1,10 @@
 <?php
 
-namespace Nours\TableBundle\Table;
+namespace Nours\TableBundle\Extension;
 
 
-use Nours\TableBundle\Builder\TableBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Nours\TableBundle\Table\Builder\TableBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Interface ExtensionInterface
@@ -22,9 +22,9 @@ interface ExtensionInterface
     public function buildTable(TableBuilderInterface $builder, array $options);
 
     /**
-     * Configures default options for this table.
+     * Configures default options for a table.
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver);
+    public function setDefaultOptions(OptionsResolver $resolver);
 }

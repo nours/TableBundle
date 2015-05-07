@@ -2,14 +2,13 @@
 
 namespace Nours\TableBundle\Field\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Field\AbstractFieldType;
 
 class BooleanType extends AbstractFieldType
 {
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Field\FieldTypeInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -17,10 +16,9 @@ class BooleanType extends AbstractFieldType
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Field\FieldTypeInterface::setDefaultOptions()
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'true_icon'  => 'check',

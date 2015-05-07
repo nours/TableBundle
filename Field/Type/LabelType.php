@@ -3,7 +3,7 @@
 namespace Nours\TableBundle\Field\Type;
 
 use Nours\TableBundle\Field\AbstractFieldType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class LabelType
@@ -23,7 +23,7 @@ class LabelType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'labels' => array(

@@ -2,7 +2,7 @@
 
 namespace Nours\TableBundle\Field;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 interface FieldTypeInterface
 {
@@ -24,7 +24,7 @@ interface FieldTypeInterface
     /**
      * Configures default options for this field.
      * 
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver);
+    public function setDefaultOptions(OptionsResolver $resolver);
 }

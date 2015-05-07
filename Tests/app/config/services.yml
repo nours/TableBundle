@@ -1,0 +1,4 @@
+services:
+  tests.table.post:
+    class: Nours\TableBundle\Tests\FixtureBundle\Table\PostType
+    tags: [ { name: 'nours_table.table_type' } ]

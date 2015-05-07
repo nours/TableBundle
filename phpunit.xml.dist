@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="./Tests/bootstrap.php" colors="true">
     <testsuites>
-        <testsuite name="NourdTableBundle test suite">
+        <testsuite name="NoursTableBundle test suite">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>
     <php>
-        <server name="KERNEL_DIR" value="./Tests/Fixtures/app/" />
+        <server name="KERNEL_DIR" value="./Tests/app/" />
     </php>
     <filter>
         <whitelist>

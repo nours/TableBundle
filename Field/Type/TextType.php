@@ -2,27 +2,20 @@
 
 namespace Nours\TableBundle\Field\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Nours\TableBundle\Field\AbstractFieldType;
 
+/**
+ * Class TextType
+ *
+ * @author David Coudrier <david.coudrier@gmail.com>
+ */
 class TextType extends AbstractFieldType
 {
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Field\FieldTypeInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {
         return 'text';
-    }
-    
-    /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Field\FieldTypeInterface::setDefaultOptions()
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-        ));
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
-namespace Nours\TableBundle\Builder;
+namespace Nours\TableBundle\Table\Builder;
 
 use Nours\TableBundle\Field\Field;
+use Nours\TableBundle\Table\TableInterface;
 
 /**
  * Interface for table builders.
@@ -16,6 +17,7 @@ interface TableBuilderInterface
      * @param string $name
      * @param string $type
      * @param array $options
+     * @return self
      */
     public function add($name, $type = null, array $options = array());
 

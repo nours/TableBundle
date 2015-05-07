@@ -53,8 +53,7 @@ class TwigRenderer implements TwigRendererInterface
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Renderer\TableRenderer::renderJavascript()
+     * {@inheritdoc}
      */
     public function renderJavascript(TableInterface $table)
     {
@@ -74,8 +73,7 @@ class TwigRenderer implements TwigRendererInterface
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Renderer\TableRenderer::renderTable()
+     * {@inheritdoc}
      */
     public function renderTable(TableInterface $table)
     {
@@ -89,8 +87,7 @@ class TwigRenderer implements TwigRendererInterface
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\Renderer\TableRenderer::renderField()
+     * {@inheritdoc}
      */
     public function renderField(FieldInterface $field)
     {

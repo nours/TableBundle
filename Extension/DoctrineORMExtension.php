@@ -9,7 +9,7 @@ use Nours\TableBundle\Field\Field;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Builds a pager upon query.
@@ -18,12 +18,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class DoctrineORMQueryExtension extends PagerfantaExtension
+class DoctrineORMExtension extends PagerfantaExtension
 {
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         parent::setDefaultOptions($resolver);
 

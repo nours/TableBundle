@@ -32,8 +32,7 @@ class Table implements TableInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\TableInterface::getName()
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -41,8 +40,7 @@ class Table implements TableInterface
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\TableInterface::getFields()
+     * {@inheritdoc}
      */
     public function getFields()
     {
@@ -52,9 +50,8 @@ class Table implements TableInterface
     /**
      * @Serializer\VirtualProperty()
      * @Serializer\XmlAttribute()
-     * 
-     * (non-PHPdoc)
-     * @see \Nours\AdminBundle\Table\TableInterface::getPage()
+     *
+     * {@inheritdoc}
      */
     public function getPage()
     {
