@@ -14,7 +14,7 @@ class TwigRenderer implements TwigRendererInterface
     private $environment;
     
     /**
-     * @var string|\Twig_Template
+     * @var \Twig_Template[]
      */
     private $templates;
     
@@ -64,10 +64,10 @@ class TwigRenderer implements TwigRendererInterface
             'row_style' => null
         );
 
-        if ($table->hasRowStyle()) {
-            $block = $table->getName() . '_row_style';
-            $context['row_style'] = $this->getTemplateForBlock($block)->renderBlock($block, array());
-        }
+//        if ($table->hasRowStyle()) {
+//            $block = $table->getName() . '_row_style';
+//            $context['row_style'] = $this->getTemplateForBlock($block)->renderBlock($block, array());
+//        }
         
         return $template->renderBlock('table_javascript', $context);
     }

@@ -21,11 +21,6 @@ class TableBuilder implements TableBuilderInterface
     /**
      * @var array
      */
-    private $options;
-
-    /**
-     * @var array
-     */
     private $resolver;
 
     /**
@@ -37,14 +32,12 @@ class TableBuilder implements TableBuilderInterface
      * @param $name
      * @param TableFactoryInterface $factory
      * @param OptionsResolver $resolver
-     * @param array $options
      */
-    public function __construct($name, TableFactoryInterface $factory, OptionsResolver $resolver, array $options = array())
+    public function __construct($name, TableFactoryInterface $factory, OptionsResolver $resolver)
     {
         $this->name     = $name;
         $this->factory  = $factory;
         $this->resolver = $resolver;
-        $this->options  = $options;
     }
 
     /**
@@ -60,19 +53,10 @@ class TableBuilder implements TableBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFields()
+    public function getTable(array $options)
     {
-        return $this->fields;
-    }
+        $options['fields'] = $this->fields;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTable()
-    {
-        $options = array_merge($this->options, array(
-            'fields' => $this->getFields()
-        ));
         $table = new Table($this->name, $this->fields, $this->resolver->resolve($options));
         
         return $table;

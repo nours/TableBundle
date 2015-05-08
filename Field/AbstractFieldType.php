@@ -17,10 +17,10 @@ abstract class AbstractFieldType implements FieldTypeInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-            'label'    => null,
-            'sortable' => false,
+            'label'      => null,
+            'sortable'   => false,
             'searchable' => false,
-            'width' => null
+            'width'      => null
         ));
 
         $this->setDefaultOptions($resolver);

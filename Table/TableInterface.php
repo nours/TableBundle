@@ -39,8 +39,8 @@ interface TableInterface
      */
     public function getData();
 
-    /**
-     * @return array
-     */
-    public function hasRowStyle();
+//    /**
+//     * @return array
+//     */
+//    public function hasRowStyle();
 }

@@ -110,10 +110,10 @@ class Table implements TableInterface
     }
 
 
-    public function hasRowStyle()
-    {
-        return (bool)$this->getOption('row_style');
-    }
+//    public function hasRowStyle()
+//    {
+//        return (bool)$this->getOption('row_style');
+//    }
 
     /**
      * @return mixed

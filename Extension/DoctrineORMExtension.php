@@ -18,15 +18,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class DoctrineORMExtension extends PagerfantaExtension
+class DoctrineORMExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        parent::setDefaultOptions($resolver);
-
         $resolver->setDefaults(array(
             'query_builder' => null,
             'search' => null,

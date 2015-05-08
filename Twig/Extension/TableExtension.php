@@ -76,7 +76,7 @@ class TableExtension extends \Twig_Extension
     
     /**
      *
-     * @param TableInterface $table
+     * @param FieldInterface $field
      * @return string
      */
     public function renderField(FieldInterface $field)

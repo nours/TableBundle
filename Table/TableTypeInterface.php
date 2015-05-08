@@ -3,8 +3,6 @@
 namespace Nours\TableBundle\Table;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Nours\TableBundle\Factory\TableFactoryInterface;
 use Nours\TableBundle\Table\Builder\TableBuilderInterface;
 
 /**
@@ -19,16 +17,6 @@ interface TableTypeInterface
      * @return string
      */
     public function getName();
-
-    /**
-     * Creates a builder ready to construct this table.
-     * 
-     * @param string $name
-     * @param TableFactoryInterface $factory
-     * @param array $options
-     * @return TableBuilderInterface
-     */
-    public function createBuilder($name, TableFactoryInterface $factory, array $options = array());
     
     /**
      * Configures default options for this table.
@@ -41,7 +29,6 @@ interface TableTypeInterface
      * Builds the table.
      * 
      * @param TableBuilderInterface $builder
-     * @param array $options
      */
-    public function buildTable(TableBuilderInterface $builder, array $options);
+    public function buildTable(TableBuilderInterface $builder);
 }

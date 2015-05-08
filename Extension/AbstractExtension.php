@@ -2,7 +2,6 @@
 
 namespace Nours\TableBundle\Extension;
 
-use Nours\TableBundle\Table\Builder\TableBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -12,14 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AbstractExtension implements ExtensionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildTable(TableBuilderInterface $builder, array $options)
-    {
-
-    }
-
     /**
      * {@inheritdoc}
      */

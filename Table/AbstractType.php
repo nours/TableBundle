@@ -3,10 +3,7 @@
 namespace Nours\TableBundle\Table;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Nours\TableBundle\Table\Builder\TableBuilder;
 use Nours\TableBundle\Table\Builder\TableBuilderInterface;
-use Nours\TableBundle\Factory\TableFactoryInterface;
 
 /**
  * Abstract type for tables.
@@ -20,50 +17,6 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function createBuilder($name, TableFactoryInterface $factory, array $options = array())
-    {
-	    // Configure options resolver
-        $resolver = $this->getOptionsResolver();
-	    
-	    $this->setDefaultOptions($resolver);
-        foreach ($factory->getExtensions() as $extension) {
-            $extension->setDefaultOptions($resolver);
-        }
-
-		$builder = new TableBuilder($name, $factory, $resolver, $options);
-		
-		$this->buildTable($builder, $options);
-
-        // Extensions
-        foreach ($factory->getExtensions() as $extension) {
-            $extension->buildTable($builder, $options);
-        }
-		
-		return $builder;
-    }
-    
-    
-    private function getOptionsResolver()
-    {
-        $resolver = new OptionsResolver();
-        
-        $resolver->setDefaults(array(
-            'fields'  => null,
-            'page'  => 1,
-            'limit' => 10,
-            'pages' => null,
-            'total' => null,
-            'data'  => null,
-            'url'   => null,
-            'row_style' => false
-        ));
-        
-        return $resolver;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         
@@ -72,7 +25,7 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildTable(TableBuilderInterface $builder, array $options)
+    public function buildTable(TableBuilderInterface $builder)
     {
         
     }

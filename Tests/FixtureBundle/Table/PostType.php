@@ -23,7 +23,7 @@ class PostType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildTable(TableBuilderInterface $builder, array $options)
+    public function buildTable(TableBuilderInterface $builder)
     {
         $builder
             ->add('id', 'text')
