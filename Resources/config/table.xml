@@ -36,7 +36,7 @@
         
         <!-- Renderer -->
         <service id="nours_table.twig.table_renderer" class="%nours_table.twig.table_renderer.class%">
-        	<argument>%nours_table.default_templates%</argument>
+        	<argument>%nours_table.table_template%</argument>
         </service>
         
         <!-- Extension -->

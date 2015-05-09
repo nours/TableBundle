@@ -14,17 +14,22 @@ class TwigRenderer implements TwigRendererInterface
     private $environment;
     
     /**
-     * @var \Twig_Template[]
+     * @var \Twig_Template
      */
-    private $templates;
-    
+    private $template;
+
+    /**
+     * @var string
+     */
+    private $templateName;
+
     /**
      * 
-     * @param array $templates
+     * @param string $templateName
      */
-    public function __construct(array $templates)
+    public function __construct($templateName)
     {
-        $this->templates = $templates;
+        $this->templateName = $templateName;
     }
     
     /**
@@ -33,23 +38,20 @@ class TwigRenderer implements TwigRendererInterface
     public function setEnvironment(\Twig_Environment $environment)
     {
         $this->environment = $environment;
-        foreach ($this->templates as $key => $template) {
-            $this->templates[$key] = $environment->loadTemplate($template);
-        }
+        $this->template = $environment->loadTemplate($this->templateName);
     }
 
     /**
-     * @return \Twig_Template
+     * @param $block
+     * @return mixed
      */
     private function getTemplateForBlock($block)
     {
-        foreach ($this->templates as $template) {
-            if ($template->hasBlock($block)) {
-                return $template;
-            }
+        if ($this->template->hasBlock($block)) {
+            return $this->template;
         }
 
-        throw new \RuntimeException("Block $block was not found in templates");
+        throw new \RuntimeException("Block $block was not found in template $this->templateName");
     }
     
     /**

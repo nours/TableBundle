@@ -47,8 +47,8 @@ class TableExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'table_render' => new \Twig_Function_Method($this, 'renderTable', array('is_safe' => array('html'))),
-            'table_javascript' => new \Twig_Function_Method($this, 'renderJavascript', array('is_safe' => array('html'))),
+            'table_html' => new \Twig_Function_Method($this, 'renderTableHtml', array('is_safe' => array('html'))),
+            'table_javascript' => new \Twig_Function_Method($this, 'renderTableJavascript', array('is_safe' => array('html'))),
             'table_field' => new \Twig_Function_Method($this, 'renderField', array('is_safe' => array('html'))),
         );
     }
@@ -59,7 +59,7 @@ class TableExtension extends \Twig_Extension
      * @param TableInterface $table
      * @return string
      */
-    public function renderTable(TableInterface $table)
+    public function renderTableHtml(TableInterface $table)
     {
     	return $this->renderer->renderTable($table);
     }
@@ -69,7 +69,7 @@ class TableExtension extends \Twig_Extension
      * @param TableInterface $table
      * @return string
      */
-    public function renderJavascript(TableInterface $table)
+    public function renderTableJavascript(TableInterface $table)
     {
     	return $this->renderer->renderJavascript($table);
     }

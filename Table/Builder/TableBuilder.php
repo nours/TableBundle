@@ -26,7 +26,7 @@ class TableBuilder implements TableBuilderInterface
     /**
      * @var array
      */
-    private $fields;
+    private $fields = array();
 
     /**
      * @param $name

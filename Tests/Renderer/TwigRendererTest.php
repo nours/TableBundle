@@ -33,9 +33,8 @@ class TwigRendererTest extends TableTestCase
         $this->twig->loadTemplate('NoursTableBundle:Table:theme.html.twig')
             ->willReturn($this->template->reveal());
 
-        $this->renderer = new TwigRenderer(array(
-            'NoursTableBundle:Table:theme.html.twig'
-        ));
+        $this->renderer = new TwigRenderer('NoursTableBundle:Table:theme.html.twig');
+
         $this->renderer->setEnvironment($this->twig->reveal());
     }
 

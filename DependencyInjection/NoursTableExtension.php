@@ -28,7 +28,7 @@ class NoursTableExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('nours_table.default_templates', array($config['table_template']));
+        $container->setParameter('nours_table.table_template', $config['table_template']);
 
         if ($config['extensions']['pagerfanta']) {
             $container
