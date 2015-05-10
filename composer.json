@@ -29,7 +29,12 @@
         "doctrine/orm" : "~2.5",
         "doctrine/doctrine-bundle" : "~1.4",
         "jms/serializer-bundle" : "~0.13",
-        "doctrine/data-fixtures": "~1.1"
+        "doctrine/data-fixtures": "~1.1",
+        "pagerfanta/pagerfanta": "~1.0"
+    },
+    "suggest" : {
+        "pagerfanta/pagerfanta": "Integrated using pagerfanta extension",
+        "doctrine/orm": "Integrated using orm extension",
     },
     "autoload": {
         "psr-4" : {

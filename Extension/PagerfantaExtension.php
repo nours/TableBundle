@@ -22,8 +22,8 @@ class PagerfantaExtension extends AbstractExtension
     {
         $resolver->setDefaults(array(
             'pager' => null,
-            'page' => $this->makeCallback('page', 'getCurrentPage'),
-            'limit' => $this->makeCallback('page', 'getMaxPerPage'),
+            'page' => 1,
+            'limit' => 10,
             'pages' => $this->makeCallback('page', 'getNbPages'),
             'total' => $this->makeCallback('page', 'getNbResults'),
             'data' => $this->makeCallback('data', 'getCurrentPageResults'),
