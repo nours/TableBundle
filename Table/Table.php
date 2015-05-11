@@ -147,8 +147,8 @@ class Table implements TableInterface
     /**
      * @return mixed
      */
-    private function getOption($name)
+    public function getOption($name, $default = null)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : null;
+        return isset($this->options[$name]) ? $this->options[$name] : $default;
     }
 }

@@ -49,8 +49,10 @@ interface TableInterface
      */
     public function isSortable();
 
-//    /**
-//     * @return array
-//     */
-//    public function hasRowStyle();
+    /**
+     * @param $name
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getOption($name, $default = null);
 }
