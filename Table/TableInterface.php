@@ -39,6 +39,16 @@ interface TableInterface
      */
     public function getData();
 
+    /**
+     * @return boolean
+     */
+    public function isSearchable();
+
+    /**
+     * @return boolean
+     */
+    public function isSortable();
+
 //    /**
 //     * @return array
 //     */

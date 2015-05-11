@@ -3,6 +3,7 @@
 namespace Nours\TableBundle\Table;
 
 use JMS\Serializer\Annotation as Serializer;
+use Nours\TableBundle\Field\FieldInterface;
 
 /**
  * A table instance.
@@ -14,13 +15,17 @@ use JMS\Serializer\Annotation as Serializer;
 class Table implements TableInterface
 {
     private $name;
+
+    /**
+     * @var FieldInterface[]
+     */
     private $fields;
     private $options;
     
     /**
      * 
      * @param string $name
-     * @param array $fields
+     * @param FieldInterface[] $fields
      * @param array $options
      */
     public function __construct($name, array $fields, array $options)
@@ -103,6 +108,34 @@ class Table implements TableInterface
     public function getUrl()
     {
         return $this->getOption('url');
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSearchable()
+    {
+        foreach ($this->fields as $field) {
+            if ($field->isSearchable()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSortable()
+    {
+        foreach ($this->fields as $field) {
+            if ($field->isSortable()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

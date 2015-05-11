@@ -68,9 +68,8 @@ class DoctrineORMExtension extends AbstractExtension
         /** @var Field $field */
         foreach ($fields as $field) {
             if ($field->isSearchable()) {
-                $builder->andWhere($alias . '.' . $field->getName() . ' LIKE : :search');
+                $builder->andWhere($alias . '.' . $field->getName() . ' LIKE :search');
             }
-            echo $field->getName();
         }
 
         $builder->setParameter('search', "%$search%");
