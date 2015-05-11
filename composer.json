@@ -34,7 +34,7 @@
     },
     "suggest" : {
         "pagerfanta/pagerfanta": "Integrated using pagerfanta extension",
-        "doctrine/orm": "Integrated using orm extension",
+        "doctrine/orm": "Integrated using orm extension"
     },
     "autoload": {
         "psr-4" : {
