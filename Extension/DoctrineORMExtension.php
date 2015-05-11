@@ -34,7 +34,7 @@ class DoctrineORMExtension extends AbstractExtension
                 /** @var QueryBuilder $builder */
                 if ($builder = $options['query_builder']) {
 
-                    // Filter the query
+                    // Filter the query by search parameter
                     if ($search = $options['search']) {
                         $this->filterQueryBuilder($builder, $search, $options['fields']);
                     }
@@ -59,20 +59,34 @@ class DoctrineORMExtension extends AbstractExtension
         ));
     }
 
-
+    /**
+     * Filter the query by the full text search parameter.
+     *
+     * Builds a orX expression taking into account all searchable fields.
+     *
+     * @param QueryBuilder $builder
+     * @param $search
+     * @param $fields
+     */
     protected function filterQueryBuilder(QueryBuilder $builder, $search, $fields)
     {
+        $searchable = false;
+        $expr = $builder->expr()->orX();
         $alias  = $builder->getRootAliases()[0];
 
         // Filtering
         /** @var Field $field */
         foreach ($fields as $field) {
             if ($field->isSearchable()) {
-                $builder->andWhere($alias . '.' . $field->getName() . ' LIKE :search');
+                $searchable = true;
+                $expr->add($alias . '.' . $field->getName() . ' LIKE :search');
             }
         }
 
-        $builder->setParameter('search', "%$search%");
+        if ($searchable) {
+            $builder->where($expr);
+            $builder->setParameter('search', "%$search%");
+        }
     }
 
 
