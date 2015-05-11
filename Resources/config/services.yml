@@ -4,3 +4,7 @@ services:
 
   nours_table.extension.orm:
     class: Nours\TableBundle\Extension\DoctrineORMExtension
+
+  nours_table.extension.core:
+    class: Nours\TableBundle\Extension\CoreExtension
+    tags: [ { name: nours_table.extension } ]

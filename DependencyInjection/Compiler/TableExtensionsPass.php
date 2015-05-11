@@ -22,14 +22,8 @@ class TableExtensionsPass implements CompilerPassInterface
         $factory = $container->getDefinition('nours_table.table_factory');
         
         // Search for extensions
-        $priorityQueue = new \SplPriorityQueue();
         $ids = $container->findTaggedServiceIds('nours_table.extension');
         foreach ($ids as $id => $tags) {
-            $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : 0;
-            $priorityQueue->insert($id, $priority);
-        }
-
-        foreach ($priorityQueue as $id) {
             $factory->addMethodCall('addTableExtension', array(new Reference($id)));
         }
     }

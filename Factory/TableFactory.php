@@ -4,6 +4,7 @@ namespace Nours\TableBundle\Factory;
 
 use Nours\TableBundle\Extension\ExtensionInterface;
 use Nours\TableBundle\Table\Builder\TableBuilder;
+use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,9 +22,14 @@ class TableFactory implements TableFactoryInterface
     private $fieldTypes = array();
 
     /**
-     * @var array
+     * @var ExtensionInterface[]
      */
     private $extensions = array();
+
+    /**
+     * @var ExtensionInterface[]
+     */
+    private $sortedExtensions;
 
     /**
      * {@inheritdoc}
@@ -46,7 +52,10 @@ class TableFactory implements TableFactoryInterface
      */
     public function addTableExtension(ExtensionInterface $extension)
     {
-        $this->extensions[] = $extension;
+        // Erase any previous sort
+        $this->sortedExtensions = null;
+
+        $this->extensions[$extension->getName()] = $extension;
     }
     
     /**
@@ -61,20 +70,38 @@ class TableFactory implements TableFactoryInterface
             
             $type = $this->tableTypes[$type];
         }
+
+        // Make options from type
+        $options = $this->getOptions($type, $options);
+
+        // Create the table from builder
+        $table = $this->createBuilder($type, $options)->getTable();
+
+        // Finish by loading data
+        $this->loadTableData($table, $options);
         
-        return $this->createBuilder($type)->getTable($options);
+        return $table;
     }
 
-    /**
-     * Creates the table builder for a table type.
-     *
-     * @param TableTypeInterface $type
-     * @return TableBuilder
-     */
-    protected function createBuilder(TableTypeInterface $type)
+
+    protected function loadTableData(TableInterface $table, array $options)
+    {
+        foreach (array_reverse($this->getExtensions()) as $extension) {
+            /** @var ExtensionInterface $extension */
+            $extension->loadTable($table, $options);
+
+            // Stop when the first extension has loaded data
+            if ($table->getData()) {
+                return;
+            }
+        }
+    }
+
+
+    protected function getOptions(TableTypeInterface $type, array $options)
     {
         // Configure options resolver
-        $resolver = $this->getOptionsResolver();
+        $resolver = new OptionsResolver();
 
         // Default options
         foreach ($this->getExtensions() as $extension) {
@@ -82,35 +109,36 @@ class TableFactory implements TableFactoryInterface
         }
         $type->setDefaultOptions($resolver);
 
-        $builder = new TableBuilder($type->getName(), $this, $resolver);
+        return $resolver->resolve($options);
+    }
+
+    /**
+     * Creates the table builder for a table type.
+     *
+     * @param TableTypeInterface $type
+     * @param array $options
+     * @return TableBuilder
+     */
+    protected function createBuilder(TableTypeInterface $type, array $options)
+    {
+        $builder = new TableBuilder($type->getName(), $this, $options);
+
+        // Extensions build pass
+        foreach ($this->getExtensions() as $extension) {
+            $extension->buildTable($builder, $options);
+        }
 
         // And build the fields
         $type->buildTable($builder);
 
+        // Extensions build pass
+        foreach ($this->getExtensions() as $extension) {
+            $extension->finishTable($builder, $options);
+        }
+
         return $builder;
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    protected function getOptionsResolver()
-    {
-        $resolver = new OptionsResolver();
-
-        $resolver->setDefaults(array(
-            'fields'  => null,
-            'page'    => 1,
-            'limit'   => 10,
-            'pages'   => null,
-            'total'   => null,
-            'data'    => null,
-            'url'     => null,
-//            'row_style' => false
-        ));
-
-        return $resolver;
-    }
-    
     /**
      * {@inheritdoc}
      */
@@ -132,7 +160,36 @@ class TableFactory implements TableFactoryInterface
      */
     public function getExtensions()
     {
-        return $this->extensions;
+        if (empty($this->sortedExtensions)) {
+            $this->sortExtensions();
+        }
+
+        return $this->sortedExtensions;
+    }
+
+    /**
+     * Sort the extensions by dependency
+     */
+    private function sortExtensions()
+    {
+        $index = array();
+        foreach ($this->extensions as $extension) {
+            $dep = $extension->getDependency() ?: '';
+            $index[$dep][] = $extension->getName();
+        }
+
+        // Ensure extensions are loaded in order
+        $this->sortedExtensions = array();
+        $stack = array('');
+        while (!empty($stack)) {
+            $current = array_pop($stack);
+            if (isset($index[$current])) {
+                foreach ($index[$current] as $name) {
+                    $this->sortedExtensions[] = $this->extensions[$name];
+                    $stack[] = $name;
+                }
+            }
+        }
     }
 
     /**

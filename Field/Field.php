@@ -56,9 +56,9 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getPath()
+    public function getPropertyPath()
     {
-        return Inflector::tableize($this->name);
+        return $this->getOption('property_path', Inflector::tableize($this->name));
     }
     
     /**

@@ -55,4 +55,19 @@ interface TableInterface
      * @return mixed
      */
     public function getOption($name, $default = null);
+
+    /**
+     * @param $data
+     */
+    public function setData(array $data);
+
+    /**
+     * @param $total
+     */
+    public function setTotal($total);
+
+    /**
+     * @param $pages
+     */
+    public function setPages($pages);
 }

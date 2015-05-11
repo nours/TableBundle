@@ -10,7 +10,7 @@
 
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
-use Nours\TableBundle\Table\Builder\TableBuilderInterface;
+use Nours\TableBundle\Table\Builder\TableBuilder;
 use Nours\TableBundle\Table\AbstractType;
 
 /**
@@ -23,7 +23,7 @@ class PostType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildTable(TableBuilderInterface $builder)
+    public function buildTable(TableBuilder $builder)
     {
         $builder
             ->add('id', 'text')

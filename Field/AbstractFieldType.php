@@ -20,7 +20,8 @@ abstract class AbstractFieldType implements FieldTypeInterface
             'label'      => null,
             'sortable'   => false,
             'searchable' => false,
-            'width'      => null
+            'width'      => null,
+            'property_path' => null
         ));
 
         $this->setDefaultOptions($resolver);

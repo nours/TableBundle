@@ -3,6 +3,8 @@
 namespace Nours\TableBundle\Extension;
 
 
+use Nours\TableBundle\Table\TableInterface;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,27 +26,30 @@ class PagerfantaExtension extends AbstractExtension
             'pager' => null,
             'page' => $this->makeCallback('page', 'getCurrentPage'),
             'limit' => $this->makeCallback('page', 'getMaxPerPage'),
-            'pages' => $this->makeCallback('page', 'getNbPages'),
-            'total' => $this->makeCallback('page', 'getNbResults'),
-            'data' => function(Options $options) {
-                if ($pager = $options['pager']) {
-                    $results = $pager->getCurrentPageResults();
-
-                    // Results must be of type array for serialization
-                    if ($results instanceof \Traversable) {
-                        return iterator_to_array($results);
-                    }
-
-                    return $results;
-                }
-
-                return null;
-            }
         ));
         $resolver->setAllowedTypes(array(
-            'pager' => array('Pagerfanta\Pagerfanta', 'null'),
-            'data'  => array('array', 'null')
+            'pager' => array('Pagerfanta\Pagerfanta', 'null')
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadTable(TableInterface $table, array $options)
+    {
+        /** @var Pagerfanta $pager */
+        if ($pager = $options['pager']) {
+            $results = $pager->getCurrentPageResults();
+
+            // Results must be of type array for serialization
+            if ($results instanceof \Traversable) {
+                $results = iterator_to_array($results);
+            }
+
+            $table->setData($results);
+            $table->setPages($pager->getNbPages());
+            $table->setTotal($pager->getNbResults());
+        }
     }
 
     /**
@@ -62,5 +67,21 @@ class PagerfantaExtension extends AbstractExtension
             }
             return null;
         };
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependency()
+    {
+        return 'core';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pagerfanta';
     }
 } 

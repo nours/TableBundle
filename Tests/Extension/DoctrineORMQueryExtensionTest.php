@@ -3,23 +3,21 @@
 namespace Nours\TableBundle\Tests\Factory;
 
 
-use Nours\TableBundle\Extension\DoctrineORMExtension;
-use Nours\TableBundle\Extension\PagerfantaExtension;
-use Nours\TableBundle\Tests\TableTestCase;
+use Nours\TableBundle\Factory\TableFactory;
+use Nours\TableBundle\Tests\TestCase;
 
-class DoctrineORMQueryExtensionTest extends TableTestCase
+class DoctrineORMQueryExtensionTest extends TestCase
 {
     /**
-     * @var PagerfantaExtension
+     * @var TableFactory
      */
-    private $extension;
+    private $factory;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->extension = new DoctrineORMExtension();
-        $this->factory->addTableExtension($this->extension);
+        $this->factory = $this->get('nours_table.table_factory');
     }
 
     public function testCreateTable()
@@ -36,6 +34,6 @@ class DoctrineORMQueryExtensionTest extends TableTestCase
 
     public function testCreateTableWithoutQueryBuilder()
     {
-        $this->factory->createTable('test');
+        $this->factory->createTable('post');
     }
 } 

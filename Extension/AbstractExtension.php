@@ -2,6 +2,8 @@
 
 namespace Nours\TableBundle\Extension;
 
+use Nours\TableBundle\Table\Builder\TableBuilder;
+use Nours\TableBundle\Table\TableInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -9,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class AbstractExtension implements ExtensionInterface
+abstract class AbstractExtension implements ExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -17,5 +19,37 @@ class AbstractExtension implements ExtensionInterface
     public function setDefaultOptions(OptionsResolver $resolver)
     {
 
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildTable(TableBuilder $builder, array $options)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishTable(TableBuilder $builder, array $options)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadTable(TableInterface $table, array $options)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependency()
+    {
+        return null;
     }
 } 

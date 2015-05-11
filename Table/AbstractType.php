@@ -3,7 +3,7 @@
 namespace Nours\TableBundle\Table;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Nours\TableBundle\Table\Builder\TableBuilderInterface;
+use Nours\TableBundle\Table\Builder\TableBuilder;
 
 /**
  * Abstract type for tables.
@@ -25,7 +25,7 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildTable(TableBuilderInterface $builder)
+    public function buildTable(TableBuilder $builder)
     {
         
     }

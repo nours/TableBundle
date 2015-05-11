@@ -14,14 +14,36 @@ use Nours\TableBundle\Field\FieldInterface;
  */
 class Table implements TableInterface
 {
+    /**
+     * @var string
+     */
     private $name;
 
     /**
      * @var FieldInterface[]
      */
     private $fields;
+
+    /**
+     * @var array
+     */
     private $options;
-    
+
+    /**
+     * @var array
+     */
+    private $data;
+
+    /**
+     * @var integer
+     */
+    private $total;
+
+    /**
+     * @var integer
+     */
+    private $pages;
+
     /**
      * 
      * @param string $name
@@ -33,6 +55,36 @@ class Table implements TableInterface
         $this->name       = $name;
         $this->fields     = $fields;
         $this->options    = $options;
+    }
+
+    /**
+     * Sets the paginated data collection.
+     *
+     * @param array $data
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * Sets the total count of items.
+     *
+     * @param $total
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+    }
+
+    /**
+     * Sets the page count.
+     *
+     * @param $pages
+     */
+    public function setPages($pages)
+    {
+        $this->pages = $pages;
     }
 
     /**
@@ -78,7 +130,7 @@ class Table implements TableInterface
      */
     public function getPages()
     {
-        return $this->getOption('pages');
+        return $this->pages;
     }
 
     /**
@@ -88,7 +140,7 @@ class Table implements TableInterface
      */
     public function getTotal()
     {
-        return $this->getOption('total');
+        return $this->total;
     }
 
     /**
@@ -98,7 +150,7 @@ class Table implements TableInterface
      */
     public function getData()
     {
-        return $this->getOption('data');
+        return $this->data;
     }
 
     /**

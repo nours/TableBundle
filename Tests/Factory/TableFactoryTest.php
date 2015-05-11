@@ -22,17 +22,16 @@ class TableFactoryTest extends TestCase
     }
 
     /**
-     * The bundle comes with two extensions which are enabled in the test env.
-     *
-     * Their order is important and defined in DI Extension.
+     * The bundle comes with 3 extensions (2 of which are enabled in the test env).
      */
-    public function testHasExtensions()
+    public function testGetExtensions()
     {
         $extensions = $this->factory->getExtensions();
 
-        $this->assertCount(2, $extensions);
-        $this->assertInstanceOf('Nours\TableBundle\Extension\PagerfantaExtension', $extensions[0]);
-        $this->assertInstanceOf('Nours\TableBundle\Extension\DoctrineORMExtension', $extensions[1]);
+        $this->assertCount(3, $extensions);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\CoreExtension', $extensions[0]);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\PagerfantaExtension', $extensions[1]);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\DoctrineORMExtension', $extensions[2]);
     }
 
     /**

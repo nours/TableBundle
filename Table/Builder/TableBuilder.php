@@ -4,9 +4,8 @@ namespace Nours\TableBundle\Table\Builder;
 
 use Nours\TableBundle\Factory\TableFactoryInterface;
 use Nours\TableBundle\Table\Table;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TableBuilder implements TableBuilderInterface
+class TableBuilder
 {
     /**
      * @var string
@@ -21,7 +20,7 @@ class TableBuilder implements TableBuilderInterface
     /**
      * @var array
      */
-    private $resolver;
+    private $options;
 
     /**
      * @var array
@@ -31,13 +30,13 @@ class TableBuilder implements TableBuilderInterface
     /**
      * @param $name
      * @param TableFactoryInterface $factory
-     * @param OptionsResolver $resolver
+     * @param array $options
      */
-    public function __construct($name, TableFactoryInterface $factory, OptionsResolver $resolver)
+    public function __construct($name, TableFactoryInterface $factory, array $options)
     {
-        $this->name     = $name;
-        $this->factory  = $factory;
-        $this->resolver = $resolver;
+        $this->name    = $name;
+        $this->factory = $factory;
+        $this->options = $options;
     }
 
     /**
@@ -53,11 +52,9 @@ class TableBuilder implements TableBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getTable(array $options)
+    public function getTable()
     {
-        $options['fields'] = $this->fields;
-
-        $table = new Table($this->name, $this->fields, $this->resolver->resolve($options));
+        $table = new Table($this->name, $this->fields, $this->options);
         
         return $table;
     }

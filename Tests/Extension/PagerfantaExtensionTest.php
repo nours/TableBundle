@@ -3,26 +3,28 @@
 namespace Nours\TableBundle\Tests\Factory;
 
 
-use Nours\TableBundle\Extension\PagerfantaExtension;
-use Nours\TableBundle\Tests\TableTestCase;
+use Nours\TableBundle\Factory\TableFactory;
+use Nours\TableBundle\Tests\TestCase;
 use Pagerfanta\Adapter\FixedAdapter;
 use Pagerfanta\Pagerfanta;
 
-class PagerfantaExtensionTest extends TableTestCase
+class PagerfantaExtensionTest extends TestCase
 {
     /**
-     * @var PagerfantaExtension
+     * @var TableFactory
      */
-    private $extension;
+    private $factory;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->extension = new PagerfantaExtension();
-        $this->factory->addTableExtension($this->extension);
+        $this->factory = $this->get('nours_table.table_factory');
     }
 
+    /**
+     * The params are loaded from pager
+     */
     public function testPagerOption()
     {
         $data = array(
@@ -33,7 +35,7 @@ class PagerfantaExtensionTest extends TableTestCase
         $pager = new Pagerfanta($adapter);
         $pager->setMaxPerPage(20)->setCurrentPage(1);
 
-        $table = $this->factory->createTable('test', array(
+        $table = $this->factory->createTable('post', array(
             'pager' => $pager
         ));
 
@@ -42,10 +44,5 @@ class PagerfantaExtensionTest extends TableTestCase
         $this->assertEquals(1, $table->getPages());
         $this->assertEquals(2, $table->getTotal());
         $this->assertEquals($data, $table->getData());
-    }
-
-    public function testCreateTableWithoutPager()
-    {
-        $this->factory->createTable('test');
     }
 } 

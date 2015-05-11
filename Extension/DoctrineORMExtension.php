@@ -6,9 +6,9 @@ namespace Nours\TableBundle\Extension;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Nours\TableBundle\Field\Field;
+use Nours\TableBundle\Table\TableInterface;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -29,34 +29,47 @@ class DoctrineORMExtension extends AbstractExtension
             'query_builder' => null,
             'search' => null,
             'sort' => null,
-            'order' => null,
-            'pager' => function(Options $options) {
-                /** @var QueryBuilder $builder */
-                if ($builder = $options['query_builder']) {
-
-                    // Filter the query by search parameter
-                    if ($search = $options['search']) {
-                        $this->filterQueryBuilder($builder, $search, $options['fields']);
-                    }
-
-                    // Order by
-                    if ($sort = $options['sort']) {
-                        $this->orderByQueryBuilder($builder, $sort, $options['order']);
-                    }
-
-                    // Make the pagerfanta
-                    $adapter = new DoctrineORMAdapter($builder->getQuery());
-                    $pager = new Pagerfanta($adapter);
-
-                    return $pager->setMaxPerPage($options['limit'])->setCurrentPage($options['page']);
-                }
-
-                return null;
-            }
+            'order' => null
         ));
         $resolver->setAllowedTypes(array(
             'query_builder' => array('Doctrine\ORM\QueryBuilder', 'null')
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadTable(TableInterface $table, array $options)
+    {
+        /** @var QueryBuilder $qb */
+        if ($qb = $options['query_builder']) {
+            // Filter the query by search parameter
+            if ($search = $options['search']) {
+                $this->filterQueryBuilder($qb, $search, $table->getFields());
+            }
+
+            // Order by
+            if ($sort = $options['sort']) {
+                $this->orderByQueryBuilder($qb, $sort, $options['order']);
+            }
+
+            // Make the pagerfanta
+            $adapter = new DoctrineORMAdapter($qb->getQuery());
+            $pager = new Pagerfanta($adapter);
+
+            $pager->setMaxPerPage($options['limit'])->setCurrentPage($options['page']);
+
+            $results = $pager->getCurrentPageResults();
+
+            // Results must be of type array for serialization
+            if ($results instanceof \Traversable) {
+                $results = iterator_to_array($results);
+            }
+
+            $table->setData($results);
+            $table->setPages($pager->getNbPages());
+            $table->setTotal($pager->getNbResults());
+        }
     }
 
     /**
@@ -95,5 +108,21 @@ class DoctrineORMExtension extends AbstractExtension
         $alias  = $builder->getRootAliases()[0];
 
         $builder->orderBy("$alias.$sort", $order);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependency()
+    {
+        return 'pagerfanta';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'orm';
     }
 } 

@@ -25,11 +25,9 @@ interface FieldInterface
     /**
      * Property path
      *
-     * todo: refactor ?
-     *
      * @return string
      */
-    public function getPath();
+    public function getPropertyPath();
 
     /**
      * The label

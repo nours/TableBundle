@@ -3,7 +3,7 @@
 namespace Nours\TableBundle\Table;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Nours\TableBundle\Table\Builder\TableBuilderInterface;
+use Nours\TableBundle\Table\Builder\TableBuilder;
 
 /**
  * 
@@ -28,7 +28,7 @@ interface TableTypeInterface
     /**
      * Builds the table.
      * 
-     * @param TableBuilderInterface $builder
+     * @param TableBuilder $builder
      */
-    public function buildTable(TableBuilderInterface $builder);
+    public function buildTable(TableBuilder $builder);
 }
