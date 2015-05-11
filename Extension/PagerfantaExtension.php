@@ -7,9 +7,9 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Enables the use of Pagerfanta pagers.
+ * Integrates a pagerfanta instance as a pager option.
  *
- * Normalizes options from a pager instance.
+ * Changes the core default values to be loaded from the pagerfanta instance.
  *
  * @author David Coudrier <david.coudrier@gmail.com>
  */
@@ -22,8 +22,8 @@ class PagerfantaExtension extends AbstractExtension
     {
         $resolver->setDefaults(array(
             'pager' => null,
-            'page' => 1,
-            'limit' => 10,
+            'page' => $this->makeCallback('page', 'getCurrentPage'),
+            'limit' => $this->makeCallback('page', 'getMaxPerPage'),
             'pages' => $this->makeCallback('page', 'getNbPages'),
             'total' => $this->makeCallback('page', 'getNbResults'),
             'data' => $this->makeCallback('data', 'getCurrentPageResults'),

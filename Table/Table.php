@@ -8,8 +8,7 @@ use JMS\Serializer\Annotation as Serializer;
  * A table instance.
  * 
  * @Serializer\ExclusionPolicy("all")
- * @Serializer\XmlRoot("table")
- * 
+ *
  * @author David Coudrier <david.coudrier@gmail.com>
  */
 class Table implements TableInterface
@@ -49,7 +48,6 @@ class Table implements TableInterface
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\XmlAttribute()
      *
      * {@inheritdoc}
      */
@@ -60,8 +58,7 @@ class Table implements TableInterface
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\XmlAttribute()
-     * 
+     *
      * @return integer
      */
     public function getLimit()
@@ -71,8 +68,7 @@ class Table implements TableInterface
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\XmlAttribute()
-     * 
+     *
      * @return integer
      */
     public function getPages()
@@ -82,8 +78,7 @@ class Table implements TableInterface
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\XmlAttribute()
-     * 
+     *
      * @return integer
      */
     public function getTotal()
@@ -92,7 +87,8 @@ class Table implements TableInterface
     }
 
     /**
-     * 
+     * @Serializer\VirtualProperty()
+     *
      * @return array
      */
     public function getData()

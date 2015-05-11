@@ -31,13 +31,14 @@ class PagerfantaExtensionTest extends TableTestCase
         );
         $adapter = new FixedAdapter(2, $data);
         $pager = new Pagerfanta($adapter);
+        $pager->setMaxPerPage(20)->setCurrentPage(1);
 
         $table = $this->factory->createTable('test', array(
             'pager' => $pager
         ));
 
         $this->assertEquals(1, $table->getPage());
-        $this->assertEquals(10, $table->getLimit());
+        $this->assertEquals(20, $table->getLimit());
         $this->assertEquals(1, $table->getPages());
         $this->assertEquals(2, $table->getTotal());
         $this->assertEquals($data, $table->getData());
