@@ -71,16 +71,17 @@ class TableExtension extends \Twig_Extension
      */
     public function renderTableJavascript(TableInterface $table)
     {
-    	return $this->renderer->renderJavascript($table);
+    	return $this->renderer->renderTableJavascript($table);
     }
     
     /**
      *
      * @param FieldInterface $field
+     * @param string $part
      * @return string
      */
-    public function renderField(FieldInterface $field)
+    public function renderField(FieldInterface $field, $part = null)
     {
-    	return $this->renderer->renderField($field);
+    	return $this->renderer->renderField($field, $part);
     }
 }

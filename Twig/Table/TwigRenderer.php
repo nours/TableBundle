@@ -3,6 +3,7 @@ namespace Nours\TableBundle\Twig\Table;
 
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Field\FieldInterface;
+
 /**
  * @author David Coudrier <david.coudrier@gmail.com>
  */
@@ -57,19 +58,13 @@ class TwigRenderer implements TwigRendererInterface
     /**
      * {@inheritdoc}
      */
-    public function renderJavascript(TableInterface $table)
+    public function renderTableJavascript(TableInterface $table)
     {
         $template = $this->getTemplateForBlock('table_javascript');
 
         $context = array(
-            'table' => $table,
-            'row_style' => null
+            'table' => $table
         );
-
-//        if ($table->hasRowStyle()) {
-//            $block = $table->getName() . '_row_style';
-//            $context['row_style'] = $this->getTemplateForBlock($block)->renderBlock($block, array());
-//        }
         
         return $template->renderBlock('table_javascript', $context);
     }
@@ -91,9 +86,13 @@ class TwigRenderer implements TwigRendererInterface
     /**
      * {@inheritdoc}
      */
-    public function renderField(FieldInterface $field)
+    public function renderField(FieldInterface $field, $part = null)
     {
         $blockName = 'field_' . $field->getType();
+
+        if ($part) {
+            $blockName .= '_' . $part;
+        }
 
         $template = $this->getTemplateForBlock($blockName);
 

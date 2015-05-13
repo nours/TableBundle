@@ -8,31 +8,36 @@ use Nours\TableBundle\Field\FieldInterface;
 /**
  * Interface for table renderers.
  * 
- * It supports two parts for the table : javascript and html. This is sufficient to integrate
- * most of the table design librairies.
+ * A table is rendered with html and javascript parts.
+ *
+ * Fields can be rendered as multiple parts.
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
 interface TableRenderer
 {
     /**
-     * Renders the javascript part of the table.
-     * 
+     * Render the table.
+     *
      * @param TableInterface $table
-     */
-    public function renderJavascript(TableInterface $table);
-    
-    /**
-     * Renders the javascript part of the table.
-     * 
-     * @param TableInterface $table
+     * @return string
      */
     public function renderTable(TableInterface $table);
-    
+
+    /**
+     * Render the javascript part of the table.
+     * 
+     * @param TableInterface $table
+     * @return string
+     */
+    public function renderTableJavascript(TableInterface $table);
+
     /**
      * Renders a field part
      * 
      * @param FieldInterface $field
+     * @param string $part
+     * @return string
      */
-    public function renderField(FieldInterface $field);
+    public function renderField(FieldInterface $field, $part = null);
 }
