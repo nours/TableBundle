@@ -29,6 +29,7 @@ interface TableTypeInterface
      * Builds the table.
      * 
      * @param TableBuilder $builder
+     * @param array $options
      */
-    public function buildTable(TableBuilder $builder);
+    public function buildTable(TableBuilder $builder, array $options);
 }

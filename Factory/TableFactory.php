@@ -129,7 +129,7 @@ class TableFactory implements TableFactoryInterface
         }
 
         // And build the fields
-        $type->buildTable($builder);
+        $type->buildTable($builder, $options);
 
         // Extensions build pass
         foreach ($this->getExtensions() as $extension) {

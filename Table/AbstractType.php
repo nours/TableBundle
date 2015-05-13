@@ -25,7 +25,7 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildTable(TableBuilder $builder)
+    public function buildTable(TableBuilder $builder, array $options)
     {
         
     }
