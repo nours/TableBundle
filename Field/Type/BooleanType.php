@@ -21,8 +21,8 @@ class BooleanType extends AbstractFieldType
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'true_icon'  => 'check',
-            'false_icon' => 'times'
+            'true_text'  => 'yes',
+            'false_text' => 'no'
         ));
     }
 }
