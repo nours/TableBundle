@@ -55,6 +55,10 @@ class Table implements TableInterface
         $this->name       = $name;
         $this->fields     = $fields;
         $this->options    = $options;
+
+        foreach ($fields as $field) {
+            $field->setTable($this);
+        }
     }
 
     /**

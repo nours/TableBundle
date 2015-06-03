@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Field;
 use Doctrine\Common\Inflector\Inflector;
+use Nours\TableBundle\Table\TableInterface;
 
 /**
  * Final representation/view for table fields.
@@ -19,6 +20,11 @@ class Field implements FieldInterface
      * @var string
      */
     private $name;
+
+    /**
+     * @var TableInterface
+     */
+    private $table;
     
     /**
      * @var array
@@ -27,6 +33,7 @@ class Field implements FieldInterface
     
     /**
      * 
+     * @param string $name
      * @param string $type
      * @param array $options
      */
@@ -37,6 +44,22 @@ class Field implements FieldInterface
         $this->options = $options;
     }
     
+    /**
+     * {@inheritdoc}
+     */
+    public function setTable(TableInterface $table)
+    {
+        $this->table = $table;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTable()
+    {
+        return $this->table;
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -109,5 +109,13 @@ class TableFactoryTest extends TestCase
         $table = $this->factory->createTable('post');
         $this->assertNotNull($table);
         $this->assertNull($table->getData());
+
+        // The type have 4 fields
+        $this->assertCount(4, $table->getFields());
+
+        // All fields must have references to their table
+        foreach ($table->getFields() as $field) {
+            $this->assertSame($table, $field->getTable());
+        }
     }
 } 

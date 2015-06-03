@@ -1,6 +1,7 @@
 <?php
 
 namespace Nours\TableBundle\Field;
+use Nours\TableBundle\Table\TableInterface;
 
 /**
  * 
@@ -61,4 +62,18 @@ interface FieldInterface
      * @return bool
      */
     public function isSearchable();
+
+    /**
+     * This field's table
+     *
+     * @return TableInterface
+     */
+    public function getTable();
+
+    /**
+     * Sets the table
+     *
+     * @param TableInterface $table
+     */
+    public function setTable(TableInterface $table);
 }

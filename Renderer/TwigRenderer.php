@@ -121,7 +121,8 @@ class TwigRenderer implements TwigRendererInterface
         $context = $field->getOptions();
         $context = array_merge($context, array(
             'field' => $field,
-            'name' => $field->getName(),
+            'table' => $field->getTable(),
+            'name'  => $field->getName(),
             'label' => $field->getLabel()
         ));
         
