@@ -1,4 +1,13 @@
 services:
+###################################################################
+## Factory
+###################################################################
+  nours_table.factory:
+    class: Nours\TableBundle\Factory\TableFactory
+
+###################################################################
+## Extensions
+###################################################################
   nours_table.extension.pagerfanta:
     class: Nours\TableBundle\Extension\PagerfantaExtension
 
@@ -8,3 +17,19 @@ services:
   nours_table.extension.core:
     class: Nours\TableBundle\Extension\CoreExtension
     tags: [ { name: nours_table.extension } ]
+
+
+###################################################################
+## Twig extension
+###################################################################
+  nours_table.twig.extension:
+    class: Nours\TableBundle\Twig\Extension\TableExtension
+    arguments: [ '@nours_table.table_renderer.twig' ]
+    tags: [ { name: twig.extension } ]
+
+###################################################################
+## Renderer
+###################################################################
+  nours_table.table_renderer.twig:
+    class: Nours\TableBundle\Renderer\TwigRenderer
+    arguments: [ '%nours_table.themes%' ]

@@ -104,6 +104,21 @@ class Table implements TableInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getField($name)
+    {
+        if (!isset($this->fields[$name])) {
+            throw new \InvalidArgumentException(sprintf(
+                "Table type %s has no field named %s (but %s)",
+                $this->getName(), $name, implode(', ', array_keys($this->fields))
+            ));
+        }
+
+        return $this->fields[$name];
+    }
+
+    /**
      * @Serializer\VirtualProperty()
      *
      * {@inheritdoc}

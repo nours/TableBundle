@@ -1,0 +1,16 @@
+services:
+  nours_table.table_field.text:
+    class: Nours\TableBundle\Field\Type\TextType
+    tags: [ { name: 'nours_table.table_field' } ]
+
+  nours_table.table_field.boolean:
+    class: Nours\TableBundle\Field\Type\BooleanType
+    tags: [ { name: 'nours_table.table_field' } ]
+
+  nours_table.table_field.date:
+    class: Nours\TableBundle\Field\Type\DateType
+    tags: [ { name: 'nours_table.table_field' } ]
+
+  nours_table.table_field.label:
+    class: Nours\TableBundle\Field\Type\LabelType
+    tags: [ { name: 'nours_table.table_field' } ]

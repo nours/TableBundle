@@ -14,6 +14,7 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
+use Nours\TableBundle\Factory\TableFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -46,6 +47,24 @@ class TestCase extends KernelTestCase
         }
 
         return static::$kernel->getContainer();
+    }
+
+    /**
+     * @return TableFactory
+     */
+    protected function getTableFactory()
+    {
+        return $this->get('nours_table.factory');
+    }
+
+    /**
+     * @param $type
+     * @param array $options
+     * @return \Nours\TableBundle\Table\Table|\Nours\TableBundle\Table\TableInterface
+     */
+    protected function createTable($type, array $options = array())
+    {
+        return $this->getTableFactory()->createTable($type, $options);
     }
 
     /**

@@ -30,6 +30,10 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->scalarNode('table_template')->defaultValue('NoursTableBundle:Table:theme.html.twig')->end()
+                ->arrayNode('themes')
+                    ->addDefaultChildrenIfNoneSet()
+                    ->prototype('scalar')->defaultValue('NoursTableBundle:Table:theme.html.twig')->end()
+                ->end()
                 ->scalarNode('translation_domain')->defaultValue('messages')->end()
             ->end()
         ->end();

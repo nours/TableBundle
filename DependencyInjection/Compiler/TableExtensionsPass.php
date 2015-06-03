@@ -15,11 +15,11 @@ class TableExtensionsPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('nours_table.table_factory')) {
+        if (!$container->hasDefinition('nours_table.factory')) {
             return;
         }
 
-        $factory = $container->getDefinition('nours_table.table_factory');
+        $factory = $container->getDefinition('nours_table.factory');
         
         // Search for extensions
         $ids = $container->findTaggedServiceIds('nours_table.extension');

@@ -1,14 +1,13 @@
 <?php
-namespace Nours\TableBundle\Twig\Table;
 
-use Nours\TableBundle\Renderer\TableRenderer;
+namespace Nours\TableBundle\Renderer;
 
 /**
  * Solves the Twig environment dependency injection
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-interface TwigRendererInterface extends TableRenderer
+interface TwigRendererInterface extends TableRendererInterface
 {
     /**
      * @param \Twig_Environment $environment

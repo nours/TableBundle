@@ -22,13 +22,12 @@ class NoursTableExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('table.xml');
-
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('fields.yml');
 
         $container->setParameter('nours_table.table_template', $config['table_template']);
+        $container->setParameter('nours_table.themes', $config['themes']);
 
         if ($config['extensions']['pagerfanta']) {
             $container

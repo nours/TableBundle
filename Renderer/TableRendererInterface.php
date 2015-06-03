@@ -8,29 +8,22 @@ use Nours\TableBundle\Field\FieldInterface;
 /**
  * Interface for table renderers.
  * 
- * A table is rendered with html and javascript parts.
+ * A renderer is able to render several blocks for one table, each one having to be available in themes.
  *
- * Fields can be rendered as multiple parts.
+ * Fields as well can be implemented using different blocks in themes.
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-interface TableRenderer
+interface TableRendererInterface
 {
     /**
-     * Render the table.
+     * Render a table part.
      *
      * @param TableInterface $table
+     * @param string $part
      * @return string
      */
-    public function renderTable(TableInterface $table);
-
-    /**
-     * Render the javascript part of the table.
-     * 
-     * @param TableInterface $table
-     * @return string
-     */
-    public function renderTableJavascript(TableInterface $table);
+    public function renderTable(TableInterface $table, $part = null);
 
     /**
      * Renders a field part

@@ -2,6 +2,8 @@
 
 namespace Nours\TableBundle\Table;
 
+use Nours\TableBundle\Field\FieldInterface;
+
 interface TableInterface
 {
     /**
@@ -13,6 +15,12 @@ interface TableInterface
      * @return array
      */
     public function getFields();
+
+    /**
+     * @param string $name
+     * @return FieldInterface
+     */
+    public function getField($name);
 
     /**
      * @return integer

@@ -56,3 +56,6 @@ nours_table:
     extensions:
         pagerfanta: true
         orm: true
+    themes:
+        - table.html.twig
+        - fields.html.twig

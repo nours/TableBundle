@@ -29,7 +29,7 @@ class CoreExtensionTest extends TestCase
     {
         parent::setUp();
 
-        $this->factory = $this->get('nours_table.table_factory');
+        $this->factory = $this->getTableFactory();
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Nours\TableBundle\Twig\Extension;
 
-use Nours\TableBundle\Twig\Table\TwigRendererInterface;
+use Nours\TableBundle\Renderer\TwigRendererInterface;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
 
@@ -47,34 +47,24 @@ class TableExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'table_html' => new \Twig_Function_Method($this, 'renderTableHtml', array('is_safe' => array('html'))),
-            'table_javascript' => new \Twig_Function_Method($this, 'renderTableJavascript', array('is_safe' => array('html'))),
-            'table_field' => new \Twig_Function_Method($this, 'renderField', array('is_safe' => array('html'))),
+            'render_table' => new \Twig_Function_Method($this, 'renderTable', array('is_safe' => array('html'))),
+            'render_table_field' => new \Twig_Function_Method($this, 'renderField', array('is_safe' => array('html'))),
         );
     }
     
     /**
-     * Réalise le rendu d'une grid.
+     * Renders a table part.
      *
      * @param TableInterface $table
      * @return string
      */
-    public function renderTableHtml(TableInterface $table)
+    public function renderTable(TableInterface $table, $part = null)
     {
-    	return $this->renderer->renderTable($table);
+    	return $this->renderer->renderTable($table, $part);
     }
     
     /**
-     *
-     * @param TableInterface $table
-     * @return string
-     */
-    public function renderTableJavascript(TableInterface $table)
-    {
-    	return $this->renderer->renderTableJavascript($table);
-    }
-    
-    /**
+     * Renders a field part.
      *
      * @param FieldInterface $field
      * @param string $part
