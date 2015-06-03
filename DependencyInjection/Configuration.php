@@ -29,7 +29,6 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('orm')->defaultFalse()->end()
                     ->end()
                 ->end()
-                ->scalarNode('table_template')->defaultValue('NoursTableBundle:Table:theme.html.twig')->end()
                 ->arrayNode('themes')
                     ->addDefaultChildrenIfNoneSet()
                     ->prototype('scalar')->defaultValue('NoursTableBundle:Table:theme.html.twig')->end()
