@@ -1,10 +1,7 @@
 <?php
 
-namespace Nours\TableBundle\Extension;
+namespace Nours\TableBundle\Table\Extension;
 
-
-use Nours\TableBundle\Table\TableInterface;
-use Pagerfanta\Pagerfanta;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,48 +17,34 @@ class PagerfantaExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'pager' => null,
-            'page' => $this->makeCallback('page', 'getCurrentPage'),
-            'limit' => $this->makeCallback('page', 'getMaxPerPage'),
+            'page' =>  $this->makeCallback('getCurrentPage'),
+            'limit' => $this->makeCallback('getMaxPerPage'),
+            'pages' => $this->makeCallback('getNbPages'),
+            'total' => $this->makeCallback('getNbResults'),
+            'data' =>  $this->makeCallback('getCurrentPageResults'),
         ));
         $resolver->setAllowedTypes(array(
             'pager' => array('Pagerfanta\Pagerfanta', 'null')
         ));
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function loadTable(TableInterface $table, array $options)
-    {
-        /** @var Pagerfanta $pager */
-        if ($pager = $options['pager']) {
-            $results = $pager->getCurrentPageResults();
-
-            // Results must be of type array for serialization
-            if ($results instanceof \Traversable) {
-                $results = iterator_to_array($results);
-            }
-
-            $table->setData($results);
-            $table->setPages($pager->getNbPages());
-            $table->setTotal($pager->getNbResults());
-        }
+        $resolver->setNormalizer('data', function(Options $options, $data) {
+            return $data instanceof \Traversable ? iterator_to_array($data) : $data;
+        });
     }
 
     /**
      * Makes a callback proxy to fantapagers.
      *
-     * @param $option
      * @param $getter
      * @return callable
      */
-    private function makeCallback($option, $getter)
+    private function makeCallback($getter)
     {
-        return function(Options $options) use ($option, $getter) {
+        return function(Options $options) use ($getter) {
             if ($pager = $options['pager']) {
                 return $pager->$getter();
             }

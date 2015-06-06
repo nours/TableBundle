@@ -1,9 +1,11 @@
 <?php
 
-namespace Nours\TableBundle\Extension;
+namespace Nours\TableBundle\Table\Extension;
 
+use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\Builder\TableBuilder;
 use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Table\View;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -16,7 +18,15 @@ abstract class AbstractExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureFieldOptions(OptionsResolver $resolver)
     {
 
     }
@@ -40,7 +50,15 @@ abstract class AbstractExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function loadTable(TableInterface $table, array $options)
+    public function buildView(View $view, TableInterface $table)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildFieldView(View $view, FieldInterface $field)
     {
 
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Nours\TableBundle\Factory;
+namespace Nours\TableBundle\Table\Factory;
 
-use Nours\TableBundle\Extension\ExtensionInterface;
+use Nours\TableBundle\Table\Extension\ExtensionInterface;
 use Nours\TableBundle\Table\Builder\TableBuilder;
-use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Table\ResolvedType;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -71,30 +71,18 @@ class TableFactory implements TableFactoryInterface
             $type = $this->tableTypes[$type];
         }
 
+        // Resolve type if not
+        if (!$type instanceof ResolvedType) {
+            $this->tableTypes[$type->getName()] = $type = new ResolvedType($type, $this->getExtensions());
+        }
+
         // Make options from type
         $options = $this->getOptions($type, $options);
 
         // Create the table from builder
         $table = $this->createBuilder($type, $options)->getTable();
 
-        // Finish by loading data
-        $this->loadTableData($table, $options);
-        
         return $table;
-    }
-
-
-    protected function loadTableData(TableInterface $table, array $options)
-    {
-        foreach (array_reverse($this->getExtensions()) as $extension) {
-            /** @var ExtensionInterface $extension */
-            $extension->loadTable($table, $options);
-
-            // Stop when the first extension has loaded data
-            if ($table->getData()) {
-                return;
-            }
-        }
     }
 
 
@@ -102,12 +90,12 @@ class TableFactory implements TableFactoryInterface
     {
         // Configure options resolver
         $resolver = new OptionsResolver();
+        $type->setDefaultOptions($resolver);
 
         // Default options
         foreach ($this->getExtensions() as $extension) {
-            $extension->setDefaultOptions($resolver);
+            $extension->configureOptions($resolver);
         }
-        $type->setDefaultOptions($resolver);
 
         return $resolver->resolve($options);
     }
@@ -121,7 +109,7 @@ class TableFactory implements TableFactoryInterface
      */
     protected function createBuilder(TableTypeInterface $type, array $options)
     {
-        $builder = new TableBuilder($type->getName(), $this, $options);
+        $builder = new TableBuilder($type, $this, $options);
 
         // Extensions build pass
         foreach ($this->getExtensions() as $extension) {
@@ -151,8 +139,38 @@ class TableFactory implements TableFactoryInterface
             
             $type = $this->fieldTypes[$type];
         }
-        
+
+        // Make options from type
+        $options = $this->getFieldOptions($type, $options);
+
         return $type->createField($name, $options);
+    }
+
+    protected function getFieldOptions(FieldTypeInterface $type, $options)
+    {
+        // Configure options resolver
+        $resolver = new OptionsResolver();
+
+        $type->configureOptions($resolver);
+
+        // Default options
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureFieldOptions($resolver);
+        }
+
+        return $resolver->resolve($options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFieldType($name)
+    {
+        if (!isset($this->fieldTypes[$name])) {
+            $this->throwBadFieldTypeException($name);
+        }
+
+        return $this->fieldTypes[$name];
     }
 
     /**

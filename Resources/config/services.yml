@@ -3,19 +3,19 @@ services:
 ## Factory
 ###################################################################
   nours_table.factory:
-    class: Nours\TableBundle\Factory\TableFactory
+    class: Nours\TableBundle\Table\Factory\TableFactory
 
 ###################################################################
 ## Extensions
 ###################################################################
   nours_table.extension.pagerfanta:
-    class: Nours\TableBundle\Extension\PagerfantaExtension
+    class: Nours\TableBundle\Table\Extension\PagerfantaExtension
 
   nours_table.extension.orm:
-    class: Nours\TableBundle\Extension\DoctrineORMExtension
+    class: Nours\TableBundle\Table\Extension\DoctrineORMExtension
 
   nours_table.extension.core:
-    class: Nours\TableBundle\Extension\CoreExtension
+    class: Nours\TableBundle\Table\Extension\CoreExtension
     tags: [ { name: nours_table.extension } ]
 
 
@@ -33,3 +33,10 @@ services:
   nours_table.table_renderer.twig:
     class: Nours\TableBundle\Renderer\TwigRenderer
     arguments: [ '%nours_table.themes%' ]
+
+###################################################################
+## Serializer handler
+###################################################################
+  nours_table.serializer.handler.table_view:
+    class: Nours\TableBundle\Serializer\Handler\TableViewHandler
+    tags: [ { name: jms_serializer.subscribing_handler } ]

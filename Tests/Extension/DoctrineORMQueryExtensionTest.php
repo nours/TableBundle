@@ -3,7 +3,7 @@
 namespace Nours\TableBundle\Tests\Factory;
 
 
-use Nours\TableBundle\Factory\TableFactory;
+use Nours\TableBundle\Table\Factory\TableFactory;
 use Nours\TableBundle\Tests\TestCase;
 
 class DoctrineORMQueryExtensionTest extends TestCase

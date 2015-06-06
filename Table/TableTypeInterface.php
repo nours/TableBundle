@@ -32,4 +32,20 @@ interface TableTypeInterface
      * @param array $options
      */
     public function buildTable(TableBuilder $builder, array $options);
+
+    /**
+     * Builds a table view.
+     *
+     * @param View $view
+     * @param array $options
+     */
+    public function buildView(View $view, array $options);
+
+    /**
+     * Builds a field view.
+     *
+     * @param View $view
+     * @param array $options
+     */
+    public function buildFieldView(View $view, array $options);
 }

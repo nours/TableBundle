@@ -1,8 +1,8 @@
 <?php
 
-namespace Nours\TableBundle\Factory;
+namespace Nours\TableBundle\Table\Factory;
 
-use Nours\TableBundle\Extension\ExtensionInterface;
+use Nours\TableBundle\Table\Extension\ExtensionInterface;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
 use Nours\TableBundle\Table\TableInterface;
@@ -46,6 +46,11 @@ interface TableFactoryInterface
      * @param array $options
      */
     public function createField($name, $type, array $options = array());
+
+    /**
+     * @return FieldTypeInterface
+     */
+    public function getFieldType($name);
 
     /**
      * @return ExtensionInterface[]

@@ -12,7 +12,7 @@ interface TableInterface
     public function getName();
 
     /**
-     * @return array
+     * @return FieldInterface[]
      */
     public function getFields();
 
@@ -58,6 +58,11 @@ interface TableInterface
     public function isSortable();
 
     /**
+     * @return array
+     */
+    public function getOptions();
+
+    /**
      * @param $name
      * @param mixed $default
      * @return mixed
@@ -65,17 +70,7 @@ interface TableInterface
     public function getOption($name, $default = null);
 
     /**
-     * @param $data
+     * @return View
      */
-    public function setData(array $data);
-
-    /**
-     * @param $total
-     */
-    public function setTotal($total);
-
-    /**
-     * @param $pages
-     */
-    public function setPages($pages);
+    public function createView();
 }

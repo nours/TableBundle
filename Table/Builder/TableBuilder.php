@@ -2,15 +2,16 @@
 
 namespace Nours\TableBundle\Table\Builder;
 
-use Nours\TableBundle\Factory\TableFactoryInterface;
+use Nours\TableBundle\Table\Factory\TableFactoryInterface;
+use Nours\TableBundle\Table\ResolvedType;
 use Nours\TableBundle\Table\Table;
 
 class TableBuilder
 {
     /**
-     * @var string
+     * @var ResolvedType
      */
-    private $name;
+    private $type;
 
     /**
      * @var TableFactoryInterface
@@ -28,13 +29,13 @@ class TableBuilder
     private $fields = array();
 
     /**
-     * @param $name
+     * @param ResolvedType $type
      * @param TableFactoryInterface $factory
      * @param array $options
      */
-    public function __construct($name, TableFactoryInterface $factory, array $options)
+    public function __construct(ResolvedType $type, TableFactoryInterface $factory, array $options)
     {
-        $this->name    = $name;
+        $this->type    = $type;
         $this->factory = $factory;
         $this->options = $options;
     }
@@ -54,7 +55,7 @@ class TableBuilder
      */
     public function getTable()
     {
-        $table = new Table($this->name, $this->fields, $this->options);
+        $table = new Table($this->type, $this->fields, $this->options);
         
         return $table;
     }

@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Field;
 
+use Nours\TableBundle\Table\View;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * 
@@ -15,26 +16,21 @@ abstract class AbstractFieldType implements FieldTypeInterface
      */
     public function createField($name, array $options)
     {
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults(array(
-            'label'      => null,
-            'sortable'   => false,
-            'searchable' => false,
-            'width'      => null,
-            'property_path' => null
-        ));
-
-        $this->setDefaultOptions($resolver);
-        
-        $options = $resolver->resolve($options);
-        
-        return new Field($name, $this->getName(), $options);
+        return new Field($name, $this, $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function buildView(View $view, array $options)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
     {
     }
 }

@@ -29,4 +29,20 @@ abstract class AbstractType implements TableTypeInterface
     {
         
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(View $view, array $options)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildFieldView(View $view, array $options)
+    {
+
+    }
 }

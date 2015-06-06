@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Field\Type;
 
+use Nours\TableBundle\Table\View;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Field\AbstractFieldType;
 
@@ -14,11 +15,19 @@ class DateType extends AbstractFieldType
     {
         return 'date';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(View $view, array $options)
+    {
+        $view->vars['format'] = $options['format'];
+    }
     
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'format' => 'Y-m-d'

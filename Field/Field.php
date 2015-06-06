@@ -12,7 +12,7 @@ use Nours\TableBundle\Table\TableInterface;
 class Field implements FieldInterface
 {
     /**
-     * @var string
+     * @var FieldTypeInterface
      */
     private $type;
 
@@ -34,10 +34,10 @@ class Field implements FieldInterface
     /**
      * 
      * @param string $name
-     * @param string $type
+     * @param FieldTypeInterface $type
      * @param array $options
      */
-    public function __construct($name, $type, array $options)
+    public function __construct($name, FieldTypeInterface $type, array $options)
     {
         $this->name    = $name;
         $this->type    = $type;
@@ -74,6 +74,14 @@ class Field implements FieldInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTypeName()
+    {
+        return $this->type->getName();
     }
 
     /**

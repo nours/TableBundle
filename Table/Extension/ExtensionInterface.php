@@ -1,9 +1,11 @@
 <?php
 
-namespace Nours\TableBundle\Extension;
+namespace Nours\TableBundle\Table\Extension;
 
+use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\Builder\TableBuilder;
 use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Table\View;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -28,17 +30,30 @@ interface ExtensionInterface
     public function finishTable(TableBuilder $builder, array $options);
 
     /**
-     * Configures default options for a table.
+     * @param View $view
+     * @param TableInterface $table
+     */
+    public function buildView(View $view, TableInterface $table);
+
+    /**
+     * @param View $view
+     * @param FieldInterface $field
+     */
+    public function buildFieldView(View $view, FieldInterface $field);
+
+    /**
+     * Configures options for a table.
      *
      * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolver $resolver);
+    public function configureOptions(OptionsResolver $resolver);
 
     /**
-     * @param TableInterface $table
-     * @param array $options
+     * Configures options for a field.
+     *
+     * @param OptionsResolver $resolver
      */
-    public function loadTable(TableInterface $table, array $options);
+    public function configureFieldOptions(OptionsResolver $resolver);
 
     /**
      * If this extension has dependency over another extension, it should return it's name.

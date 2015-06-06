@@ -15,9 +15,9 @@ use Nours\TableBundle\Field\FieldInterface;
 class Table implements TableInterface
 {
     /**
-     * @var string
+     * @var ResolvedType
      */
-    private $name;
+    private $type;
 
     /**
      * @var FieldInterface[]
@@ -30,29 +30,14 @@ class Table implements TableInterface
     private $options;
 
     /**
-     * @var array
-     */
-    private $data;
-
-    /**
-     * @var integer
-     */
-    private $total;
-
-    /**
-     * @var integer
-     */
-    private $pages;
-
-    /**
      * 
-     * @param string $name
+     * @param ResolvedType $type
      * @param FieldInterface[] $fields
      * @param array $options
      */
-    public function __construct($name, array $fields, array $options)
+    public function __construct(ResolvedType $type,  array $fields, array $options)
     {
-        $this->name       = $name;
+        $this->type       = $type;
         $this->fields     = $fields;
         $this->options    = $options;
 
@@ -62,33 +47,11 @@ class Table implements TableInterface
     }
 
     /**
-     * Sets the paginated data collection.
-     *
-     * @param array $data
+     * {@inheritdoc}
      */
-    public function setData(array $data)
+    public function getOptions()
     {
-        $this->data = $data;
-    }
-
-    /**
-     * Sets the total count of items.
-     *
-     * @param $total
-     */
-    public function setTotal($total)
-    {
-        $this->total = $total;
-    }
-
-    /**
-     * Sets the page count.
-     *
-     * @param $pages
-     */
-    public function setPages($pages)
-    {
-        $this->pages = $pages;
+        return $this->options;
     }
 
     /**
@@ -96,7 +59,7 @@ class Table implements TableInterface
      */
     public function getName()
     {
-        return $this->name;
+        return $this->type->getName();
     }
     
     /**
@@ -149,7 +112,7 @@ class Table implements TableInterface
      */
     public function getPages()
     {
-        return $this->pages;
+        return $this->getOption('pages');
     }
 
     /**
@@ -159,7 +122,7 @@ class Table implements TableInterface
      */
     public function getTotal()
     {
-        return $this->total;
+        return $this->getOption('total');
     }
 
     /**
@@ -169,7 +132,7 @@ class Table implements TableInterface
      */
     public function getData()
     {
-        return $this->data;
+        return $this->getOption('data');
     }
 
     /**
@@ -221,5 +184,13 @@ class Table implements TableInterface
     public function getOption($name, $default = null)
     {
         return isset($this->options[$name]) ? $this->options[$name] : $default;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createView()
+    {
+        return $this->type->createView($this);
     }
 }

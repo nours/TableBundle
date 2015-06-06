@@ -1,6 +1,7 @@
 <?php
 
 namespace Nours\TableBundle\Field;
+
 use Nours\TableBundle\Table\TableInterface;
 
 /**
@@ -10,11 +11,18 @@ use Nours\TableBundle\Table\TableInterface;
 interface FieldInterface
 {
     /**
-     * The type name of the field
+     * The resolved type of the field
+     *
+     * @return FieldTypeInterface
+     */
+    public function getType();
+
+    /**
+     * The resolved type of the field
      *
      * @return string
      */
-    public function getType();
+    public function getTypeName();
 
     /**
      * The name of the field

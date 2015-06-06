@@ -101,7 +101,7 @@ class TwigRenderer implements TwigRendererInterface
         $suffix = $part ? '_' . $part : '';
 
         $blocks = array(
-            'field_' . $field->getType() . $suffix,
+            'field_' . $field->getTypeName() . $suffix,
             'field' . $suffix
         );
 

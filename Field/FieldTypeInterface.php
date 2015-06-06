@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Field;
 
+use Nours\TableBundle\Table\View;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 interface FieldTypeInterface
@@ -26,5 +27,14 @@ interface FieldTypeInterface
      * 
      * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolver $resolver);
+    public function configureOptions(OptionsResolver $resolver);
+
+    /**
+     * Builds a view for this field type.
+     *
+     * @param View $view
+     * @param array $options
+     * @return mixed
+     */
+    public function buildView(View $view, array $options);
 }

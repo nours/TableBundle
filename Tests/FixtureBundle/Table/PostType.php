@@ -27,7 +27,10 @@ class PostType extends AbstractType
     {
         $builder
             ->add('id', 'text')
-            ->add('status', 'text')
+            ->add('status', 'text', array(
+                'sortable' => true,
+                'searchable' => true
+            ))
             ->add('active', 'boolean')
             ->add('content', 'text')
         ;

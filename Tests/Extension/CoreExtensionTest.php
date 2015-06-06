@@ -10,7 +10,7 @@
 
 namespace Nours\TableBundle\Tests\Extension;
 
-use Nours\TableBundle\Factory\TableFactory;
+use Nours\TableBundle\Table\Factory\TableFactory;
 use Nours\TableBundle\Tests\TestCase;
 
 /**
