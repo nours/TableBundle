@@ -3,8 +3,7 @@
 namespace Nours\TableBundle\Twig\Extension;
 
 use Nours\TableBundle\Renderer\TwigRendererInterface;
-use Nours\TableBundle\Field\FieldInterface;
-use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Table\View;
 
 /**
  * 
@@ -55,23 +54,23 @@ class TableExtension extends \Twig_Extension
     /**
      * Renders a table part.
      *
-     * @param TableInterface $table
+     * @param View $tableView
      * @return string
      */
-    public function renderTable(TableInterface $table, $part = null)
+    public function renderTable(View $tableView, $part = null)
     {
-    	return $this->renderer->renderTable($table, $part);
+    	return $this->renderer->renderTable($tableView, $part);
     }
     
     /**
      * Renders a field part.
      *
-     * @param FieldInterface $field
+     * @param View $fieldView
      * @param string $part
      * @return string
      */
-    public function renderField(FieldInterface $field, $part = null)
+    public function renderField(View $fieldView, $part = null)
     {
-    	return $this->renderer->renderField($field, $part);
+    	return $this->renderer->renderField($fieldView, $part);
     }
 }

@@ -4,9 +4,17 @@ page={{ page }}
 limit={{ limit }}
 pages={{ pages }}
 total={{ total }}
+{% for field in table %}field={{ render_table_field(field, 'name') }}
+{% endfor %}
 {%- endblock %}
 
 
 {% block table_javascript %}
 <script></script>
 {%- endblock %}
+
+
+{% block field_name %}
+{{ name }}
+{%- endblock %}
+

@@ -60,6 +60,11 @@ page=2
 limit=10
 pages=20
 total=200
+field=id
+field=status
+field=isActive
+field=content
+
 EOS;
 
         $this->assertEquals($expected, $html);
