@@ -87,7 +87,7 @@ class ResolvedType implements TableTypeInterface
             $type = $field->getType();
             $options = $field->getOptions();
 
-            $fieldView = new View();
+            $fieldView = new View($view);
 
             $type->buildView($fieldView, $options);
 
@@ -95,7 +95,7 @@ class ResolvedType implements TableTypeInterface
                 $extension->buildFieldView($fieldView, $field);
             }
 
-            $view->fields[] = $fieldView;
+            $view->fields[$field->getName()] = $fieldView;
         }
 
         $this->buildView($view, $table->getOptions());

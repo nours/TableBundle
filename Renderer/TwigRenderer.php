@@ -2,8 +2,7 @@
 
 namespace Nours\TableBundle\Renderer;
 
-use Nours\TableBundle\Table\TableInterface;
-use Nours\TableBundle\Field\FieldInterface;
+use Nours\TableBundle\Table\View;
 
 /**
  * @author David Coudrier <david.coudrier@gmail.com>
@@ -24,6 +23,16 @@ class TwigRenderer implements TwigRendererInterface
      * @var string
      */
     private $templateNames;
+
+    /**
+     * @var array
+     */
+    private $cacheTemplates = array();
+
+    /**
+     * @var array
+     */
+    private $cacheBlockNames = array();
 
     /**
      * 
@@ -56,39 +65,55 @@ class TwigRenderer implements TwigRendererInterface
     }
 
     /**
-     * @param $block
+     * @param string $blockName
      * @return \Twig_Template
      */
-    private function getTemplateForBlock($block)
+    private function getTemplateForBlock($blockName)
     {
         $this->loadTemplates();
 
         foreach ($this->templates as $template) {
-            if ($template->hasBlock($block)) {
+            if ($template->hasBlock($blockName)) {
                 return $template;
             }
         }
 
         return null;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @param $cacheKey
+     * @param array $blockNames
+     * @param array $context
+     * @return string
      */
-    public function renderTable(TableInterface $table, $part = null)
+    private function renderBlock($cacheKey, array $blockNames, array $context)
     {
-        $blockName = 'table';
-        if (!empty($part)) {
-            $blockName .= '_' . $part;
+        $template  = null;
+        $blockName = null;
+        if (isset($this->cacheTemplates[$cacheKey])) {
+            $template = $this->cacheTemplates[$cacheKey];
+            $blockName = $this->cacheBlockNames[$cacheKey];
         }
 
-        $template = $this->getTemplateForBlock($blockName);
+        if (!isset($template)) {
+            // Search the template for first block available
+            foreach ($blockNames as $name) {
+                if ($found = $this->getTemplateForBlock($name)) {
+                    $template  = $found;
+                    $blockName = $name;
+                    break;
+                }
+            }
 
-        $this->assertTemplateFound($template, $blockName);
-
-        $context = array(
-            'table' => $table
-        );
+            // Throw if no matching blocks are found
+            if (empty($template)) {
+                throw new \RuntimeException(sprintf(
+                    "Block%s %s not found in table themes (%s)",
+                    count($blockNames) > 1 ? 's' : '', implode(', ', $blockNames), implode(', ', $this->templateNames)
+                ));
+            }
+        }
 
         return $template->renderBlock($blockName, $context);
     }
@@ -96,37 +121,41 @@ class TwigRenderer implements TwigRendererInterface
     /**
      * {@inheritdoc}
      */
-    public function renderField(FieldInterface $field, $part = null)
+    public function renderTable(View $tableView, $part = null)
     {
-        $suffix = $part ? '_' . $part : '';
+        $context = $tableView->vars;
+        $context['table'] = $tableView;
 
-        $blocks = array(
-            'field_' . $field->getTypeName() . $suffix,
-            'field' . $suffix
-        );
+        return $this->renderBlock($tableView->options['cache_key'], $this->getBlockPrefixes($tableView, $part), $context);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function renderField(View $fieldView, $part = null)
+    {
+        $context = $fieldView->vars;
+        $context['table'] = $fieldView->parent;
+        $context['field'] = $fieldView;
 
-        // Search template for first block available
-        $template = null;
-        $block    = null;
-        foreach ($blocks as $blockName) {
-            if ($found = $this->getTemplateForBlock($blockName)) {
-                $template = $found;
-                $block    = $blockName;
-                break;
-            }
+        return $this->renderBlock($fieldView->options['cache_key'], $this->getBlockPrefixes($fieldView, $part), $context);
+    }
+
+    /**
+     * @param View $view
+     * @param string $part
+     * @return array
+     */
+    private function getBlockPrefixes(View $view, $part = null)
+    {
+        $blockNames = $view->options['block_prefixes'];
+        if ($part) {
+            $blockNames = array_map(function($blockName) use ($part) {
+                return $blockName . '_' . $part;
+            }, $blockNames);
         }
 
-        $this->assertTemplateFound($template, $blocks);
-
-        $context = $field->getOptions();
-        $context = array_merge($context, array(
-            'field' => $field,
-            'table' => $field->getTable(),
-            'name'  => $field->getName(),
-            'label' => $field->getLabel()
-        ));
-        
-        return $template->renderBlock($block, $context);
+        return $blockNames;
     }
 
     /**

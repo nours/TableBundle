@@ -3,6 +3,7 @@
 namespace Nours\TableBundle\Tests\Renderer;
 
 use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Table\View;
 use Nours\TableBundle\Tests\TestCase;
 use Nours\TableBundle\Renderer\TwigRenderer;
 
@@ -24,11 +25,17 @@ class TwigRendererTest extends TestCase
      */
     private $table;
 
+    /**
+     * @var View
+     */
+    private $view;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->table = $this->createTable('post');
+        $this->view = $this->table->createView();
     }
 
     /**
@@ -39,10 +46,23 @@ class TwigRendererTest extends TestCase
     public function testRenderTable()
     {
         $renderer = $this->getRenderer();
+        $table = $this->createTable('post', array(
+            'page' => 2,
+            'limit' => 10,
+            'pages' => 20,
+            'total' => 200
+        ));
 
-        $html = $renderer->renderTable($this->table);
+        $html = $renderer->renderTable($table->createView());
 
-        $this->assertEquals('<table></table>', $html);
+        $expected = <<<EOS
+page=2
+limit=10
+pages=20
+total=200
+EOS;
+
+        $this->assertEquals($expected, $html);
     }
 
     /**
@@ -52,7 +72,7 @@ class TwigRendererTest extends TestCase
     {
         $renderer = $this->getRenderer();
 
-        $html = $renderer->renderTable($this->table, 'javascript');
+        $html = $renderer->renderTable($this->view, 'javascript');
 
         $this->assertEquals('<script></script>', $html);
     }
@@ -64,7 +84,7 @@ class TwigRendererTest extends TestCase
     {
         $renderer = $this->getRenderer();
 
-        $html = $renderer->renderField($this->table->getField('content'));
+        $html = $renderer->renderField($this->view->fields['content']);
 
         $this->assertEquals('field_text', $html);
     }
@@ -76,7 +96,7 @@ class TwigRendererTest extends TestCase
     {
         $renderer = $this->getRenderer();
 
-        $html = $renderer->renderField($this->table->getField('content'), 'part');
+        $html = $renderer->renderField($this->view->fields['content'], 'part');
 
         $this->assertEquals('field_text_part', $html);
     }
@@ -88,11 +108,16 @@ class TwigRendererTest extends TestCase
     {
         $renderer = $this->getRenderer();
 
-        $field = $this->table->getField('active');
+        $html = $renderer->renderField($this->view->fields['isActive']);
 
-        $html = $renderer->renderField($field);
+        $expected = <<<EOS
+block=field
+name=isActive
+label=isActive
+property_path=is_active
+EOS;
 
-        $this->assertEquals('field', $html);
+        $this->assertEquals($expected, $html);
     }
 
     /**
@@ -102,9 +127,7 @@ class TwigRendererTest extends TestCase
     {
         $renderer = $this->getRenderer();
 
-        $field = $this->table->getField('active');
-
-        $html = $renderer->renderField($field, 'part');
+        $html = $renderer->renderField($this->view->fields['isActive'], 'part');
 
         $this->assertEquals('field_part', $html);
     }
@@ -116,7 +139,7 @@ class TwigRendererTest extends TestCase
     {
         $this->setExpectedException('RuntimeException');
 
-        $this->getRenderer()->renderTable($this->table, 'foo');
+        $this->getRenderer()->renderTable($this->view, 'foo');
     }
 
     /**
@@ -126,7 +149,7 @@ class TwigRendererTest extends TestCase
     {
         $this->setExpectedException('RuntimeException');
 
-        $this->getRenderer()->renderField($this->table->getField('id'), 'bar');
+        $this->getRenderer()->renderField($this->view->fields['id'], 'bar');
     }
 
     /**

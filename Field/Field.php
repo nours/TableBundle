@@ -1,6 +1,7 @@
 <?php
 
 namespace Nours\TableBundle\Field;
+
 use Doctrine\Common\Inflector\Inflector;
 use Nours\TableBundle\Table\TableInterface;
 

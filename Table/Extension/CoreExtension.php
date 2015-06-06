@@ -9,8 +9,10 @@
  */
 
 namespace Nours\TableBundle\Table\Extension;
+use Doctrine\Common\Inflector\Inflector;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\View;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Table\TableInterface;
 
@@ -44,7 +46,7 @@ class CoreExtension extends AbstractExtension
     {
         $options = $table->getOptions();
 
-        $view->vars = array_merge($view->vars, array(
+        $view->vars = array_replace($view->vars, array(
             'page' =>  $options['page'],
             'limit' => $options['limit'],
             'pages' => $options['pages'],
@@ -54,6 +56,10 @@ class CoreExtension extends AbstractExtension
             'sortable' =>   $table->isSortable(),
             'searchable' => $table->isSearchable(),
         ));
+
+        // Block prefixes used for searching template blocks
+        $view->options['block_prefixes'] = array('table_' . $table->getType()->getName(), 'table');
+        $view->options['cache_key'] = 'table_' . $table->getType()->getName();
     }
     /**
      * {@inheritdoc}
@@ -61,13 +67,18 @@ class CoreExtension extends AbstractExtension
     public function configureFieldOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'label'      => null,
+            'label' => function(Options $options) {
+                return $options['name'];
+            },
+            'property_path' => function(Options $options) {
+                return Inflector::tableize($options['name']);
+            },
             'sortable'   => false,
             'searchable' => false,
             'width'      => null,
-            'property_path' => null
         ));
 
+        $resolver->setRequired('name');
         $resolver->setAllowedTypes('sortable', 'bool');
         $resolver->setAllowedTypes('searchable', 'bool');
     }
@@ -79,13 +90,18 @@ class CoreExtension extends AbstractExtension
     {
         $options = $field->getOptions();
 
-        $view->vars = array_merge($view->vars, array(
+        $view->vars = array_replace($view->vars, array(
+            'name' => $options['name'],
             'label' => $options['label'],
             'sortable' => $options['sortable'],
             'searchable' => $options['searchable'],
             'width' => $options['width'],
             'property_path' => $options['property_path'],
         ));
+
+        // Block prefixes used for searching template blocks
+        $view->options['block_prefixes'] = array('field_' . $field->getType()->getName(), 'field');
+        $view->options['cache_key'] = 'field_' . $field->getType()->getName();
     }
 
     /**

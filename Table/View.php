@@ -26,11 +26,31 @@ class View implements \IteratorAggregate
     public $vars = array();
 
     /**
+     * Options (not passed to templates not serialized)
+     *
+     * @var array
+     */
+    public $options = array();
+
+    /**
      * The field views
      *
      * @var View[]
      */
     public $fields = array();
+
+    /**
+     * @var View
+     */
+    public $parent;
+
+    /**
+     * @param View $parent
+     */
+    public function __construct(View $parent = null)
+    {
+        $this->parent = $parent;
+    }
 
     /**
      * @return \ArrayIterator

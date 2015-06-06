@@ -31,7 +31,7 @@ class PostType extends AbstractType
                 'sortable' => true,
                 'searchable' => true
             ))
-            ->add('active', 'boolean')
+            ->add('isActive', 'boolean')
             ->add('content', 'text')
         ;
     }

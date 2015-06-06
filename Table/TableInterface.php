@@ -12,6 +12,11 @@ interface TableInterface
     public function getName();
 
     /**
+     * @return ResolvedType
+     */
+    public function getType();
+
+    /**
      * @return FieldInterface[]
      */
     public function getFields();

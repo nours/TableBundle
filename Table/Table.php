@@ -47,6 +47,14 @@ class Table implements TableInterface
     }
 
     /**
+     * @return ResolvedType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getOptions()

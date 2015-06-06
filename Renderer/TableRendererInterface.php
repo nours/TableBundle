@@ -2,8 +2,7 @@
 
 namespace Nours\TableBundle\Renderer;
 
-use Nours\TableBundle\Table\TableInterface;
-use Nours\TableBundle\Field\FieldInterface;
+use Nours\TableBundle\Table\View;
 
 /**
  * Interface for table renderers.
@@ -19,18 +18,18 @@ interface TableRendererInterface
     /**
      * Render a table part.
      *
-     * @param TableInterface $table
+     * @param View $tableView
      * @param string $part
      * @return string
      */
-    public function renderTable(TableInterface $table, $part = null);
+    public function renderTable(View $tableView, $part = null);
 
     /**
      * Renders a field part
      * 
-     * @param FieldInterface $field
+     * @param View $fieldView
      * @param string $part
      * @return string
      */
-    public function renderField(FieldInterface $field, $part = null);
+    public function renderField(View $fieldView, $part = null);
 }

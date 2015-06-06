@@ -55,27 +55,33 @@ class TableTest extends TestCase
 
         $this->assertCount(4, $view->fields);
 
-        $fieldView = $view->fields[0];
+        $fieldView = $view->fields['id'];
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $fieldView);
         $vars = $fieldView->vars;
+        $this->assertEquals('id', $vars['name']);
+        $this->assertEquals('id', $vars['label']);
+        $this->assertEquals('id', $vars['property_path']);
         $this->assertFalse($vars['sortable']);
         $this->assertFalse($vars['searchable']);
 
-        $fieldView = $view->fields[1];
+        $fieldView = $view->fields['status'];
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $fieldView);
         $vars = $fieldView->vars;
         $this->assertTrue($vars['sortable']);
         $this->assertTrue($vars['searchable']);
 
-        $fieldView = $view->fields[2];
+        $fieldView = $view->fields['isActive'];
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $fieldView);
         $vars = $fieldView->vars;
+        $this->assertEquals('isActive', $vars['name']);
+        $this->assertEquals('isActive', $vars['label']);
+        $this->assertEquals('is_active', $vars['property_path']);
         $this->assertEquals('yes', $vars['true_text']);
         $this->assertEquals('no', $vars['false_text']);
         $this->assertFalse($vars['sortable']);
         $this->assertFalse($vars['searchable']);
 
-        $fieldView = $view->fields[3];
+        $fieldView = $view->fields['content'];
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $fieldView);
         $vars = $fieldView->vars;
         $this->assertFalse($vars['sortable']);

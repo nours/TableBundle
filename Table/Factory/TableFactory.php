@@ -76,6 +76,7 @@ class TableFactory implements TableFactoryInterface
             $this->tableTypes[$type->getName()] = $type = new ResolvedType($type, $this->getExtensions());
         }
 
+
         // Make options from type
         $options = $this->getOptions($type, $options);
 
@@ -141,17 +142,18 @@ class TableFactory implements TableFactoryInterface
         }
 
         // Make options from type
-        $options = $this->getFieldOptions($type, $options);
+        $options = $this->getFieldOptions($name, $type, $options);
 
         return $type->createField($name, $options);
     }
 
-    protected function getFieldOptions(FieldTypeInterface $type, $options)
+    protected function getFieldOptions($name, FieldTypeInterface $type, $options)
     {
         // Configure options resolver
         $resolver = new OptionsResolver();
 
         $type->configureOptions($resolver);
+        $resolver->setDefault('name', $name);
 
         // Default options
         foreach ($this->getExtensions() as $extension) {
