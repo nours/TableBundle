@@ -22,7 +22,7 @@ abstract class AbstractFieldType implements FieldTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildView(View $view, array $options)
+    public function buildView(View $view, FieldInterface $field, array $options)
     {
 
     }

@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Table;
 
+use Nours\TableBundle\Field\FieldInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Table\Builder\TableBuilder;
 
@@ -33,7 +34,7 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildView(View $view, array $options)
+    public function buildView(View $view, TableInterface $table, array $options)
     {
 
     }
@@ -41,7 +42,7 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildFieldView(View $view, array $options)
+    public function buildFieldView(View $view, FieldInterface $field, array $options)
     {
 
     }

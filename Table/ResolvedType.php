@@ -9,6 +9,7 @@
  */
 
 namespace Nours\TableBundle\Table;
+use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\Builder\TableBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Table\Extension\ExtensionInterface;
@@ -61,17 +62,17 @@ class ResolvedType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildView(View $view, array $options)
+    public function buildView(View $view, TableInterface $table, array $options)
     {
-        return $this->type->buildView($view, $options);
+        return $this->type->buildView($view, $table, $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildFieldView(View $view, array $options)
+    public function buildFieldView(View $view, FieldInterface $field, array $options)
     {
-        return $this->type->buildFieldView($view, $options);
+        return $this->type->buildFieldView($view, $field, $options);
     }
 
     /**
@@ -80,6 +81,7 @@ class ResolvedType implements TableTypeInterface
      */
     public function createView(TableInterface $table)
     {
+        $tableType = $table->getType();
         $view = new View();
 
         // Create fields views
@@ -89,19 +91,20 @@ class ResolvedType implements TableTypeInterface
 
             $fieldView = new View($view);
 
-            $type->buildView($fieldView, $options);
+            $type->buildView($fieldView, $field, $options);
+            $tableType->buildFieldView($fieldView, $field, $options);
 
             foreach ($this->extensions as $extension) {
-                $extension->buildFieldView($fieldView, $field);
+                $extension->buildFieldView($fieldView, $field, $options);
             }
 
             $view->fields[$field->getName()] = $fieldView;
         }
 
-        $this->buildView($view, $table->getOptions());
+        $this->buildView($view, $table, $table->getOptions());
 
         foreach ($this->extensions as $extension) {
-            $extension->buildView($view, $table);
+            $extension->buildView($view, $table, $table->getOptions());
         }
 
         return $view;

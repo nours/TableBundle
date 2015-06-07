@@ -33,8 +33,8 @@ interface FieldTypeInterface
      * Builds a view for this field type.
      *
      * @param View $view
+     * @param FieldInterface $field
      * @param array $options
-     * @return mixed
      */
-    public function buildView(View $view, array $options);
+    public function buildView(View $view, FieldInterface $field, array $options);
 }

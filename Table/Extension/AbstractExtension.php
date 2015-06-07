@@ -50,7 +50,7 @@ abstract class AbstractExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function buildView(View $view, TableInterface $table)
+    public function buildView(View $view, TableInterface $table, array $options)
     {
 
     }
@@ -58,7 +58,7 @@ abstract class AbstractExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function buildFieldView(View $view, FieldInterface $field)
+    public function buildFieldView(View $view, FieldInterface $field, array $options)
     {
 
     }

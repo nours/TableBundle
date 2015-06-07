@@ -32,14 +32,16 @@ interface ExtensionInterface
     /**
      * @param View $view
      * @param TableInterface $table
+     * @param array $options
      */
-    public function buildView(View $view, TableInterface $table);
+    public function buildView(View $view, TableInterface $table, array $options);
 
     /**
      * @param View $view
      * @param FieldInterface $field
+     * @param array $options
      */
-    public function buildFieldView(View $view, FieldInterface $field);
+    public function buildFieldView(View $view, FieldInterface $field, array $options);
 
     /**
      * Configures options for a table.

@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Table;
 
+use Nours\TableBundle\Field\FieldInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Table\Builder\TableBuilder;
 
@@ -37,15 +38,17 @@ interface TableTypeInterface
      * Builds a table view.
      *
      * @param View $view
+     * @param TableInterface $table
      * @param array $options
      */
-    public function buildView(View $view, array $options);
+    public function buildView(View $view, TableInterface $table, array $options);
 
     /**
      * Builds a field view.
      *
      * @param View $view
+     * @param FieldInterface $field
      * @param array $options
      */
-    public function buildFieldView(View $view, array $options);
+    public function buildFieldView(View $view, FieldInterface $field, array $options);
 }

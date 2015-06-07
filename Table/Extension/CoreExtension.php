@@ -42,10 +42,8 @@ class CoreExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function buildView(View $view, TableInterface $table)
+    public function buildView(View $view, TableInterface $table, array $options)
     {
-        $options = $table->getOptions();
-
         $view->vars = array_replace($view->vars, array(
             'page' =>  $options['page'],
             'limit' => $options['limit'],
@@ -86,10 +84,8 @@ class CoreExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function buildFieldView(View $view, FieldInterface $field)
+    public function buildFieldView(View $view, FieldInterface $field, array $options)
     {
-        $options = $field->getOptions();
-
         $view->vars = array_replace($view->vars, array(
             'name' => $options['name'],
             'label' => $options['label'],
