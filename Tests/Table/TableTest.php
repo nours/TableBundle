@@ -114,8 +114,5 @@ class TableTest extends TestCase
         $this->assertEquals(1, $object['pages']);
         $this->assertEquals(2, $object['total']);
         $this->assertEquals($data, $object['data']);
-        $this->assertEquals(true, $object['sortable']);
-        $this->assertEquals(true, $object['searchable']);
-        $this->assertCount(4, $object['fields']);
     }
 }

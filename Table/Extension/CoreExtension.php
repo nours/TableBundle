@@ -55,6 +55,9 @@ class CoreExtension extends AbstractExtension
             'searchable' => $table->isSearchable(),
         ));
 
+        // Set the vars which will be exposed in serialization.
+        $view->serializedVars = array('page', 'limit', 'pages', 'total', 'data');
+
         // Block prefixes used for searching template blocks
         $view->options['block_prefixes'] = array('table_' . $table->getType()->getName(), 'table');
         $view->options['cache_key'] = 'table_' . $table->getType()->getName();

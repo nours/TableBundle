@@ -26,6 +26,13 @@ class View implements \IteratorAggregate
     public $vars = array();
 
     /**
+     * The var names for serialization
+     *
+     * @var array
+     */
+    public $serializedVars = array();
+
+    /**
      * Options (not passed to templates not serialized)
      *
      * @var array
