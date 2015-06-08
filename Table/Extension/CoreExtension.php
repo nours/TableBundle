@@ -36,6 +36,7 @@ class CoreExtension extends AbstractExtension
             'total'   => null,
             'data'    => null
         ));
+        $resolver->setRequired('name');
     }
 
     /**
@@ -62,7 +63,8 @@ class CoreExtension extends AbstractExtension
     public function buildView(View $view, TableInterface $table, array $options)
     {
         $view->vars = array_replace($view->vars, array(
-            'page'  =>  $table->getPage(),
+            'name'  => $table->getName(),
+            'page'  => $table->getPage(),
             'limit' => $table->getLimit(),
             'pages' => $table->getPages(),
             'total' => $table->getTotal(),
