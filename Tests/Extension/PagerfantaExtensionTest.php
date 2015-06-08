@@ -37,7 +37,7 @@ class PagerfantaExtensionTest extends TestCase
 
         $table = $this->factory->createTable('post', array(
             'pager' => $pager
-        ));
+        ))->handle();
 
         $this->assertEquals(1, $table->getPage());
         $this->assertEquals(20, $table->getLimit());

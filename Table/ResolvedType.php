@@ -11,6 +11,7 @@
 namespace Nours\TableBundle\Table;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\Builder\TableBuilder;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Table\Extension\ExtensionInterface;
 
@@ -46,9 +47,9 @@ class ResolvedType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return $this->type->setDefaultOptions($resolver);
+        $this->type->configureOptions($resolver);
     }
 
     /**
@@ -56,7 +57,24 @@ class ResolvedType implements TableTypeInterface
      */
     public function buildTable(TableBuilder $builder, array $options)
     {
-        return $this->type->buildTable($builder, $options);
+        $this->type->buildTable($builder, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(TableInterface $table, Request $request = null)
+    {
+//        $this->type->handle($request, $table, $options);
+
+        // Loop over extensions (in reverse order), and stops when one did populate data
+        // Configuration can propage from most dependant extensions to least
+        // They will be able to share config using table options
+        $extensions = $this->extensions;
+        while (($extension = array_pop($extensions)) && (!$table->getData())) {
+            /** @var ExtensionInterface $extension */
+            $extension->handle($table, $request);
+        }
     }
 
     /**
@@ -64,27 +82,12 @@ class ResolvedType implements TableTypeInterface
      */
     public function buildView(View $view, TableInterface $table, array $options)
     {
-        return $this->type->buildView($view, $table, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildFieldView(View $view, FieldInterface $field, array $options)
-    {
-        return $this->type->buildFieldView($view, $field, $options);
-    }
-
-    /**
-     * @param TableInterface $table
-     * @return View
-     */
-    public function createView(TableInterface $table)
-    {
         $tableType = $table->getType();
-        $view = new View();
 
-        // Create fields views
+        // Create fields views using :
+        // - the field type
+        // - the table type
+        // - table extensions
         foreach ($table->getFields() as $field) {
             $type = $field->getType();
             $options = $field->getOptions();
@@ -101,11 +104,33 @@ class ResolvedType implements TableTypeInterface
             $view->fields[$field->getName()] = $fieldView;
         }
 
-        $this->buildView($view, $table, $table->getOptions());
+        // Build the table view using :
+        // - the underlying table type
+        // - table extensions
+        $this->type->buildView($view, $table, $options);
 
         foreach ($this->extensions as $extension) {
             $extension->buildView($view, $table, $table->getOptions());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildFieldView(View $view, FieldInterface $field, array $options)
+    {
+        $this->type->buildFieldView($view, $field, $options);
+    }
+
+    /**
+     * @param TableInterface $table
+     * @return View
+     */
+    public function createView(TableInterface $table)
+    {
+        $view = new View();
+
+        $this->buildView($view, $table, $table->getOptions());
 
         return $view;
     }

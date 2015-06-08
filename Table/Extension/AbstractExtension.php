@@ -6,6 +6,7 @@ use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\Builder\TableBuilder;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -43,6 +44,14 @@ abstract class AbstractExtension implements ExtensionInterface
      * {@inheritdoc}
      */
     public function finishTable(TableBuilder $builder, array $options)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(TableInterface $table, Request $request = null)
     {
 
     }

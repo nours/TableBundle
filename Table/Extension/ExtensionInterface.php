@@ -6,6 +6,7 @@ use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\Builder\TableBuilder;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -28,6 +29,14 @@ interface ExtensionInterface
      * @param array $options
      */
     public function finishTable(TableBuilder $builder, array $options);
+
+    /**
+     *
+     *
+     * @param TableInterface $table
+     * @param Request $request
+     */
+    public function handle(TableInterface $table, Request $request = null);
 
     /**
      * @param View $view

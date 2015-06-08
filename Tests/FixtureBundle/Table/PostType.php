@@ -12,6 +12,7 @@ namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
 use Nours\TableBundle\Table\Builder\TableBuilder;
 use Nours\TableBundle\Table\AbstractType;
+use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
 
 /**
  * Class PostType
@@ -26,13 +27,27 @@ class PostType extends AbstractType
     public function buildTable(TableBuilder $builder, array $options)
     {
         $builder
-            ->add('id', 'text')
+            ->add('id', 'text', array(
+                'sortable' => true
+            ))
             ->add('status', 'text', array(
                 'sortable' => true,
+                'searchable' => true,
+                'filter_type' => 'choice',
+                'filter_options' => array(
+                    'choices' => array(
+                        Post::STATUS_NEW => 'new',
+                        Post::STATUS_EDITING => 'editing',
+                        Post::STATUS_PUBLISHED => 'published',
+                    )
+                )
+            ))
+            ->add('isActive', 'boolean', array(
+                'sortable' => true
+            ))
+            ->add('content', 'text', array(
                 'searchable' => true
             ))
-            ->add('isActive', 'boolean')
-            ->add('content', 'text')
         ;
     }
 

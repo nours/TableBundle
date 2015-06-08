@@ -2,7 +2,9 @@
 
 namespace Nours\TableBundle\Table\Extension;
 
-use Symfony\Component\OptionsResolver\Options;
+use Nours\TableBundle\Table\TableInterface;
+use Pagerfanta\Pagerfanta;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -20,36 +22,29 @@ class PagerfantaExtension extends AbstractExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'pager' => null,
-            'page' =>  $this->makeCallback('getCurrentPage'),
-            'limit' => $this->makeCallback('getMaxPerPage'),
-            'pages' => $this->makeCallback('getNbPages'),
-            'total' => $this->makeCallback('getNbResults'),
-            'data' =>  $this->makeCallback('getCurrentPageResults'),
+            'pager' => null
         ));
         $resolver->setAllowedTypes(array(
             'pager' => array('Pagerfanta\Pagerfanta', 'null')
         ));
-
-        $resolver->setNormalizer('data', function(Options $options, $data) {
-            return $data instanceof \Traversable ? iterator_to_array($data) : $data;
-        });
     }
 
     /**
-     * Makes a callback proxy to fantapagers.
-     *
-     * @param $getter
-     * @return callable
+     * {@inheritdoc}
      */
-    private function makeCallback($getter)
+    public function handle(TableInterface $table, Request $request = null)
     {
-        return function(Options $options) use ($getter) {
-            if ($pager = $options['pager']) {
-                return $pager->$getter();
-            }
-            return null;
-        };
+        /** @var Pagerfanta $pager */
+        if ($pager = $table->getOption('pager')) {
+            $table->setPage($pager->getCurrentPage());
+            $table->setLimit($pager->getMaxPerPage());
+            $table->setPages($pager->getNbPages());
+            $table->setTotal($pager->getNbResults());
+
+            // Normalize data to array for serialization
+            $data = $pager->getCurrentPageResults();
+            $table->setData($data instanceof \Traversable ? iterator_to_array($data) : $data);
+        }
     }
 
     /**

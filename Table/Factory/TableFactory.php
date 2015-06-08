@@ -91,7 +91,7 @@ class TableFactory implements TableFactoryInterface
     {
         // Configure options resolver
         $resolver = new OptionsResolver();
-        $type->setDefaultOptions($resolver);
+        $type->configureOptions($resolver);
 
         // Default options
         foreach ($this->getExtensions() as $extension) {
@@ -205,8 +205,10 @@ class TableFactory implements TableFactoryInterface
             $current = array_pop($stack);
             if (isset($index[$current])) {
                 foreach ($index[$current] as $name) {
-                    $this->sortedExtensions[] = $this->extensions[$name];
-                    $stack[] = $name;
+                    if ($name) {
+                        $this->sortedExtensions[] = $this->extensions[$name];
+                        $stack[] = $name;
+                    }
                 }
             }
         }

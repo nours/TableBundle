@@ -126,7 +126,7 @@ class TwigRenderer implements TwigRendererInterface
         $context = $tableView->vars;
         $context['table'] = $tableView;
 
-        return $this->renderBlock($tableView->options['cache_key'], $this->getBlockPrefixes($tableView, $part), $context);
+        return $this->renderBlock($tableView->vars['cache_key'], $this->getBlockPrefixes($tableView, $part), $context);
     }
     
     /**
@@ -138,7 +138,7 @@ class TwigRenderer implements TwigRendererInterface
         $context['table'] = $fieldView->parent;
         $context['field'] = $fieldView;
 
-        return $this->renderBlock($fieldView->options['cache_key'], $this->getBlockPrefixes($fieldView, $part), $context);
+        return $this->renderBlock($fieldView->vars['cache_key'], $this->getBlockPrefixes($fieldView, $part), $context);
     }
 
     /**
@@ -148,7 +148,7 @@ class TwigRenderer implements TwigRendererInterface
      */
     private function getBlockPrefixes(View $view, $part = null)
     {
-        $blockNames = $view->options['block_prefixes'];
+        $blockNames = $view->vars['block_prefixes'];
         if ($part) {
             $blockNames = array_map(function($blockName) use ($part) {
                 return $blockName . '_' . $part;

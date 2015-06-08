@@ -31,13 +31,20 @@ class NoursTableExtension extends Extension
         if ($config['extensions']['pagerfanta']) {
             $container
                 ->getDefinition('nours_table.extension.pagerfanta')
-                ->addTag('nours_table.extension', array('priority' => 40));
+                ->addTag('nours_table.extension');
         }
 
         if ($config['extensions']['orm']) {
             $container
                 ->getDefinition('nours_table.extension.orm')
-                ->addTag('nours_table.extension', array('priority' => 20));
+                ->addTag('nours_table.extension');
+        }
+
+        if ($config['extensions']['form']) {
+            $container
+                ->getDefinition('nours_table.extension.form')
+                ->addTag('nours_table.extension')
+            ;
         }
     }
 }

@@ -34,34 +34,10 @@ class CoreExtension extends AbstractExtension
             'limit'   => 10,
             'pages'   => null,
             'total'   => null,
-            'data'    => null,
-            'url'     => null
+            'data'    => null
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(View $view, TableInterface $table, array $options)
-    {
-        $view->vars = array_replace($view->vars, array(
-            'page' =>  $options['page'],
-            'limit' => $options['limit'],
-            'pages' => $options['pages'],
-            'total' => $options['total'],
-            'data' =>  $options['data'],
-            'url' =>   $options['url'],
-            'sortable' =>   $table->isSortable(),
-            'searchable' => $table->isSearchable(),
-        ));
-
-        // Set the vars which will be exposed in serialization.
-        $view->serializedVars = array('page', 'limit', 'pages', 'total', 'data');
-
-        // Block prefixes used for searching template blocks
-        $view->options['block_prefixes'] = array('table_' . $table->getType()->getName(), 'table');
-        $view->options['cache_key'] = 'table_' . $table->getType()->getName();
-    }
     /**
      * {@inheritdoc}
      */
@@ -74,14 +50,29 @@ class CoreExtension extends AbstractExtension
             'property_path' => function(Options $options) {
                 return Inflector::tableize($options['name']);
             },
-            'sortable'   => false,
-            'searchable' => false,
             'width'      => null,
         ));
 
         $resolver->setRequired('name');
-        $resolver->setAllowedTypes('sortable', 'bool');
-        $resolver->setAllowedTypes('searchable', 'bool');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(View $view, TableInterface $table, array $options)
+    {
+        $view->vars = array_replace($view->vars, array(
+            'page'  =>  $table->getPage(),
+            'limit' => $table->getLimit(),
+            'pages' => $table->getPages(),
+            'total' => $table->getTotal(),
+            'data'  =>  $table->getData(),
+            'block_prefixes' => array('table_' . $table->getType()->getName(), 'table'),
+            'cache_key' => 'table_' . $table->getType()->getName()
+        ));
+
+        // Set the vars which will be exposed in serialization.
+        $view->serializedVars = array('page', 'limit', 'pages', 'total', 'data');
     }
 
     /**
@@ -92,15 +83,11 @@ class CoreExtension extends AbstractExtension
         $view->vars = array_replace($view->vars, array(
             'name' => $options['name'],
             'label' => $options['label'],
-            'sortable' => $options['sortable'],
-            'searchable' => $options['searchable'],
             'width' => $options['width'],
             'property_path' => $options['property_path'],
+            'block_prefixes' => array('field_' . $field->getType()->getName(), 'field'),
+            'cache_key' => 'field_' . $field->getType()->getName()
         ));
-
-        // Block prefixes used for searching template blocks
-        $view->options['block_prefixes'] = array('field_' . $field->getType()->getName(), 'field');
-        $view->options['cache_key'] = 'field_' . $field->getType()->getName();
     }
 
     /**

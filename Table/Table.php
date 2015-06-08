@@ -4,6 +4,7 @@ namespace Nours\TableBundle\Table;
 
 use JMS\Serializer\Annotation as Serializer;
 use Nours\TableBundle\Field\FieldInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * A table instance.
@@ -28,6 +29,11 @@ class Table implements TableInterface
      * @var array
      */
     private $options;
+
+    /**
+     * @var bool Flag
+     */
+    private $handled = false;
 
     /**
      * 
@@ -94,8 +100,6 @@ class Table implements TableInterface
     }
 
     /**
-     * @Serializer\VirtualProperty()
-     *
      * {@inheritdoc}
      */
     public function getPage()
@@ -104,8 +108,6 @@ class Table implements TableInterface
     }
 
     /**
-     * @Serializer\VirtualProperty()
-     *
      * @return integer
      */
     public function getLimit()
@@ -114,8 +116,6 @@ class Table implements TableInterface
     }
 
     /**
-     * @Serializer\VirtualProperty()
-     *
      * @return integer
      */
     public function getPages()
@@ -124,8 +124,6 @@ class Table implements TableInterface
     }
 
     /**
-     * @Serializer\VirtualProperty()
-     *
      * @return integer
      */
     public function getTotal()
@@ -134,13 +132,51 @@ class Table implements TableInterface
     }
 
     /**
-     * @Serializer\VirtualProperty()
-     *
      * @return array
      */
     public function getData()
     {
         return $this->getOption('data');
+    }
+
+    /**
+     * @param mixed $page
+     */
+    public function setPage($page)
+    {
+        $this->setOption('page', $page);
+    }
+
+    /**
+     * @param mixed $limit
+     */
+    public function setLimit($limit)
+    {
+        $this->setOption('limit', $limit);
+    }
+
+    /**
+     * @param mixed $pages
+     */
+    public function setPages($pages)
+    {
+        $this->setOption('pages', $pages);
+    }
+
+    /**
+     * @param mixed $total
+     */
+    public function setTotal($total)
+    {
+        $this->setOption('total', $total);
+    }
+
+    /**
+     * @param mixed $data
+     */
+    public function setData($data)
+    {
+        $this->setOption('data', $data);
     }
 
     /**
@@ -187,7 +223,7 @@ class Table implements TableInterface
 //    }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getOption($name, $default = null)
     {
@@ -197,8 +233,28 @@ class Table implements TableInterface
     /**
      * {@inheritdoc}
      */
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createView()
     {
-        return $this->type->createView($this);
+        return $this->handle()->type->createView($this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(Request $request = null)
+    {
+        if (false === $this->handled) {
+            $this->type->handle($this, $request);
+            $this->handled = true;
+        }
+        return $this;
     }
 }

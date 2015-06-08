@@ -8,15 +8,20 @@ services:
 ###################################################################
 ## Extensions
 ###################################################################
+  nours_table.extension.core:
+    class: Nours\TableBundle\Table\Extension\CoreExtension
+    tags: [ { name: nours_table.extension } ]
+
   nours_table.extension.pagerfanta:
     class: Nours\TableBundle\Table\Extension\PagerfantaExtension
 
   nours_table.extension.orm:
+    arguments: [ '@doctrine.orm.entity_manager' ]
     class: Nours\TableBundle\Table\Extension\DoctrineORMExtension
 
-  nours_table.extension.core:
-    class: Nours\TableBundle\Table\Extension\CoreExtension
-    tags: [ { name: nours_table.extension } ]
+  nours_table.extension.form:
+    class: Nours\TableBundle\Table\Extension\FormFilterExtension
+    arguments: [ '@form.factory' ]
 
 
 ###################################################################

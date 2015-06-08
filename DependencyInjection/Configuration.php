@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->booleanNode('pagerfanta')->defaultFalse()->end()
                         ->booleanNode('orm')->defaultFalse()->end()
+                        ->booleanNode('form')->defaultFalse()->end()
                     ->end()
                 ->end()
                 ->arrayNode('themes')

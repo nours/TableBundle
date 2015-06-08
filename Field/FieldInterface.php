@@ -61,6 +61,7 @@ interface FieldInterface
      * If this field is sortable
      *
      * @return bool
+     * @deprecated
      */
     public function isSortable();
 
@@ -68,6 +69,7 @@ interface FieldInterface
      * If this field is searchable
      *
      * @return bool
+     * @deprecated
      */
     public function isSearchable();
 

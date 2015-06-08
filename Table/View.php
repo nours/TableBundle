@@ -33,13 +33,6 @@ class View implements \IteratorAggregate
     public $serializedVars = array();
 
     /**
-     * Options (not passed to templates not serialized)
-     *
-     * @var array
-     */
-    public $options = array();
-
-    /**
      * The field views
      *
      * @var View[]

@@ -61,7 +61,7 @@ class TableTest extends TestCase
         $this->assertEquals('id', $vars['name']);
         $this->assertEquals('id', $vars['label']);
         $this->assertEquals('id', $vars['property_path']);
-        $this->assertFalse($vars['sortable']);
+        $this->assertTrue($vars['sortable']);
         $this->assertFalse($vars['searchable']);
 
         $fieldView = $view->fields['status'];
@@ -78,14 +78,14 @@ class TableTest extends TestCase
         $this->assertEquals('is_active', $vars['property_path']);
         $this->assertEquals('yes', $vars['true_text']);
         $this->assertEquals('no', $vars['false_text']);
-        $this->assertFalse($vars['sortable']);
+        $this->assertTrue($vars['sortable']);
         $this->assertFalse($vars['searchable']);
 
         $fieldView = $view->fields['content'];
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $fieldView);
         $vars = $fieldView->vars;
         $this->assertFalse($vars['sortable']);
-        $this->assertFalse($vars['searchable']);
+        $this->assertTrue($vars['searchable']);
     }
 
     public function testViewSerialization()

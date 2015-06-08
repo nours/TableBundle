@@ -24,7 +24,7 @@ interface TableTypeInterface
      * 
      * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolver $resolver);
+    public function configureOptions(OptionsResolver $resolver);
     
     /**
      * Builds the table.

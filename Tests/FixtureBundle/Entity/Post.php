@@ -10,11 +10,14 @@
 
 namespace Nours\TableBundle\Tests\FixtureBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Post
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
+ *
+ * @ORM\Entity()
  */
 class Post
 {
@@ -22,9 +25,34 @@ class Post
     const STATUS_EDITING   = 'editing';
     const STATUS_PUBLISHED = 'published';
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
     private $status = self::STATUS_NEW;
-    private $active = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
     private $content;
 
     /**
@@ -72,7 +100,7 @@ class Post
      */
     public function isActive()
     {
-        return $this->active;
+        return $this->isActive;
     }
 
     /**
@@ -80,6 +108,6 @@ class Post
      */
     public function setActive($active)
     {
-        $this->active = $active;
+        $this->isActive = $active;
     }
 }
