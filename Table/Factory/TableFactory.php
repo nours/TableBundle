@@ -92,6 +92,7 @@ class TableFactory implements TableFactoryInterface
         // Configure options resolver
         $resolver = new OptionsResolver();
         $type->configureOptions($resolver);
+        $resolver->setDefault('name', $type->getName());
 
         // Default options
         foreach ($this->getExtensions() as $extension) {

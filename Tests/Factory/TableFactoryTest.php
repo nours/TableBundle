@@ -120,6 +120,8 @@ class TableFactoryTest extends TestCase
         $table = $this->factory->createTable('post');
         $this->assertNotNull($table);
         $this->assertNull($table->getData());
+        $this->assertEquals('post', $table->getName());
+        $this->assertEquals('post', $table->getOption('name'));
 
         // The type have 4 fields
         $this->assertCount(4, $table->getFields());

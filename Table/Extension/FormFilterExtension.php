@@ -13,6 +13,7 @@ namespace Nours\TableBundle\Table\Extension;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,10 +51,14 @@ class FormFilterExtension extends AbstractExtension
     {
         $resolver->setDefaults(array(
             'form_name' => 'filter',
-            'filter_params' => null,      // Will be set upon request handling
-            'form' => null      // Will be set upon request handling
+            'form_type' => 'form',
+            'form_options' => array(),
+            'filter_params' => null,
+            'form' => null
         ));
+        // Will be set upon request handling
         $resolver->setAllowedTypes('form', array('null'));
+        $resolver->setAllowedTypes('form_options', array('array'));
     }
 
     /**
@@ -77,7 +82,18 @@ class FormFilterExtension extends AbstractExtension
     {
         // Build the form if table has fields for filtering
         if ($fields = $this->getFilterFields($table)) {
-            $form = $this->createFilterForm($fields, $table->getOption('form_name'));
+            $builder = $this->formFactory->createNamedBuilder(
+                $table->getOption('form_name'),
+                $table->getOption('form_type'),
+                null,
+                array_replace($table->getOption('form_options'), array(
+                    'method' => 'GET',
+                    'csrf_protection' => false
+                ))
+            );
+
+            $this->buildFilterForm($builder, $fields);
+            $form = $builder->getForm();
             $table->setOption('form', $form);
 
             if ($request) {
@@ -92,22 +108,14 @@ class FormFilterExtension extends AbstractExtension
     }
 
     /**
+     * @param FormBuilder $builder
      * @param FieldInterface[] $fields
-     * @param $name
-     * @return \Symfony\Component\Form\Form
      */
-    private function createFilterForm($fields, $name)
+    private function buildFilterForm(FormBuilder $builder, $fields)
     {
-        $builder = $this->formFactory->createNamedBuilder($name, 'form', null, array(
-            'method' => 'GET',
-            'csrf_protection' => false
-        ));
-
         foreach ($fields as $field) {
             $builder->add($field->getName(), $field->getOption('filter_type'), $field->getOption('filter_options'));
         }
-
-        return $builder->getForm();
     }
 
     /**
