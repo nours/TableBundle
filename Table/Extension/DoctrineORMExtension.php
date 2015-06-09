@@ -80,7 +80,8 @@ class DoctrineORMExtension extends AbstractExtension
             'association' => null,  // Association for field mapping
             'association_alias' => null,
             'parent_alias' => null,
-            'query_path' => null
+            'query_path' => null,
+            'property_path' => null
         ));
 
         $resolver->setAllowedTypes('sortable', 'bool');
@@ -108,6 +109,15 @@ class DoctrineORMExtension extends AbstractExtension
                 return $alias . '.' . $path;
             }
             return $value;
+        });
+        $resolver->setNormalizer('property_path', function(Options $options, $value) {
+//            if (empty($value)) {
+                $association = $options['association'];
+                $path = $options['field_path'];
+
+                return Inflector::tableize(($association ? $association . '.' : '') . $path);
+//            }
+//            return $value;
         });
     }
 

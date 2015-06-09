@@ -43,7 +43,8 @@ class PostEmbedType extends AbstractType
                 'field_path' => 'name',
                 'filter_type' => 'entity',
                 'filter_options' => array(
-                    'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Author'
+                    'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Author',
+                    'property' => 'name'
                 )
             ))
             ->add('author_email', 'text', array(

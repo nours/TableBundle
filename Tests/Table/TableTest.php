@@ -114,4 +114,16 @@ class TableTest extends TestCase
         $this->assertEquals(2, $object['total']);
         $this->assertEquals($data, $object['data']);
     }
+
+
+    public function testCreateAnotherView()
+    {
+        $table = $this->getTableFactory()->createTable('post_embed');
+
+        $view = $table->createView();
+
+        $fieldView = $view->fields['author'];
+        $vars = $fieldView->vars;
+        $this->assertEquals('author.name', $vars['property_path']);
+    }
 }
