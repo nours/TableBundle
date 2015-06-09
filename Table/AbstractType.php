@@ -18,6 +18,14 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function getExtension()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         

@@ -47,19 +47,16 @@ class TwigRendererTest extends TestCase
     {
         $renderer = $this->getRenderer();
         $table = $this->createTable('post', array(
-            'page' => 2,
             'limit' => 10,
-            'pages' => 20,
-            'total' => 200
         ));
 
         $html = $renderer->renderTable($table->createView());
 
         $expected = <<<EOS
-page=2
+page=1
 limit=10
-pages=20
-total=200
+pages=1
+total=3
 field=id
 field=status
 field=isActive

@@ -44,8 +44,9 @@ interface TableFactoryInterface
      * 
      * @param string $type
      * @param array $options
+     * @param array $extensions
      */
-    public function createField($name, $type, array $options = array());
+    public function createField($name, $type, array $options = array(), array $extensions = array());
 
     /**
      * @return FieldTypeInterface
@@ -56,4 +57,10 @@ interface TableFactoryInterface
      * @return ExtensionInterface[]
      */
     public function getExtensions();
+
+    /**
+     * @param TableTypeInterface $type
+     * @return ExtensionInterface[]
+     */
+    public function getExtensionsForType(TableTypeInterface $type);
 }

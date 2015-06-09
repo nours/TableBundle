@@ -5,6 +5,7 @@ namespace Nours\TableBundle\Tests\Factory;
 use Nours\TableBundle\Table\Factory\TableFactory;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PagerType;
 use Nours\TableBundle\Tests\TestCase;
 
 class TableFactoryTest extends TestCase
@@ -33,6 +34,18 @@ class TableFactoryTest extends TestCase
         $this->assertInstanceOf('Nours\TableBundle\Table\Extension\PagerfantaExtension', $extensions[1]);
         $this->assertInstanceOf('Nours\TableBundle\Table\Extension\DoctrineORMExtension', $extensions[2]);
         $this->assertInstanceOf('Nours\TableBundle\Table\Extension\FormFilterExtension', $extensions[3]);
+    }
+
+    /**
+     * The bundle comes with 3 extensions (2 of which are enabled in the test env).
+     */
+    public function testGetExtensionsForType()
+    {
+        $extensions = $this->factory->getExtensionsForType(new PagerType());
+
+        $this->assertCount(2, $extensions);
+        $this->assertInstanceOf('Nours\TableBundle\Table\Extension\CoreExtension', $extensions[0]);
+        $this->assertInstanceOf('Nours\TableBundle\Table\Extension\PagerfantaExtension', $extensions[1]);
     }
 
     /**

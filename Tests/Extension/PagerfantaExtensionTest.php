@@ -35,7 +35,7 @@ class PagerfantaExtensionTest extends TestCase
         $pager = new Pagerfanta($adapter);
         $pager->setMaxPerPage(20)->setCurrentPage(1);
 
-        $table = $this->factory->createTable('post', array(
+        $table = $this->factory->createTable('pager', array(
             'pager' => $pager
         ))->handle();
 

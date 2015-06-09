@@ -3,6 +3,7 @@
 namespace Nours\TableBundle\Table\Extension;
 
 
+use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
@@ -47,7 +48,7 @@ class DoctrineORMExtension extends AbstractExtension
             $class = $options['class'];
 
             if (!empty($class)) {
-                return $this->entityManager->getRepository($class)->createQueryBuilder('a');
+                return $this->entityManager->getRepository($class)->createQueryBuilder('_root');
             }
             return null;
         };
@@ -72,13 +73,42 @@ class DoctrineORMExtension extends AbstractExtension
         $resolver->setDefaults(array(
             'sortable'   => false,
             'searchable' => false,
-            'sort_path'  => function(Options $options) {
+            'filterable' => false,
+            'field_path' => function(Options $options) {
                 return $options['name'];
             },
+            'association' => null,  // Association for field mapping
+            'association_alias' => null,
+            'parent_alias' => null,
+            'query_path' => null
         ));
 
         $resolver->setAllowedTypes('sortable', 'bool');
         $resolver->setAllowedTypes('searchable', 'bool');
+        $resolver->setNormalizer('association', function(Options $options, $value) {
+            if (true === $value) {
+                return $options['name'];
+            }
+            return $value;
+        });
+        $resolver->setNormalizer('association_alias', function(Options $options, $value) {
+            if (empty($value) && ($association = $options['association'])) {
+                return '_' . Inflector::tableize($association);
+            }
+            return $value;
+        });
+        $resolver->setNormalizer('parent_alias', function(Options $options, $value) {
+            return $value ?: '_root';
+        });
+        $resolver->setNormalizer('query_path', function(Options $options, $value) {
+            if (empty($value)) {
+                $alias = $options['association_alias'] ?: '_root';
+                $path = $options['field_path'];
+
+                return $alias . '.' . $path;
+            }
+            return $value;
+        });
     }
 
     /**
@@ -109,14 +139,16 @@ class DoctrineORMExtension extends AbstractExtension
     public function handle(TableInterface $table, Request $request = null)
     {
         // Update searchable and sortable options
-        $table->setOption('searchable', $this->getFieldOption($table, 'searchable'));
-        $table->setOption('sortable', $this->getFieldOption($table, 'sortable'));
+        $table->setOption('searchable', $this->resolveFieldOption($table, 'searchable'));
+        $table->setOption('sortable', $this->resolveFieldOption($table, 'sortable'));
+        $table->setOption('filterable', $this->resolveFieldOption($table, 'filterable'));
 
         /** @var QueryBuilder $queryBuilder */
         if ($queryBuilder = $table->getOption('query_builder')) {
             // Filter Querybuilder if parameter in request
             $this->filterQueryBuilder($queryBuilder, $table);
 
+//            var_dump($queryBuilder->getQuery()->getSQL());
             // Create the pager
             $adapter = new DoctrineORMAdapter($queryBuilder->getQuery());
             $pager = new Pagerfanta($adapter);
@@ -136,16 +168,16 @@ class DoctrineORMExtension extends AbstractExtension
      */
     private function filterQueryBuilder(QueryBuilder $queryBuilder, TableInterface $table)
     {
-        // Handle some search among fields
+        // Build associations
+        $this->buildAssociations($queryBuilder, $table->getFields());
+
+        // Search
         if ($table->getOption('searchable') && ($search = $table->getOption('search'))) {
             $queryBuilder->where($this->makeSearchExpr($queryBuilder, $table->getFields()));
             $queryBuilder->setParameter('search', "%".$search."%");
         }
 
-        if ($table->getOption('sortable') && ($sort = $table->getOption('sort'))) {
-            $this->orderQueryBuilderBy($queryBuilder, $table, $sort);
-        }
-
+        // Sort
         if ($table->getOption('sortable') && ($sort = $table->getOption('sort'))) {
             $this->orderQueryBuilderBy($queryBuilder, $table, $sort);
         }
@@ -156,74 +188,105 @@ class DoctrineORMExtension extends AbstractExtension
         }
     }
 
-
-    private function buildFilter(QueryBuilder $queryBuilder, TableInterface $table, array $filter)
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param FieldInterface[] $fields
+     */
+    private function buildAssociations(QueryBuilder $queryBuilder, array $fields)
     {
-        $alias  = $queryBuilder->getRootAliases()[0];
+        $assocBuild = array();
 
-        foreach ($filter as $name => $value) {
-            $field = $table->getField($name);
+        foreach ($fields as $field) {
+            if ($association = $field->getOption('association')) {
 
-            // todo : check this elsewhere
-//            if (!$field->getOption('filterable')) {
-//                throw new InvalidArgumentException("Field $name is not filterable in table " . $table->getName());
-//            }
+                // Only one level supported by now
+                if (!isset($assocBuild[$association])) {
+                    $this->buildAssociation($queryBuilder, $association, $field->getOption('association_alias'));
 
-            $queryBuilder->andWhere("$alias.$name = :$name");
-            $queryBuilder->setParameter($name, $value);
-
+                    $assocBuild[$association] = true;
+                }
+            }
         }
-//        var_dump($filter);die;
     }
 
-    private function orderQueryBuilderBy(QueryBuilder $queryBuilder, TableInterface $table, $fieldName)
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param string $association
+     * @param string $assocAlias
+     * @param string|null $parentAlias
+     */
+    private function buildAssociation(QueryBuilder $queryBuilder, $association, $assocAlias, $parentAlias = null)
     {
-        $alias  = $queryBuilder->getRootAliases()[0];
-
-        // Check field is sortable
-        $field = $table->getField($fieldName);
-        if (!$field->getOption('sortable')) {
-            throw new InvalidArgumentException("Field $fieldName is not sortable in table " . $table->getName());
-        }
-
-        $sort  = $field->getOption('sort_path');
-        $order = $table->getOption('order', 'DESC');
-
-        $queryBuilder->orderBy("$alias.$sort", $order);
+        $parentAlias = $parentAlias ?: $queryBuilder->getRootAliases()[0];
+        $queryBuilder->addSelect($assocAlias)->leftJoin($parentAlias .'.' . $association, $assocAlias);
     }
 
-
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array $fields
+     * @return Query\Expr\Orx
+     */
     private function makeSearchExpr(QueryBuilder $queryBuilder, array $fields)
     {
         $expr = $queryBuilder->expr()->orX();
-        $alias  = $queryBuilder->getRootAliases()[0];
 
         // Filtering
         /** @var Field $field */
         foreach ($fields as $field) {
-            if ($field->isSearchable()) {
-                $expr->add($alias . '.' . $field->getName() . ' LIKE :search');
+            if ($field->getOption('searchable')) {
+                $expr->add($field->getOption('query_path') . ' LIKE :search');
             }
         }
 
         return $expr;
     }
 
-    protected function getFieldOption(TableInterface $table, $option, $expected = true)
+    /**
+     * Sets the order by
+     *
+     * @param QueryBuilder $queryBuilder
+     * @param TableInterface $table
+     * @param $fieldName
+     */
+    private function orderQueryBuilderBy(QueryBuilder $queryBuilder, TableInterface $table, $fieldName)
     {
-        if (($value = $table->getOption($option)) !== null) {
-            // Value has been set in table option
-            return $value;
+        // Check field is sortable
+        $field = $table->getField($fieldName);
+        if (!$field->getOption('sortable')) {
+            throw new InvalidArgumentException("Field $fieldName is not sortable in table " . $table->getName());
         }
 
-        foreach ($table->getFields() as $field) {
-            if ($field->getOption($option) === $expected) {
-                $table->setOption('searchable', $expected);
-                return $expected;
+        $order = $table->getOption('order', 'DESC');
+
+        $queryBuilder->orderBy($field->getOption('query_path'), $order);
+    }
+
+    /**
+     *
+     *
+     * @param QueryBuilder $queryBuilder
+     * @param TableInterface $table
+     * @param array $filter
+     */
+    private function buildFilter(QueryBuilder $queryBuilder, TableInterface $table, array $filter)
+    {
+        foreach ($filter as $name => $value) {
+            $field = $table->getField($name);
+
+            // todo : check this elsewhere
+            if (!$field->getOption('filterable')) {
+                throw new InvalidArgumentException("Field $name is not filterable in table " . $table->getName());
             }
-        }
 
-        return null;
+            if ($value) {
+                $path = is_object($value) ?
+                    $field->getOption('parent_alias') . '.' . $field->getOption('association') :
+                    $field->getOption('query_path');
+                $queryBuilder->andWhere($path . " = :filter_$name");
+                $queryBuilder->setParameter('filter_' . $name, $value);
+            }
+
+        }
     }
 
     /**

@@ -18,7 +18,14 @@ interface TableTypeInterface
      * @return string
      */
     public function getName();
-    
+
+    /**
+     * The name of the extension to load.
+     *
+     * @return string|null
+     */
+    public function getExtension();
+
     /**
      * Configures default options for this table.
      * 

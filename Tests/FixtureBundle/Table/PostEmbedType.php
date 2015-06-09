@@ -12,15 +12,14 @@ namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
 use Nours\TableBundle\Table\Builder\TableBuilder;
 use Nours\TableBundle\Table\AbstractType;
-use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class PostType
+ * Class PostEmbedType
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class PostType extends AbstractType
+class PostEmbedType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -31,17 +30,27 @@ class PostType extends AbstractType
             ->add('id', 'text', array(
                 'sortable' => true
             ))
-            ->add('status', 'text', array(
+            ->add('date', 'date', array(
                 'sortable' => true,
                 'searchable' => true,
-                'filter_type' => 'choice',
+                'field_path' => 'embed.date'
+            ))
+            ->add('author', 'text', array(
+                'sortable' => true,
+                'searchable' => true,
+                'filterable' => true,
+                'association' => true,
+                'field_path' => 'name',
+                'filter_type' => 'entity',
                 'filter_options' => array(
-                    'choices' => array(
-                        Post::STATUS_NEW => 'new',
-                        Post::STATUS_EDITING => 'editing',
-                        Post::STATUS_PUBLISHED => 'published',
-                    )
+                    'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Author'
                 )
+            ))
+            ->add('author_email', 'text', array(
+                'sortable' => true,
+                'searchable' => true,
+                'association' => 'author',
+                'field_path' => 'email'
             ))
             ->add('isActive', 'boolean', array(
                 'sortable' => true
@@ -64,6 +73,6 @@ class PostType extends AbstractType
 
     public function getName()
     {
-        return 'post';
+        return 'post_embed';
     }
 }

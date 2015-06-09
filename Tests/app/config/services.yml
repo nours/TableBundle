@@ -2,3 +2,11 @@ services:
   tests.table.post:
     class: Nours\TableBundle\Tests\FixtureBundle\Table\PostType
     tags: [ { name: 'nours_table.table_type' } ]
+
+  tests.table.post_embed:
+    class: Nours\TableBundle\Tests\FixtureBundle\Table\PostEmbedType
+    tags: [ { name: 'nours_table.table_type' } ]
+
+  tests.table.pager:
+    class: Nours\TableBundle\Tests\FixtureBundle\Table\PagerType
+    tags: [ { name: 'nours_table.table_type' } ]

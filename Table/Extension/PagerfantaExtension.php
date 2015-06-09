@@ -3,6 +3,7 @@
 namespace Nours\TableBundle\Table\Extension;
 
 use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Table\View;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,6 +28,14 @@ class PagerfantaExtension extends AbstractExtension
         $resolver->setAllowedTypes(array(
             'pager' => array('Pagerfanta\Pagerfanta', 'null')
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(View $view, TableInterface $table, array $options)
+    {
+        $view->vars['pager'] = $options['pager'];
     }
 
     /**

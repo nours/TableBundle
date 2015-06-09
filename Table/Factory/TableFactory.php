@@ -73,7 +73,7 @@ class TableFactory implements TableFactoryInterface
 
         // Resolve type if not
         if (!$type instanceof ResolvedType) {
-            $this->tableTypes[$type->getName()] = $type = new ResolvedType($type, $this->getExtensions());
+            $this->tableTypes[$type->getName()] = $type = new ResolvedType($type, $this->getExtensionsForType($type));
         }
 
 
@@ -91,13 +91,15 @@ class TableFactory implements TableFactoryInterface
     {
         // Configure options resolver
         $resolver = new OptionsResolver();
-        $type->configureOptions($resolver);
-        $resolver->setDefault('name', $type->getName());
 
         // Default options
         foreach ($this->getExtensions() as $extension) {
             $extension->configureOptions($resolver);
         }
+
+        // Type configuration should prevail over extensions
+        $type->configureOptions($resolver);
+        $resolver->setDefault('name', $type->getName());
 
         return $resolver->resolve($options);
     }
@@ -112,9 +114,10 @@ class TableFactory implements TableFactoryInterface
     protected function createBuilder(TableTypeInterface $type, array $options)
     {
         $builder = new TableBuilder($type, $this, $options);
+        $extensions = $this->getExtensionsForType($type);
 
         // Extensions build pass
-        foreach ($this->getExtensions() as $extension) {
+        foreach ($extensions as $extension) {
             $extension->buildTable($builder, $options);
         }
 
@@ -122,7 +125,7 @@ class TableFactory implements TableFactoryInterface
         $type->buildTable($builder, $options);
 
         // Extensions build pass
-        foreach ($this->getExtensions() as $extension) {
+        foreach ($extensions as $extension) {
             $extension->finishTable($builder, $options);
         }
 
@@ -132,7 +135,7 @@ class TableFactory implements TableFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createField($name, $type, array $options = array())
+    public function createField($name, $type, array $options = array(), array $extensions = array())
     {
         if (!$type instanceof FieldTypeInterface) {
             if (!isset($this->fieldTypes[$type])) {
@@ -142,26 +145,21 @@ class TableFactory implements TableFactoryInterface
             $type = $this->fieldTypes[$type];
         }
 
-        // Make options from type
-        $options = $this->getFieldOptions($name, $type, $options);
-
-        return $type->createField($name, $options);
-    }
-
-    protected function getFieldOptions($name, FieldTypeInterface $type, $options)
-    {
         // Configure options resolver
         $resolver = new OptionsResolver();
+
+        // Default options
+        $extensions = $extensions ?: $this->getExtensions();
+        foreach ($extensions as $extension) {
+            $extension->configureFieldOptions($resolver);
+        }
 
         $type->configureOptions($resolver);
         $resolver->setDefault('name', $name);
 
-        // Default options
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureFieldOptions($resolver);
-        }
+        $options = $resolver->resolve($options);
 
-        return $resolver->resolve($options);
+        return $type->createField($name, $options);
     }
 
     /**
@@ -186,6 +184,60 @@ class TableFactory implements TableFactoryInterface
         }
 
         return $this->sortedExtensions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtensionsForType(TableTypeInterface $type)
+    {
+        // Type extensions are resolved
+        if ($type instanceof ResolvedType) {
+            return $type->getExtensions();
+        }
+
+        // Return all extensions if no name provided
+        if (($name = $type->getExtension()) === null) {
+            return $this->getExtensions();
+        }
+
+        // Find ordered extensions list for specific name
+        $extensions = array();
+        $this->findExtensions($extensions, $name);
+
+        // Strip off index
+        return array_values($extensions);
+    }
+
+    /**
+     * Finds recursively
+     *
+     * @param $extensions
+     * @param $name
+     */
+    private function findExtensions(&$extensions, $name)
+    {
+        $extension = $this->getExtension($name);
+
+        // Put deps first
+        if (($dep = $extension->getDependency()) && !isset($extensions[$dep])) {
+            $this->findExtensions($extensions, $dep);
+        }
+
+        $extensions[$name] = $extension;
+    }
+
+    /**
+     * @param $name
+     * @return ExtensionInterface
+     */
+    private function getExtension($name)
+    {
+        if (!isset($this->extensions[$name])) {
+            throw new \InvalidArgumentException("There is no extension called $name in (" . implode(', ', array_keys($this->extensions)) . ")");
+        }
+
+        return $this->extensions[$name];
     }
 
     /**

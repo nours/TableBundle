@@ -41,7 +41,6 @@ class TableTest extends TestCase
     public function testCreateView()
     {
         $table = $this->getTableFactory()->createTable('post', array(
-            'page' => 2,
             'limit' => 15
         ));
 
@@ -50,7 +49,7 @@ class TableTest extends TestCase
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $view);
 
         $vars = $view->vars;
-        $this->assertEquals(2, $vars['page']);
+        $this->assertEquals(1, $vars['page']);
         $this->assertEquals(15, $vars['limit']);
 
         $this->assertCount(4, $view->fields);
@@ -100,12 +99,12 @@ class TableTest extends TestCase
         $pager = new Pagerfanta($adapter);
         $pager->setMaxPerPage(20)->setCurrentPage(1);
 
-        $view = $this->getTableFactory()->createTable('post', array(
+        $table = $this->getTableFactory()->createTable('pager', array(
             'pager' => $pager
-        ))->createView();
+        ));
+        $view = $table->createView();
 
         $serialized = $serializer->serialize($view, 'json');
-
 
         $object = json_decode($serialized, true);
 

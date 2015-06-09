@@ -45,7 +45,7 @@ class TableBuilder
      */
     public function add($name, $type = null, array $options = array())
     {
-        $this->fields[$name] = $this->factory->createField($name, $type, $options);
+        $this->fields[$name] = $this->factory->createField($name, $type, $options, $this->type->getExtensions());
 
         return $this;
     }

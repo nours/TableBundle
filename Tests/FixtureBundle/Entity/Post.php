@@ -56,6 +56,29 @@ class Post
     private $content;
 
     /**
+     * @var string
+     *
+     * @ORM\Embedded(class="Embedded")
+     */
+    private $embed;
+
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="Author")
+     */
+    private $author;
+
+
+    /**
+     * @param Author $author
+     */
+    public function __construct(Author $author)
+    {
+        $this->author = $author;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -109,5 +132,24 @@ class Post
     public function setActive($active)
     {
         $this->isActive = $active;
+    }
+
+    /**
+     * @return Embedded
+     */
+    public function getEmbed()
+    {
+        if (empty($this->embed)) {
+            $this->embed = new Embedded();
+        }
+        return $this->embed;
+    }
+
+    /**
+     * @param mixed $embed
+     */
+    public function setEmbed($embed)
+    {
+        $this->embed = $embed;
     }
 }

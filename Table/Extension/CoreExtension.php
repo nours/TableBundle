@@ -95,6 +95,14 @@ class CoreExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
+    public function getDependency()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'core';

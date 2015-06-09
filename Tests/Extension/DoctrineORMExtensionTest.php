@@ -28,7 +28,6 @@ class DoctrineORMExtensionTest extends TestCase
 
         $table = $this->createTable('post', array(
             'limit' => 15,
-            'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Post',
         ))->handle();
 
         $this->assertEquals(1, $table->getPage());
@@ -46,7 +45,6 @@ class DoctrineORMExtensionTest extends TestCase
         $this->loadFixtures();
 
         $table = $this->createTable('post', array(
-            'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Post',
             'sort' => 'content',
             'order' => 'DESC'
         ));
@@ -61,7 +59,6 @@ class DoctrineORMExtensionTest extends TestCase
         $this->loadFixtures();
 
         $table = $this->createTable('post', array(
-            'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Post',
             'sort' => 'status',
             'order' => 'ASC'
         ))->handle();
@@ -69,6 +66,7 @@ class DoctrineORMExtensionTest extends TestCase
         $data = $table->getData();
 
         // Order is scrambled (see FixtureBundle\Fixtures\LoadAll)
+        $this->assertCount(3, $data);
         $this->assertEquals(2, $data[0]->getId());
         $this->assertEquals(1, $data[1]->getId());
         $this->assertEquals(3, $data[2]->getId());
@@ -79,7 +77,6 @@ class DoctrineORMExtensionTest extends TestCase
         $this->loadFixtures();
 
         $table = $this->createTable('post', array(
-            'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Post',
             'search' => 'post',
             'sort' => 'status',
             'order' => 'ASC'
@@ -98,7 +95,6 @@ class DoctrineORMExtensionTest extends TestCase
         $this->loadFixtures();
 
         $table = $this->createTable('post', array(
-            'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Post',
             'sort' => 'isActive',
             'order' => 'DESC'
         ))->handle();
@@ -116,7 +112,6 @@ class DoctrineORMExtensionTest extends TestCase
         $this->loadFixtures();
 
         $table = $this->createTable('post', array(
-            'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Post',
             'search' => 'published'
         ))->handle();
 
@@ -131,7 +126,6 @@ class DoctrineORMExtensionTest extends TestCase
         $this->loadFixtures();
 
         $table = $this->createTable('post', array(
-            'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Post',
         ));
 
         $table->handle(new Request(array(
@@ -143,5 +137,80 @@ class DoctrineORMExtensionTest extends TestCase
         $data = $table->getData();
         $this->assertCount(1, $data);
         $this->assertEquals(2, $data[0]->getId());
+    }
+
+    public function testSortByEmbeddedDate()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_embed', array(
+            'sort' => 'date',
+            'order' => 'desc'
+        ))->handle();
+
+        $data = $table->getData();
+
+        $this->assertCount(3, $data);
+        $this->assertEquals(3, $data[0]->getId());
+        $this->assertEquals(2, $data[1]->getId());
+        $this->assertEquals(1, $data[2]->getId());
+    }
+
+    public function testSearchAndSortUsingAssociationField()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_embed', array(
+            'search' => 'author2@authorship.org',
+            'sort' => 'author_email',
+            'order' => 'desc'
+        ))->handle();
+
+        $data = $table->getData();
+
+        $this->assertCount(1, $data);
+        $this->assertEquals(3, $data[0]->getId());
+    }
+
+    public function testFilterUsingAssociationField()
+    {
+        $this->loadFixtures();
+        $author = $this->getEntityManager()->find('FixtureBundle:Author', 1);
+
+        $table = $this->createTable('post_embed', array(
+            'sort' => 'date',
+            'order' => 'desc',
+            'filter_params' => array(
+                'author' => $author
+            )
+        ));
+
+        $table->handle();
+
+        $data = $table->getData();
+
+//        var_dump($table->getOption('pager')->getAdapter()->getQuery()->getDql());die;
+
+        $this->assertCount(2, $data);
+        $this->assertEquals(2, $data[0]->getId());
+        $this->assertEquals(1, $data[1]->getId());
+    }
+
+    public function testFilterUsingAssociationFieldForm()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_embed');
+
+        $table->handle(new Request(array(
+            'filter' => array(
+                'author' => 2
+            )
+        )));
+
+        $data = $table->getData();
+
+        $this->assertCount(1, $data);
+        $this->assertEquals(3, $data[0]->getId());
     }
 } 

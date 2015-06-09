@@ -12,6 +12,7 @@ namespace Nours\RestAdminBundle\Tests\FixtureBundle\Fixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Nours\TableBundle\Tests\FixtureBundle\Entity\Author;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
 
 /**
@@ -23,21 +24,40 @@ class LoadAll extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
-        $post = new Post();
+        $author = new Author();
+        $author->setName('author 1');
+        $author->setEmail('author@authorship.org');
+
+        $manager->persist($author);
+
+        $author2 = new Author();
+        $author2->setName('author 2');
+        $author2->setEmail('author2@authorship.org');
+
+        $manager->persist($author2);
+
+        $date = new \DateTime();
+
+        $post = new Post($author);
         $post->setContent('content');
+        $post->getEmbed()->setDate(clone $date);
 
         $manager->persist($post);
+        $date->add(new \DateInterval('P1D'));
 
-        $post = new Post();
+        $post = new Post($author);
         $post->setContent('second post');
         $post->setStatus(Post::STATUS_EDITING);
+        $post->getEmbed()->setDate(clone $date);
 
         $manager->persist($post);
+        $date->add(new \DateInterval('P1D'));
 
-        $post = new Post();
+        $post = new Post($author2);
         $post->setContent('third post');
         $post->setStatus(Post::STATUS_PUBLISHED);
         $post->setActive(true);
+        $post->getEmbed()->setDate(clone $date);
 
         $manager->persist($post);
 

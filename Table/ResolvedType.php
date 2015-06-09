@@ -39,6 +39,22 @@ class ResolvedType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function getExtension()
+    {
+        return $this->type->getExtension();
+    }
+
+    /**
+     * @return Extension\ExtensionInterface[]
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return $this->type->getName();
