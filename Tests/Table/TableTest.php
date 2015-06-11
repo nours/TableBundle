@@ -124,7 +124,6 @@ class TableTest extends TestCase
 
         $fieldView = $view->fields['author'];
         $vars = $fieldView->vars;
-        $this->assertEquals('name', $vars['property_path']);
-        $this->assertEquals('author.name', $vars['full_path']);
+        $this->assertEquals('author.name', $vars['property_path']);
     }
 }

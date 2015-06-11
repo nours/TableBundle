@@ -10,7 +10,10 @@ property_path={{ property_path }}
 
 {# specific html block for text fields #}
 {% block field_text %}
-field_text
+block=field_text
+name={{ name }}
+label={{ label }}
+property_path={{ property_path }}
 {%- endblock %}
 
 

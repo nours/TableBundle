@@ -172,6 +172,21 @@ class DoctrineORMExtensionTest extends TestCase
         $this->assertEquals(3, $data[0]->getId());
     }
 
+    public function testSearchCanResultNothing()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_embed', array(
+            'search' => 'foobarbaz',
+            'sort' => 'author',
+            'order' => 'desc'
+        ))->handle();
+
+        $data = $table->getData();
+
+        $this->assertCount(0, $data);
+    }
+
     public function testFilterUsingAssociationField()
     {
         $this->loadFixtures();
@@ -228,5 +243,18 @@ class DoctrineORMExtensionTest extends TestCase
 
         $this->assertCount(1, $data);
         $this->assertEquals(3, $data[0]->getId());
+
+        // Another request
+        $table = $this->createTable('post_comments');
+        $table->handle(new Request(array(
+            'filter' => array(
+                'comments' => array(1)
+            )
+        )));
+
+        $data = $table->getData();
+
+        $this->assertCount(1, $data);
+        $this->assertEquals(2, $data[0]->getId());
     }
 } 

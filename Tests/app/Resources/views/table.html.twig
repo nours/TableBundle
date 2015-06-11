@@ -4,7 +4,7 @@ page={{ page }}
 limit={{ limit }}
 pages={{ pages }}
 total={{ total }}
-{% for field in table %}field={{ render_table_field(field, 'name') }}
+{% for field in table %}{{ render_table_field(field, 'block') }}
 {% endfor %}
 {%- endblock %}
 
@@ -19,7 +19,8 @@ total={{ total }}
 {%- endblock %}
 
 
-{% block field_name %}
-{{ name }}
+{% block field_block %}
+field={{ name }}
+property_path={{ property_path }}
 {%- endblock %}
 

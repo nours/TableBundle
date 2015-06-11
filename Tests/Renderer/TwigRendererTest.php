@@ -43,7 +43,7 @@ class TwigRendererTest extends TestCase
      *
      * See Tests/app/Resources/views/table.html.twig
      */
-    public function testRenderTable()
+    public function testRenderPostTable()
     {
         $renderer = $this->getRenderer();
         $table = $this->createTable('post', array(
@@ -58,9 +58,48 @@ limit=10
 pages=1
 total=3
 field=id
+property_path=id
 field=status
+property_path=status
 field=isActive
+property_path=isActive
 field=content
+property_path=content
+
+EOS;
+
+        $this->assertEquals($expected, $html);
+    }
+
+    /**
+     * Render the main part of a table.
+     *
+     * See Tests/app/Resources/views/table.html.twig
+     */
+    public function testRenderPostEmbedTable()
+    {
+        $renderer = $this->getRenderer();
+        $table = $this->createTable('post_embed');
+
+        $html = $renderer->renderTable($table->createView());
+
+        $expected = <<<EOS
+page=1
+limit=10
+pages=1
+total=3
+field=id
+property_path=id
+field=date
+property_path=embed.date
+field=author
+property_path=author.name
+field=author_email
+property_path=author.email
+field=isActive
+property_path=isActive
+field=content
+property_path=content
 
 EOS;
 
@@ -88,7 +127,14 @@ EOS;
 
         $html = $renderer->renderField($this->view->fields['content']);
 
-        $this->assertEquals('field_text', $html);
+        $expected = <<<EOS
+block=field_text
+name=content
+label=content
+property_path=content
+EOS;
+
+        $this->assertEquals($expected, $html);
     }
 
     /**

@@ -9,7 +9,6 @@
  */
 
 namespace Nours\TableBundle\Table\Extension;
-use Doctrine\Common\Inflector\Inflector;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\View;
 use Symfony\Component\OptionsResolver\Options;
@@ -51,9 +50,6 @@ class CoreExtension extends AbstractExtension
             'property_path' => function(Options $options) {
                 return $options['name'];
             },
-            'full_path' => function(Options $options) {
-                return $options['property_path'];
-            },
             'width'      => null,
             'displayed'  => true,
         ));
@@ -92,7 +88,6 @@ class CoreExtension extends AbstractExtension
             'width' => $options['width'],
             'displayed' => $options['displayed'],
             'property_path' => $options['property_path'],
-            'full_path' => $options['full_path'],
             'block_prefixes' => array('field_' . $field->getType()->getName(), 'field'),
             'cache_key' => 'field_' . $field->getType()->getName()
         ));

@@ -75,6 +75,19 @@ class DoctrineORMExtension extends AbstractExtension
             'searchable' => false,
             'filterable' => false,
             'association' => null,  // Association for field mapping
+            'property' => null,     // The property in the association
+            'property_path' => function(Options $options) {
+                $association = $options['association'];
+                $property    = $options['property'];
+                if ($association) {
+                    // The property path now defaults to association.property
+                    if (!$property) {
+                        throw new \DomainException("property must be set for field " . $options['name']);
+                    }
+                    return $association . '.' . $property;
+                }
+                return $options['name'];
+            },
 
             /**
              * Alias of the association
@@ -89,42 +102,25 @@ class DoctrineORMExtension extends AbstractExtension
             },
 
             /**
-             * Parent alias of the association
-             *
-             * always : _root until other levels are handled
-             */
-            'parent_alias' => '_root',
-
-            /**
-             * Overrides CoreExtension full_path option to include association part as a full
-             * property_path (which should remain based on the associated relation)
-             *
-             * ex : author.name
-             */
-            'full_path' => function(Options $options) {
-                // Override full path to include association name if any
-                $association = $options['association'];
-
-                return ($association ? $association . '.' : '') . $options['property_path'];
-            },
-
-            /**
              * Self path is the path to current object in query perspective.
              *
              * It shall be used for filtering as objects
              *
              * ex : _root.author
              */
-            'self_path' => function(Options $options) {
-                return $options['parent_alias'] . '.' . ($options['association'] ?: $options['property_path']);
+            'association_path' => function(Options $options) {
+                return '_root.' . ($options['association'] ?: $options['property_path']);
             },
 
-            'query_path' => function(Options $options, $value) {
+            /**
+             * Query path is the path of the field inside query : it's alias based
+             */
+            'query_path' => function(Options $options) {
                 // Association query path
-                if (empty($value)) {
-                    return $options['alias'] . '.' . $options['property_path'];
+                if ($options['association']) {
+                    return $options['alias'] . '.' . $options['property'];
                 }
-                return $value;
+                return '_root.' . $options['property_path'];
             }
         ));
 
@@ -232,7 +228,7 @@ class DoctrineORMExtension extends AbstractExtension
                 if (!isset($assocBuild[$association])) {
                     $alias = $field->getOption('alias');
 
-                    $queryBuilder->addSelect($alias)->leftJoin($field->getOption('self_path'), $alias);
+                    $queryBuilder->addSelect($alias)->leftJoin($field->getOption('association_path'), $alias);
 
                     $assocBuild[$association] = true;
                 }
@@ -298,7 +294,7 @@ class DoctrineORMExtension extends AbstractExtension
             }
 
             if ($value) {
-                $path = $field->getOption('self_path');
+                $path = $field->getOption('association_path');
 
                 /**
                  * Handle array or collections of items

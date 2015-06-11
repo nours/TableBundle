@@ -40,7 +40,7 @@ class PostEmbedType extends AbstractType
                 'searchable' => true,
                 'filterable' => true,
                 'association' => true,
-                'property_path' => 'name',
+                'property' => 'name',
                 'filter_type' => 'entity',
                 'filter_options' => array(
                     'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Author',
@@ -51,7 +51,7 @@ class PostEmbedType extends AbstractType
                 'sortable' => true,
                 'searchable' => true,
                 'association' => 'author',
-                'property_path' => 'email'
+                'property' => 'email'
             ))
             ->add('isActive', 'boolean', array(
                 'sortable' => true
