@@ -189,8 +189,6 @@ class DoctrineORMExtensionTest extends TestCase
 
         $data = $table->getData();
 
-//        var_dump($table->getOption('pager')->getAdapter()->getQuery()->getDql());die;
-
         $this->assertCount(2, $data);
         $this->assertEquals(2, $data[0]->getId());
         $this->assertEquals(1, $data[1]->getId());
@@ -205,6 +203,24 @@ class DoctrineORMExtensionTest extends TestCase
         $table->handle(new Request(array(
             'filter' => array(
                 'author' => 2
+            )
+        )));
+
+        $data = $table->getData();
+
+        $this->assertCount(1, $data);
+        $this->assertEquals(3, $data[0]->getId());
+    }
+
+    public function testFilterUsingAssociationArrayFieldForm()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_comments');
+
+        $table->handle(new Request(array(
+            'filter' => array(
+                'comments' => array(2)
             )
         )));
 

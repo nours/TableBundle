@@ -13,6 +13,7 @@ namespace Nours\RestAdminBundle\Tests\FixtureBundle\Fixtures;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Author;
+use Nours\TableBundle\Tests\FixtureBundle\Entity\Comment;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
 
 /**
@@ -50,6 +51,10 @@ class LoadAll extends AbstractFixture
         $post->setStatus(Post::STATUS_EDITING);
         $post->getEmbed()->setDate(clone $date);
 
+        $comment = new Comment($post);
+        $comment->setComment('comment1');
+        $manager->persist($comment);
+
         $manager->persist($post);
         $date->add(new \DateInterval('P1D'));
 
@@ -58,6 +63,13 @@ class LoadAll extends AbstractFixture
         $post->setStatus(Post::STATUS_PUBLISHED);
         $post->setActive(true);
         $post->getEmbed()->setDate(clone $date);
+
+        $comment = new Comment($post);
+        $comment->setComment('comment2');
+        $manager->persist($comment);
+        $comment = new Comment($post);
+        $comment->setComment('comment3');
+        $manager->persist($comment);
 
         $manager->persist($post);
 

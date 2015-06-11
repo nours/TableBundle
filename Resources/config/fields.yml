@@ -14,3 +14,7 @@ services:
   nours_table.table_field.label:
     class: Nours\TableBundle\Field\Type\LabelType
     tags: [ { name: 'nours_table.table_field' } ]
+
+  nours_table.table_field.collection:
+    class: Nours\TableBundle\Field\Type\CollectionType
+    tags: [ { name: 'nours_table.table_field' } ]

@@ -74,7 +74,7 @@ class TableTest extends TestCase
         $vars = $fieldView->vars;
         $this->assertEquals('isActive', $vars['name']);
         $this->assertEquals('isActive', $vars['label']);
-        $this->assertEquals('is_active', $vars['property_path']);
+        $this->assertEquals('isActive', $vars['property_path']);
         $this->assertEquals('yes', $vars['true_text']);
         $this->assertEquals('no', $vars['false_text']);
         $this->assertTrue($vars['sortable']);
@@ -124,6 +124,7 @@ class TableTest extends TestCase
 
         $fieldView = $view->fields['author'];
         $vars = $fieldView->vars;
-        $this->assertEquals('author.name', $vars['property_path']);
+        $this->assertEquals('name', $vars['property_path']);
+        $this->assertEquals('author.name', $vars['full_path']);
     }
 }

@@ -74,50 +74,69 @@ class DoctrineORMExtension extends AbstractExtension
             'sortable'   => false,
             'searchable' => false,
             'filterable' => false,
-            'field_path' => function(Options $options) {
-                return $options['name'];
-            },
             'association' => null,  // Association for field mapping
-            'association_alias' => null,
-            'parent_alias' => null,
-            'query_path' => null,
-            'property_path' => null
+
+            /**
+             * Alias of the association
+             *
+             * ex : _author
+             */
+            'alias' => function(Options $options) {
+                if ($association = $options['association']) {
+                    return '_' . Inflector::tableize($association);
+                }
+                return '_root';
+            },
+
+            /**
+             * Parent alias of the association
+             *
+             * always : _root until other levels are handled
+             */
+            'parent_alias' => '_root',
+
+            /**
+             * Overrides CoreExtension full_path option to include association part as a full
+             * property_path (which should remain based on the associated relation)
+             *
+             * ex : author.name
+             */
+            'full_path' => function(Options $options) {
+                // Override full path to include association name if any
+                $association = $options['association'];
+
+                return ($association ? $association . '.' : '') . $options['property_path'];
+            },
+
+            /**
+             * Self path is the path to current object in query perspective.
+             *
+             * It shall be used for filtering as objects
+             *
+             * ex : _root.author
+             */
+            'self_path' => function(Options $options) {
+                return $options['parent_alias'] . '.' . ($options['association'] ?: $options['property_path']);
+            },
+
+            'query_path' => function(Options $options, $value) {
+                // Association query path
+                if (empty($value)) {
+                    return $options['alias'] . '.' . $options['property_path'];
+                }
+                return $value;
+            }
         ));
 
         $resolver->setAllowedTypes('sortable', 'bool');
         $resolver->setAllowedTypes('searchable', 'bool');
+
+        // Association is the name of the relation for joining the query
         $resolver->setNormalizer('association', function(Options $options, $value) {
             if (true === $value) {
                 return $options['name'];
             }
             return $value;
-        });
-        $resolver->setNormalizer('association_alias', function(Options $options, $value) {
-            if (empty($value) && ($association = $options['association'])) {
-                return '_' . Inflector::tableize($association);
-            }
-            return $value;
-        });
-        $resolver->setNormalizer('parent_alias', function(Options $options, $value) {
-            return $value ?: '_root';
-        });
-        $resolver->setNormalizer('query_path', function(Options $options, $value) {
-            if (empty($value)) {
-                $alias = $options['association_alias'] ?: '_root';
-                $path = $options['field_path'];
-
-                return $alias . '.' . $path;
-            }
-            return $value;
-        });
-        $resolver->setNormalizer('property_path', function(Options $options, $value) {
-//            if (empty($value)) {
-                $association = $options['association'];
-                $path = $options['field_path'];
-
-                return Inflector::tableize(($association ? $association . '.' : '') . $path);
-//            }
-//            return $value;
         });
     }
 
@@ -211,24 +230,14 @@ class DoctrineORMExtension extends AbstractExtension
 
                 // Only one level supported by now
                 if (!isset($assocBuild[$association])) {
-                    $this->buildAssociation($queryBuilder, $association, $field->getOption('association_alias'));
+                    $alias = $field->getOption('alias');
+
+                    $queryBuilder->addSelect($alias)->leftJoin($field->getOption('self_path'), $alias);
 
                     $assocBuild[$association] = true;
                 }
             }
         }
-    }
-
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param string $association
-     * @param string $assocAlias
-     * @param string|null $parentAlias
-     */
-    private function buildAssociation(QueryBuilder $queryBuilder, $association, $assocAlias, $parentAlias = null)
-    {
-        $parentAlias = $parentAlias ?: $queryBuilder->getRootAliases()[0];
-        $queryBuilder->addSelect($assocAlias)->leftJoin($parentAlias .'.' . $association, $assocAlias);
     }
 
     /**
@@ -274,11 +283,11 @@ class DoctrineORMExtension extends AbstractExtension
     /**
      *
      *
-     * @param QueryBuilder $queryBuilder
+     * @param QueryBuilder $qb
      * @param TableInterface $table
      * @param array $filter
      */
-    private function buildFilter(QueryBuilder $queryBuilder, TableInterface $table, array $filter)
+    private function buildFilter(QueryBuilder $qb, TableInterface $table, array $filter)
     {
         foreach ($filter as $name => $value) {
             $field = $table->getField($name);
@@ -289,11 +298,28 @@ class DoctrineORMExtension extends AbstractExtension
             }
 
             if ($value) {
-                $path = is_object($value) ?
-                    $field->getOption('parent_alias') . '.' . $field->getOption('association') :
-                    $field->getOption('query_path');
-                $queryBuilder->andWhere($path . " = :filter_$name");
-                $queryBuilder->setParameter('filter_' . $name, $value);
+                $path = $field->getOption('self_path');
+
+                /**
+                 * Handle array or collections of items
+                 */
+                if (is_array($value) || $value instanceof \Traversable) {
+
+                    $expr = $qb->expr()->orX();
+                    foreach ($value as $index => $v) {
+                        $param = 'filter_' . $name . '_' . $index;
+                        $expr->add(":$param MEMBER OF $path");
+                        $qb->setParameter($param, $v);
+                    }
+
+                    $qb->andWhere($expr);
+                } else {
+                    /**
+                     * Otherwise, handles an equality operation
+                     */
+                    $qb->andWhere($path . " = :filter_$name");
+                    $qb->setParameter('filter_' . $name, $value);
+                }
             }
 
         }

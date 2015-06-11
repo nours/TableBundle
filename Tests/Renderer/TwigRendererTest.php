@@ -116,7 +116,7 @@ EOS;
 block=field
 name=isActive
 label=isActive
-property_path=is_active
+property_path=isActive
 EOS;
 
         $this->assertEquals($expected, $html);

@@ -10,6 +10,8 @@
 
 namespace Nours\TableBundle\Tests\FixtureBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -69,6 +71,13 @@ class Post
      */
     private $author;
 
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
+     */
+    private $comments;
+
 
     /**
      * @param Author $author
@@ -76,6 +85,7 @@ class Post
     public function __construct(Author $author)
     {
         $this->author = $author;
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -84,6 +94,14 @@ class Post
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 
     /**

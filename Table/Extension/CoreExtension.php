@@ -49,9 +49,13 @@ class CoreExtension extends AbstractExtension
                 return $options['name'];
             },
             'property_path' => function(Options $options) {
-                return Inflector::tableize($options['name']);
+                return $options['name'];
+            },
+            'full_path' => function(Options $options) {
+                return $options['property_path'];
             },
             'width'      => null,
+            'displayed'  => true,
         ));
 
         $resolver->setRequired('name');
@@ -86,7 +90,9 @@ class CoreExtension extends AbstractExtension
             'name' => $options['name'],
             'label' => $options['label'],
             'width' => $options['width'],
+            'displayed' => $options['displayed'],
             'property_path' => $options['property_path'],
+            'full_path' => $options['full_path'],
             'block_prefixes' => array('field_' . $field->getType()->getName(), 'field'),
             'cache_key' => 'field_' . $field->getType()->getName()
         ));
