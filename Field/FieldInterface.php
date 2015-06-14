@@ -82,6 +82,11 @@ interface FieldInterface
     public function isSearchable();
 
     /**
+     * @return bool
+     */
+    public function isDisplayed();
+
+    /**
      * This field's table
      *
      * @return TableInterface

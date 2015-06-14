@@ -105,19 +105,21 @@ class ResolvedType implements TableTypeInterface
         // - the table type
         // - table extensions
         foreach ($table->getFields() as $field) {
-            $type = $field->getType();
-            $options = $field->getOptions();
+            if ($field->isDisplayed()) {
+                $type = $field->getType();
+                $options = $field->getOptions();
 
-            $fieldView = new View($view);
+                $fieldView = new View($view);
 
-            $type->buildView($fieldView, $field, $options);
-            $tableType->buildFieldView($fieldView, $field, $options);
+                $type->buildView($fieldView, $field, $options);
+                $tableType->buildFieldView($fieldView, $field, $options);
 
-            foreach ($this->extensions as $extension) {
-                $extension->buildFieldView($fieldView, $field, $options);
+                foreach ($this->extensions as $extension) {
+                    $extension->buildFieldView($fieldView, $field, $options);
+                }
+
+                $view->fields[$field->getName()] = $fieldView;
             }
-
-            $view->fields[$field->getName()] = $fieldView;
         }
 
         // Build the table view using :

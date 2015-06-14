@@ -25,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * Use form_type option on fields to provide a form type which be used for building a form for data filtering.
  *
- * If submitted on current request, this extension will provide the resulting form's data on the table's 'filter_params' option.
+ * The filter_data option can be used to provide default filter data, and it will be overwritten with form submission.
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
@@ -53,7 +53,7 @@ class FormFilterExtension extends AbstractExtension
             'form_name' => 'filter',
             'form_type' => 'form',
             'form_options' => array(),
-            'filter_params' => null,
+            'filter_data' => array(),
             'form' => null
         ));
         // Will be set upon request handling
@@ -100,7 +100,7 @@ class FormFilterExtension extends AbstractExtension
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
-                    $table->setOption('filter_params', $form->getData());
+                    $table->setOption('filter_data', $form->getData());
                 }
             }
         }

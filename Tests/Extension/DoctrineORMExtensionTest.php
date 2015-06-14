@@ -195,7 +195,7 @@ class DoctrineORMExtensionTest extends TestCase
         $table = $this->createTable('post_embed', array(
             'sort' => 'date',
             'order' => 'desc',
-            'filter_params' => array(
+            'filter_data' => array(
                 'author' => $author
             )
         ));
@@ -256,5 +256,32 @@ class DoctrineORMExtensionTest extends TestCase
 
         $this->assertCount(1, $data);
         $this->assertEquals(2, $data[0]->getId());
+    }
+
+    public function testDefaultFilterParam()
+    {
+        $this->loadFixtures();
+        $author = $this->getEntityManager()->find('FixtureBundle:Author', 2);
+        $other  = $this->getEntityManager()->find('FixtureBundle:Author', 1);
+
+        $table = $this->createTable('post_embed', array(
+            'sort' => 'date',
+            'order' => 'desc',
+            'filter_data' => array(
+                'author' => $author
+            )
+        ));
+
+        // Form must not be submitted, otherwise it will blank default options
+        $table->handle(new Request(array(
+//            'filter' => array(
+//                'author' => $author
+//            )
+        )));
+
+        $data = $table->getData();
+
+        $this->assertCount(1, $data);
+        $this->assertEquals(3, $data[0]->getId());
     }
 } 

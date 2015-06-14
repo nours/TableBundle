@@ -51,7 +51,7 @@ class CoreExtension extends AbstractExtension
                 return $options['name'];
             },
             'width'      => null,
-            'displayed'  => true,
+            'display'  => true,
         ));
 
         $resolver->setRequired('name');
@@ -86,7 +86,6 @@ class CoreExtension extends AbstractExtension
             'name' => $options['name'],
             'label' => $options['label'],
             'width' => $options['width'],
-            'displayed' => $options['displayed'],
             'property_path' => $options['property_path'],
             'block_prefixes' => array('field_' . $field->getType()->getName(), 'field'),
             'cache_key' => 'field_' . $field->getType()->getName()

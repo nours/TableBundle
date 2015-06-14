@@ -34,7 +34,7 @@ class FormFilterExtensionTest extends TestCase
             )
         )));
 
-        $params = $table->getOption('filter_params');
+        $params = $table->getOption('filter_data');
 
         $this->assertNotNull($params);
         $this->assertCount(1, $params);

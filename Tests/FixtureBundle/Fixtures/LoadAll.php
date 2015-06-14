@@ -39,6 +39,7 @@ class LoadAll extends AbstractFixture
 
         $date = new \DateTime();
 
+        // First post
         $post = new Post($author);
         $post->setContent('content');
         $post->getEmbed()->setDate(clone $date);
@@ -46,6 +47,7 @@ class LoadAll extends AbstractFixture
         $manager->persist($post);
         $date->add(new \DateInterval('P1D'));
 
+        // Second post
         $post = new Post($author);
         $post->setContent('second post');
         $post->setStatus(Post::STATUS_EDITING);
@@ -58,6 +60,7 @@ class LoadAll extends AbstractFixture
         $manager->persist($post);
         $date->add(new \DateInterval('P1D'));
 
+        // Third post
         $post = new Post($author2);
         $post->setContent('third post');
         $post->setStatus(Post::STATUS_PUBLISHED);
@@ -72,6 +75,8 @@ class LoadAll extends AbstractFixture
         $manager->persist($comment);
 
         $manager->persist($post);
+
+        $manager->persist($author);
 
         $manager->flush();
     }

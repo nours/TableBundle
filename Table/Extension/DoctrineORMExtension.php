@@ -208,7 +208,7 @@ class DoctrineORMExtension extends AbstractExtension
         }
 
         // Filter params comes from FormFilterExtension, and contains the validated form data
-        if ($filter = $table->getOption('filter_params')) {
+        if ($filter = $table->getOption('filter_data')) {
             $this->buildFilter($queryBuilder, $table, $filter);
         }
     }

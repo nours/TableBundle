@@ -107,6 +107,31 @@ EOS;
     }
 
     /**
+     * Disabled fields are not passed through view
+     */
+    public function testRenderTableWithDisabledFields()
+    {
+        $renderer = $this->getRenderer();
+        $table = $this->createTable('post_comments', array(
+            'limit' => 12,
+        ));
+
+        $html = $renderer->renderTable($table->createView());
+
+        $expected = <<<EOS
+page=1
+limit=12
+pages=1
+total=3
+field=id
+property_path=id
+
+EOS;
+
+        $this->assertEquals($expected, $html);
+    }
+
+    /**
      * Render a javascript block of a table.
      */
     public function testRenderTableJavascript()

@@ -126,6 +126,7 @@ class Field implements FieldInterface
     }
 
     /**
+     * @return mixed
      */
     public function getWidth()
     {
@@ -133,6 +134,7 @@ class Field implements FieldInterface
     }
 
     /**
+     * {@inheritdoc}
      */
     public function isSortable()
     {
@@ -140,9 +142,18 @@ class Field implements FieldInterface
     }
 
     /**
+     * {@inheritdoc}
      */
     public function isSearchable()
     {
         return $this->options['searchable'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayed()
+    {
+        return $this->options['display'];
     }
 }

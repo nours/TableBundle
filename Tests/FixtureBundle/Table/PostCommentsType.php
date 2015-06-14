@@ -26,8 +26,12 @@ class PostCommentsType extends AbstractType
      */
     public function buildTable(TableBuilder $builder, array $options)
     {
-        $builder->add('comments', 'collection', array(
-            'displayed' => false,
+        $builder
+            ->add('id', 'text', array(
+                'sortable' => true
+            ))
+            ->add('comments', 'collection', array(
+            'display' => false,
             'association' => true,
             'property_path' => 'comment',
             'filter_type' => 'entity',
