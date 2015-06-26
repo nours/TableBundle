@@ -127,7 +127,7 @@ class FormFilterExtension extends AbstractExtension
         $fields = array();
 
         foreach ($table->getFields() as $field) {
-            if ($field->getOption('filterable')) {
+            if ($field->getOption('filterable') && $field->getOption('filter_type')) {
                 $fields[] = $field;
             }
         }

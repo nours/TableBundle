@@ -198,7 +198,7 @@ class DoctrineORMExtension extends AbstractExtension
 
         // Search
         if ($table->getOption('searchable') && ($search = $table->getOption('search'))) {
-            $queryBuilder->where($this->makeSearchExpr($queryBuilder, $table->getFields()));
+            $queryBuilder->andWhere($this->makeSearchExpr($queryBuilder, $table->getFields()));
             $queryBuilder->setParameter('search', "%".$search."%");
         }
 
