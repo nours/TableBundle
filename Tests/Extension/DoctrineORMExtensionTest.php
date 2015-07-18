@@ -284,4 +284,24 @@ class DoctrineORMExtensionTest extends TestCase
         $this->assertCount(1, $data);
         $this->assertEquals(3, $data[0]->getId());
     }
+
+    public function testFilterMultipleChoice()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_status');
+
+        // Form must not be submitted, otherwise it will blank default options
+        $table->handle(new Request(array(
+            'filter' => array(
+                'status' => array(Post::STATUS_NEW, Post::STATUS_PUBLISHED)
+            )
+        )));
+
+        $data = $table->getData();
+
+        $this->assertCount(2, $data);
+        $this->assertEquals(1, $data[0]->getId());
+        $this->assertEquals(3, $data[1]->getId());
+    }
 } 

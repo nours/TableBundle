@@ -304,8 +304,13 @@ class DoctrineORMExtension extends AbstractExtension
                     $expr = $qb->expr()->orX();
                     foreach ($value as $index => $v) {
                         $param = 'filter_' . $name . '_' . $index;
-                        $expr->add(":$param MEMBER OF $path");
                         $qb->setParameter($param, $v);
+
+                        if (is_object($v)) {
+                            $expr->add(":$param MEMBER OF $path");
+                        } else {
+                            $expr->add("$path = :$param");
+                        }
                     }
 
                     $qb->andWhere($expr);
