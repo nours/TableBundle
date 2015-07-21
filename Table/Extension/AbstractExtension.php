@@ -81,26 +81,10 @@ abstract class AbstractExtension implements ExtensionInterface
     }
 
     /**
-     * Resolves option from fields
-     *
-     * @param TableInterface $table
-     * @param $option
-     * @param mixed $expected
-     * @return mixed
+     * {@inheritdoc}
      */
-    protected function resolveFieldOption(TableInterface $table, $option, $expected = true)
+    public function normalizeTableOptions(array $options, array $fields)
     {
-        if (($value = $table->getOption($option)) !== null) {
-            // Value has been set in table option
-            return $value;
-        }
-
-        foreach ($table->getFields() as $field) {
-            if ($field->getOption($option) === $expected) {
-                return $expected;
-            }
-        }
-
-        return null;
+        return $options;
     }
 } 

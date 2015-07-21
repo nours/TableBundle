@@ -79,18 +79,6 @@ interface TableInterface
     public function setData($data);
 
     /**
-     * @return boolean
-     * @deprecated use getOption('searchable')
-     */
-    public function isSearchable();
-
-    /**
-     * @return boolean
-     * @deprecated use getOption('sortable')
-     */
-    public function isSortable();
-
-    /**
      * @return array
      */
     public function getOptions();

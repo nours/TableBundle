@@ -41,7 +41,7 @@ class Table implements TableInterface
      * @param FieldInterface[] $fields
      * @param array $options
      */
-    public function __construct(ResolvedType $type,  array $fields, array $options)
+    public function __construct(ResolvedType $type, array $fields, array $options)
     {
         $this->type       = $type;
         $this->fields     = $fields;
@@ -187,40 +187,6 @@ class Table implements TableInterface
     {
         return $this->getOption('url');
     }
-
-    /**
-     * @return boolean
-     */
-    public function isSearchable()
-    {
-        foreach ($this->fields as $field) {
-            if ($field->isSearchable()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isSortable()
-    {
-        foreach ($this->fields as $field) {
-            if ($field->isSortable()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-//    public function hasRowStyle()
-//    {
-//        return (bool)$this->getOption('row_style');
-//    }
 
     /**
      * {@inheritdoc}

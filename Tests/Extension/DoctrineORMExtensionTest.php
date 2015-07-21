@@ -35,6 +35,9 @@ class DoctrineORMExtensionTest extends TestCase
         $this->assertEquals(1, $table->getPages());
         $this->assertEquals(3, $table->getTotal());
         $this->assertCount(3, $table->getData());
+        $this->assertTrue($table->getOption('sortable'));
+        $this->assertTrue($table->getOption('searchable'));
+        $this->assertTrue($table->getOption('filterable'));
     }
 
     /**
@@ -262,7 +265,6 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
         $author = $this->getEntityManager()->find('FixtureBundle:Author', 2);
-        $other  = $this->getEntityManager()->find('FixtureBundle:Author', 1);
 
         $table = $this->createTable('post_embed', array(
             'sort' => 'date',
@@ -274,9 +276,6 @@ class DoctrineORMExtensionTest extends TestCase
 
         // Form must not be submitted, otherwise it will blank default options
         $table->handle(new Request(array(
-//            'filter' => array(
-//                'author' => $author
-//            )
         )));
 
         $data = $table->getData();

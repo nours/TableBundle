@@ -210,6 +210,18 @@ class TableFactory implements TableFactoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function normalizeTableOptions(array $options, array $fields)
+    {
+        foreach ($this->getExtensions() as $extension) {
+            $options = $extension->normalizeTableOptions($options, $fields);
+        }
+
+        return $options;
+    }
+
+    /**
      * Finds recursively
      *
      * @param $extensions

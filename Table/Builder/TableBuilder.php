@@ -55,7 +55,8 @@ class TableBuilder
      */
     public function getTable()
     {
-        $table = new Table($this->type, $this->fields, $this->options);
+        $options = $this->factory->normalizeTableOptions($this->options, $this->fields);
+        $table = new Table($this->type, $this->fields, $options);
         
         return $table;
     }

@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Table\Factory;
 
+use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\Extension\ExtensionInterface;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
@@ -63,4 +64,13 @@ interface TableFactoryInterface
      * @return ExtensionInterface[]
      */
     public function getExtensionsForType(TableTypeInterface $type);
+
+    /**
+     * Normalize table options after collecting fields.
+     *
+     * @param array $options
+     * @param FieldInterface[] $fields
+     * @return array
+     */
+    public function normalizeTableOptions(array $options, array $fields);
 }

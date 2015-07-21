@@ -60,6 +60,15 @@ interface ExtensionInterface
     public function configureOptions(OptionsResolver $resolver);
 
     /**
+     * Normalize table options after collecting fields.
+     *
+     * @param array $options
+     * @param FieldInterface[] $fields
+     * @return array
+     */
+    public function normalizeTableOptions(array $options, array $fields);
+
+    /**
      * Configures options for a field.
      *
      * @param OptionsResolver $resolver

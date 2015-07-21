@@ -161,13 +161,40 @@ class DoctrineORMExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function handle(TableInterface $table, Request $request = null)
+    public function normalizeTableOptions(array $options, array $fields)
     {
         // Update searchable and sortable options
-        $table->setOption('searchable', $this->resolveFieldOption($table, 'searchable'));
-        $table->setOption('sortable', $this->resolveFieldOption($table, 'sortable'));
-        $table->setOption('filterable', $this->resolveFieldOption($table, 'filterable'));
+        $options['searchable'] = $this->resolveFieldOption($fields, 'searchable');
+        $options['sortable'] = $this->resolveFieldOption($fields, 'sortable');
+        $options['filterable'] = $this->resolveFieldOption($fields, 'filterable');
 
+        return $options;
+    }
+
+    /**
+     * Resolves option from fields
+     *
+     * @param FieldInterface[] $fields
+     * @param $option
+     * @param mixed $expected
+     * @return mixed
+     */
+    protected function resolveFieldOption(array $fields, $option, $expected = true)
+    {
+        foreach ($fields as $field) {
+            if ($field->getOption($option) === $expected) {
+                return $expected;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(TableInterface $table, Request $request = null)
+    {
         /** @var QueryBuilder $queryBuilder */
         if ($queryBuilder = $table->getOption('query_builder')) {
             // Filter Querybuilder if parameter in request

@@ -136,22 +136,6 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function isSortable()
-    {
-        return $this->options['sortable'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isSearchable()
-    {
-        return $this->options['searchable'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isDisplayed()
     {
         return $this->options['display'];

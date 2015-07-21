@@ -66,22 +66,6 @@ interface FieldInterface
     public function getOptions();
 
     /**
-     * If this field is sortable
-     *
-     * @return bool
-     * @deprecated
-     */
-    public function isSortable();
-
-    /**
-     * If this field is searchable
-     *
-     * @return bool
-     * @deprecated
-     */
-    public function isSearchable();
-
-    /**
      * @return bool
      */
     public function isDisplayed();

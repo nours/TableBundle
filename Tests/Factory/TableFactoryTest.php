@@ -74,8 +74,8 @@ class TableFactoryTest extends TestCase
         $this->assertEquals('text', $field->getTypeName());
         $this->assertEquals('The Text Field', $field->getLabel());
 
-        $this->assertTrue($field->isSortable());
-        $this->assertTrue($field->isSearchable());
+        $this->assertTrue($field->getOption('sortable'));
+        $this->assertTrue($field->getOption('searchable'));
     }
 
     /**
@@ -90,8 +90,8 @@ class TableFactoryTest extends TestCase
         $this->assertEquals('boolean', $field->getTypeName());
         $this->assertEquals('testBool', $field->getLabel());
 
-        $this->assertFalse($field->isSortable());
-        $this->assertFalse($field->isSearchable());
+        $this->assertFalse($field->getOption('sortable'));
+        $this->assertFalse($field->getOption('searchable'));
     }
 
     /**
@@ -105,8 +105,8 @@ class TableFactoryTest extends TestCase
         $this->assertEquals('testDate', $field->getName());
         $this->assertEquals('date', $field->getTypeName());
 
-        $this->assertFalse($field->isSortable());
-        $this->assertFalse($field->isSearchable());
+        $this->assertFalse($field->getOption('sortable'));
+        $this->assertFalse($field->getOption('searchable'));
     }
 
     /**
@@ -120,8 +120,8 @@ class TableFactoryTest extends TestCase
         $this->assertEquals('state', $field->getName());
         $this->assertEquals('label', $field->getTypeName());
 
-        $this->assertFalse($field->isSortable());
-        $this->assertFalse($field->isSearchable());
+        $this->assertFalse($field->getOption('sortable'));
+        $this->assertFalse($field->getOption('searchable'));
     }
 
     /**
@@ -143,5 +143,10 @@ class TableFactoryTest extends TestCase
         foreach ($table->getFields() as $field) {
             $this->assertSame($table, $field->getTable());
         }
+
+        // The table is searchable and sortable
+        $this->assertTrue($table->getOption('sortable'));
+        $this->assertTrue($table->getOption('searchable'));
+        $this->assertTrue($table->getOption('filterable'));
     }
 } 
