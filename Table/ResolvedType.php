@@ -87,7 +87,7 @@ class ResolvedType implements TableTypeInterface
         // Configuration can propage from most dependant extensions to least
         // They will be able to share config using table options
         $extensions = $this->extensions;
-        while (($extension = array_pop($extensions)) && (!$table->getData())) {
+        while (($extension = array_pop($extensions)) && ($table->getData() === null)) {
             /** @var ExtensionInterface $extension */
             $extension->handle($table, $request);
         }
