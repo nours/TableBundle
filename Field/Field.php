@@ -106,7 +106,7 @@ class Field implements FieldInterface
      */
     public function getLabel()
     {
-        return $this->getOption('label', $this->name);
+        return $this->getOption('label');
     }
     
     /**
