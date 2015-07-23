@@ -44,9 +44,7 @@ class CoreExtension extends AbstractExtension
     public function configureFieldOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'label' => function(Options $options) {
-                return $options['name'];
-            },
+            'label' => null,
             'property_path' => function(Options $options) {
                 return $options['name'];
             },
