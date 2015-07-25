@@ -30,6 +30,11 @@ class PostCommentAuthorType extends AbstractType
             ->add('id', 'text', array(
                 'sortable' => true
             ))
+            ->add('page', 'text', array(
+                'association' => true,
+                'property' => 'content',
+                'parent_alias' => 'author'
+            ))
             ->add('author', 'text', array(
                 'association' => true,
                 'property' => 'name'
@@ -37,11 +42,6 @@ class PostCommentAuthorType extends AbstractType
             ->add('authorEmail', 'text', array(
                 'association' => 'author',
                 'property' => 'email'
-            ))
-            ->add('page', 'text', array(
-                'association' => true,
-                'property' => 'content',
-                'association_parent' => 'author'
             ))
         ;
     }

@@ -306,7 +306,10 @@ class DoctrineORMExtensionTest extends TestCase
 
     /**
      * The post_comment_author table, based on post entity, has an association to post author
-     * and to author's post (second level).
+     * and to author's page (second level).
+     *
+     * The page sub association is placed before it's parent, so the Extension will take care to
+     * reorder query declaration.
      */
     public function testTableWithSubAssociations()
     {

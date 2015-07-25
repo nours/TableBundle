@@ -3,7 +3,6 @@
 namespace Nours\TableBundle\Table\Extension;
 
 
-use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
@@ -90,39 +89,40 @@ class DoctrineORMExtension extends AbstractExtension
             },
 
             /**
-             * The parent association name.
-             */
-            'association_parent' => null,
-
-            /**
-             * Alias of the association
+             * Alias of the association, defaults to the association name if any, otherwise '_root'.
              *
-             * ex : _author
+             * ex : author, _root
              */
             'alias' => function(Options $options) {
                 if ($association = $options['association']) {
-                    return '_' . Inflector::tableize($association);
+                    return $association;
                 }
                 return '_root';
             },
 
             /**
-             * Path to current object in query point of view.
+             * The parent association alias, defaults to _root.
+             */
+            'parent_alias' => function(Options $options) {
+                return '_root';
+            },
+
+            /**
+             * Path to current object in query, based on parent alias.
              *
-             * It shall be used for filtering as objects
+             * Will be used for making joins and by filtering.
              *
              * ex : _root.author
              */
             'association_path' => function(Options $options) {
-                $parentAlias = $options['association_parent'] ?
-                    '_' . $options['association_parent'] . '.' :
-                    '_root.';
+                $parentAlias = $options['parent_alias'];
 
-                return $parentAlias . ($options['association'] ?: $options['property_path']);
+                return $parentAlias . '.'  . ($options['association'] ?: $options['property_path']);
             },
 
             /**
-             * Query path is the path of the field inside query : it's alias based
+             * Query path is the path of the field inside query : it's either an association,
+             * or a base entity field (identified by it's property path).
              */
             'query_path' => function(Options $options) {
                 // Association query path
@@ -255,21 +255,54 @@ class DoctrineORMExtension extends AbstractExtension
      */
     private function buildAssociations(QueryBuilder $queryBuilder, array $fields)
     {
-        $assocBuild = array();
+        $assocToBuild = array(
+            '_root' => true
+        );
 
+        // Make an association index
+        $index = array();
         foreach ($fields as $field) {
-            if ($association = $field->getOption('association')) {
+            if ($field->getOption('association')) {
+                $alias = $field->getOption('alias');
+                $parent = $field->getOption('parent_alias');
+                $path = $field->getOption('association_path');
 
-                // Only one level supported by now
-                if (!isset($assocBuild[$association])) {
-                    $alias = $field->getOption('alias');
+                // Put the item in index
+                $index[$alias] = array(
+                    'join'   => $path,
+                    'parent' => $parent
+                );
 
-                    $queryBuilder->addSelect($alias)->leftJoin($field->getOption('association_path'), $alias);
-
-                    $assocBuild[$association] = true;
-                }
+                $assocToBuild[$alias] = false;
             }
         }
+
+        // Index containing built associations' alias
+        foreach ($index as $alias => $association) {
+            if (!$assocToBuild[$alias]) {
+                // Can build the association
+                $this->buildQBAssociation($queryBuilder, $alias, $association, $index, $assocToBuild);
+            }
+        }
+    }
+
+
+    private function buildQBAssociation(
+        QueryBuilder $queryBuilder,
+        $alias,
+        array $association,
+        array $index,
+        array &$built
+    ) {
+        // Add the parent first
+        if (!$built[$association['parent']]) {
+            $this->buildQBAssociation($queryBuilder, $association['parent'], $index[$association['parent']], $index, $built);
+        }
+
+        // Then the association itself
+        $queryBuilder->addSelect($alias)->leftJoin($association['join'], $alias);
+
+        $built[$alias] = true;
     }
 
     /**
