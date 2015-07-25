@@ -84,11 +84,13 @@ class TableFactoryTest extends TestCase
     public function testCreateBooleanTypeField()
     {
         /** @var FieldInterface $field */
-        $field = $this->factory->createField('testBool', 'boolean');
+        $field = $this->factory->createField('testBool', 'boolean', array(
+            'label' => 'testBool label'
+        ));
         $this->assertNotNull($field);
         $this->assertEquals('testBool', $field->getName());
         $this->assertEquals('boolean', $field->getTypeName());
-        $this->assertEquals('testBool', $field->getLabel());
+        $this->assertEquals('testBool label', $field->getLabel());
 
         $this->assertFalse($field->getOption('sortable'));
         $this->assertFalse($field->getOption('searchable'));

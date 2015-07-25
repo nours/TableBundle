@@ -58,7 +58,6 @@ class TableTest extends TestCase
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $fieldView);
         $vars = $fieldView->vars;
         $this->assertEquals('id', $vars['name']);
-        $this->assertEquals('id', $vars['label']);
         $this->assertEquals('id', $vars['property_path']);
         $this->assertTrue($vars['sortable']);
         $this->assertFalse($vars['searchable']);
@@ -73,7 +72,7 @@ class TableTest extends TestCase
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $fieldView);
         $vars = $fieldView->vars;
         $this->assertEquals('isActive', $vars['name']);
-        $this->assertEquals('isActive', $vars['label']);
+        $this->assertEquals(null, $vars['label']);
         $this->assertEquals('isActive', $vars['property_path']);
         $this->assertEquals('yes', $vars['true_text']);
         $this->assertEquals('no', $vars['false_text']);

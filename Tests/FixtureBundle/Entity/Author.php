@@ -45,6 +45,13 @@ class Author
     private $email;
 
     /**
+     * @var Post
+     *
+     * @ORM\ManyToOne(targetEntity="Post")
+     */
+    private $page;
+
+    /**
      * @return int
      */
     public function getId()
@@ -66,6 +73,22 @@ class Author
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return Post
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param Post $page
+     */
+    public function setPage($page)
+    {
+        $this->page = $page;
     }
 
     /**

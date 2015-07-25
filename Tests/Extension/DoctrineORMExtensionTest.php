@@ -303,4 +303,23 @@ class DoctrineORMExtensionTest extends TestCase
         $this->assertEquals(1, $data[0]->getId());
         $this->assertEquals(3, $data[1]->getId());
     }
+
+    /**
+     * The post_comment_author table, based on post entity, has an association to post author
+     * and to author's post (second level).
+     */
+    public function testTableWithSubAssociations()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_comment_author');
+
+        // Form must not be submitted, otherwise it will blank default options
+        $table->handle(new Request(array(
+        )));
+
+        $data = $table->getData();
+
+        $this->assertCount(3, $data);
+    }
 } 

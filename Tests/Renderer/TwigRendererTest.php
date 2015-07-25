@@ -155,7 +155,7 @@ EOS;
         $expected = <<<EOS
 block=field_text
 name=content
-label=content
+label=
 property_path=content
 EOS;
 
@@ -186,7 +186,7 @@ EOS;
         $expected = <<<EOS
 block=field
 name=isActive
-label=isActive
+label=
 property_path=isActive
 EOS;
 

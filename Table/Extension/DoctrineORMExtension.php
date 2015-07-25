@@ -90,6 +90,11 @@ class DoctrineORMExtension extends AbstractExtension
             },
 
             /**
+             * The parent association name.
+             */
+            'association_parent' => null,
+
+            /**
              * Alias of the association
              *
              * ex : _author
@@ -102,14 +107,18 @@ class DoctrineORMExtension extends AbstractExtension
             },
 
             /**
-             * Self path is the path to current object in query perspective.
+             * Path to current object in query point of view.
              *
              * It shall be used for filtering as objects
              *
              * ex : _root.author
              */
             'association_path' => function(Options $options) {
-                return '_root.' . ($options['association'] ?: $options['property_path']);
+                $parentAlias = $options['association_parent'] ?
+                    '_' . $options['association_parent'] . '.' :
+                    '_root.';
+
+                return $parentAlias . ($options['association'] ?: $options['property_path']);
             },
 
             /**

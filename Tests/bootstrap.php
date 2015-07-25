@@ -1,11 +1,13 @@
 <?php
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
+require __DIR__ . '/app/autoload.php';
 
-if (!is_file($loaderFile = __DIR__.'/../vendor/autoload.php') && !is_file($loaderFile = __DIR__.'/../../../../vendor/autoload.php')) {
-    throw new \LogicException('Could not find autoload.php in vendor/. Did you run "composer install --dev"?');
-}
+// Clear cache
+passthru(sprintf(
+    'php "Tests/app/console" cache:clear --env=test --no-warmup'
+));
 
-$loader = require $loaderFile;
-
-AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+// Update sqlite DB
+passthru(sprintf(
+    'php "Tests/app/console" doctrine:schema:update --env=test --force'
+));

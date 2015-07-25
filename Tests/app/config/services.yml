@@ -15,6 +15,10 @@ services:
     class: Nours\TableBundle\Tests\FixtureBundle\Table\PostCommentsType
     tags: [ { name: 'nours_table.table_type' } ]
 
+  tests.table.post_comment_author:
+    class: Nours\TableBundle\Tests\FixtureBundle\Table\PostCommentAuthorType
+    tags: [ { name: 'nours_table.table_type' } ]
+
   tests.table.pager:
     class: Nours\TableBundle\Tests\FixtureBundle\Table\PagerType
     tags: [ { name: 'nours_table.table_type' } ]
