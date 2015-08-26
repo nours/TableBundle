@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nours\TableBundle\Table\Extension;
+namespace Nours\TableBundle\Extension;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\View;
 use Symfony\Component\OptionsResolver\Options;
@@ -33,7 +33,9 @@ class CoreExtension extends AbstractExtension
             'limit'   => 10,
             'pages'   => null,
             'total'   => null,
-            'data'    => null
+            'data'    => null,
+            'sort'    => null,
+            'order'   => 'ASC'
         ));
         $resolver->setRequired('name');
     }
@@ -66,7 +68,9 @@ class CoreExtension extends AbstractExtension
             'limit' => $table->getLimit(),
             'pages' => $table->getPages(),
             'total' => $table->getTotal(),
-            'data'  =>  $table->getData(),
+            'data'  => $table->getData(),
+            'sort'  => $options['sort'],
+            'order' => $options['order'],
             'block_prefixes' => array('table_' . $table->getType()->getName(), 'table'),
             'cache_key' => 'table_' . $table->getType()->getName()
         ));

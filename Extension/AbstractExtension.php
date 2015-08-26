@@ -1,9 +1,9 @@
 <?php
 
-namespace Nours\TableBundle\Table\Extension;
+namespace Nours\TableBundle\Extension;
 
 use Nours\TableBundle\Field\FieldInterface;
-use Nours\TableBundle\Table\Builder\TableBuilder;
+use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
 use Symfony\Component\HttpFoundation\Request;

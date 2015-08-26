@@ -217,6 +217,7 @@ class Table implements TableInterface
      */
     public function handle(Request $request = null)
     {
+        // The table can only be handled once (is that good ?)
         if (false === $this->handled) {
             $this->type->handle($this, $request);
             $this->handled = true;

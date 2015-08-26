@@ -10,10 +10,10 @@
 
 namespace Nours\TableBundle\Table;
 use Nours\TableBundle\Field\FieldInterface;
-use Nours\TableBundle\Table\Builder\TableBuilder;
+use Nours\TableBundle\Builder\TableBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Nours\TableBundle\Table\Extension\ExtensionInterface;
+use Nours\TableBundle\Extension\ExtensionInterface;
 
 
 /**
@@ -45,7 +45,7 @@ class ResolvedType implements TableTypeInterface
     }
 
     /**
-     * @return Extension\ExtensionInterface[]
+     * @return ExtensionInterface[]
      */
     public function getExtensions()
     {
@@ -77,14 +77,15 @@ class ResolvedType implements TableTypeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Handle a request for a table
+     *
+     * @param TableInterface $table
+     * @param Request $request
      */
     public function handle(TableInterface $table, Request $request = null)
     {
-//        $this->type->handle($request, $table, $options);
-
         // Loop over extensions (in reverse order), and stops when one did populate data
-        // Configuration can propage from most dependant extensions to least
+        // Configuration can propagate from most dependant extensions to least
         // They will be able to share config using table options
         $extensions = $this->extensions;
         while (($extension = array_pop($extensions)) && ($table->getData() === null)) {
@@ -100,7 +101,7 @@ class ResolvedType implements TableTypeInterface
     {
         $tableType = $table->getType();
 
-        // Create fields views using :
+        // Fields views are created using :
         // - the field type
         // - the table type
         // - table extensions
@@ -122,7 +123,7 @@ class ResolvedType implements TableTypeInterface
             }
         }
 
-        // Build the table view using :
+        // Table views are created using :
         // - the underlying table type
         // - table extensions
         $this->type->buildView($view, $table, $options);

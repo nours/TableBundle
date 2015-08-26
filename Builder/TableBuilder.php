@@ -1,8 +1,8 @@
 <?php
 
-namespace Nours\TableBundle\Table\Builder;
+namespace Nours\TableBundle\Builder;
 
-use Nours\TableBundle\Table\Factory\TableFactoryInterface;
+use Nours\TableBundle\Factory\TableFactoryInterface;
 use Nours\TableBundle\Table\ResolvedType;
 use Nours\TableBundle\Table\Table;
 

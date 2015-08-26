@@ -3,7 +3,7 @@
 namespace Nours\TableBundle\Tests\Factory;
 
 
-use Nours\TableBundle\Table\Factory\TableFactory;
+use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
 use Nours\TableBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,6 +66,7 @@ class DoctrineORMExtensionTest extends TestCase
             'order' => 'ASC'
         ))->handle();
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         // Order is scrambled (see FixtureBundle\Fixtures\LoadAll)
@@ -85,6 +86,7 @@ class DoctrineORMExtensionTest extends TestCase
             'order' => 'ASC'
         ))->handle();
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         // Order is scrambled (see FixtureBundle\Fixtures\LoadAll)
@@ -102,6 +104,7 @@ class DoctrineORMExtensionTest extends TestCase
             'order' => 'DESC'
         ))->handle();
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(3, $data);
@@ -118,6 +121,7 @@ class DoctrineORMExtensionTest extends TestCase
             'search' => 'published'
         ))->handle();
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(1, $data);
@@ -137,6 +141,7 @@ class DoctrineORMExtensionTest extends TestCase
             )
         )));
 
+        /** @var Post[] $data */
         $data = $table->getData();
         $this->assertCount(1, $data);
         $this->assertEquals(2, $data[0]->getId());
@@ -151,6 +156,7 @@ class DoctrineORMExtensionTest extends TestCase
             'order' => 'desc'
         ))->handle();
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(3, $data);
@@ -169,6 +175,7 @@ class DoctrineORMExtensionTest extends TestCase
             'order' => 'desc'
         ))->handle();
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(1, $data);
@@ -185,6 +192,7 @@ class DoctrineORMExtensionTest extends TestCase
             'order' => 'desc'
         ))->handle();
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(0, $data);
@@ -205,6 +213,7 @@ class DoctrineORMExtensionTest extends TestCase
 
         $table->handle();
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(2, $data);
@@ -224,6 +233,7 @@ class DoctrineORMExtensionTest extends TestCase
             )
         )));
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(1, $data);
@@ -242,6 +252,7 @@ class DoctrineORMExtensionTest extends TestCase
             )
         )));
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(1, $data);
@@ -255,6 +266,7 @@ class DoctrineORMExtensionTest extends TestCase
             )
         )));
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(1, $data);
@@ -278,6 +290,7 @@ class DoctrineORMExtensionTest extends TestCase
         $table->handle(new Request(array(
         )));
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(1, $data);
@@ -297,6 +310,7 @@ class DoctrineORMExtensionTest extends TestCase
             )
         )));
 
+        /** @var Post[] $data */
         $data = $table->getData();
 
         $this->assertCount(2, $data);

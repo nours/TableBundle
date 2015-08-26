@@ -10,7 +10,7 @@
 
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
-use Nours\TableBundle\Table\Builder\TableBuilder;
+use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Table\AbstractType;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
 use Symfony\Component\OptionsResolver\OptionsResolver;

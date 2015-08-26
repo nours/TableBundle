@@ -2,7 +2,7 @@
 
 namespace Nours\TableBundle\Tests\Factory;
 
-use Nours\TableBundle\Table\Factory\TableFactory;
+use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Tests\FixtureBundle\Table\PagerType;
@@ -30,10 +30,10 @@ class TableFactoryTest extends TestCase
         $extensions = $this->factory->getExtensions();
 
         $this->assertCount(4, $extensions);
-        $this->assertInstanceOf('Nours\TableBundle\Table\Extension\CoreExtension', $extensions[0]);
-        $this->assertInstanceOf('Nours\TableBundle\Table\Extension\PagerfantaExtension', $extensions[1]);
-        $this->assertInstanceOf('Nours\TableBundle\Table\Extension\DoctrineORMExtension', $extensions[2]);
-        $this->assertInstanceOf('Nours\TableBundle\Table\Extension\FormFilterExtension', $extensions[3]);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\CoreExtension', $extensions[0]);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\PagerfantaExtension', $extensions[1]);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\DoctrineORMExtension', $extensions[2]);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\FormFilterExtension', $extensions[3]);
     }
 
     /**
@@ -44,8 +44,8 @@ class TableFactoryTest extends TestCase
         $extensions = $this->factory->getExtensionsForType(new PagerType());
 
         $this->assertCount(2, $extensions);
-        $this->assertInstanceOf('Nours\TableBundle\Table\Extension\CoreExtension', $extensions[0]);
-        $this->assertInstanceOf('Nours\TableBundle\Table\Extension\PagerfantaExtension', $extensions[1]);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\CoreExtension', $extensions[0]);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\PagerfantaExtension', $extensions[1]);
     }
 
     /**

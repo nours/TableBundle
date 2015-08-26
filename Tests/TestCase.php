@@ -14,7 +14,7 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
-use Nours\TableBundle\Table\Factory\TableFactory;
+use Nours\TableBundle\Factory\TableFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**

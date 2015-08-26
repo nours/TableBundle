@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nours\TableBundle\Table\Extension;
+namespace Nours\TableBundle\Extension;
 
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;

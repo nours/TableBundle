@@ -1,6 +1,6 @@
 <?php
 
-namespace Nours\TableBundle\Table\Extension;
+namespace Nours\TableBundle\Extension;
 
 
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
@@ -55,9 +55,7 @@ class DoctrineORMExtension extends AbstractExtension
         $resolver->setDefaults(array(
             'class' => null,
             'query_builder' => $defaultQueryBuilder,
-            'search' => null,
-            'sort' => null,
-            'order' => null
+            'search' => null
         ));
         $resolver->setAllowedTypes(array(
             'query_builder' => array('Doctrine\ORM\QueryBuilder', 'null')
@@ -103,9 +101,7 @@ class DoctrineORMExtension extends AbstractExtension
             /**
              * The parent association alias, defaults to _root.
              */
-            'parent_alias' => function(Options $options) {
-                return '_root';
-            },
+            'parent_alias' => '_root',
 
             /**
              * Path to current object in query, based on parent alias.

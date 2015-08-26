@@ -3,24 +3,24 @@ services:
 ## Factory
 ###################################################################
   nours_table.factory:
-    class: Nours\TableBundle\Table\Factory\TableFactory
+    class: Nours\TableBundle\Factory\TableFactory
 
 ###################################################################
 ## Extensions
 ###################################################################
   nours_table.extension.core:
-    class: Nours\TableBundle\Table\Extension\CoreExtension
+    class: Nours\TableBundle\Extension\CoreExtension
     tags: [ { name: nours_table.extension } ]
 
   nours_table.extension.pagerfanta:
-    class: Nours\TableBundle\Table\Extension\PagerfantaExtension
+    class: Nours\TableBundle\Extension\PagerfantaExtension
 
   nours_table.extension.orm:
     arguments: [ '@doctrine.orm.entity_manager' ]
-    class: Nours\TableBundle\Table\Extension\DoctrineORMExtension
+    class: Nours\TableBundle\Extension\DoctrineORMExtension
 
   nours_table.extension.form:
-    class: Nours\TableBundle\Table\Extension\FormFilterExtension
+    class: Nours\TableBundle\Extension\FormFilterExtension
     arguments: [ '@form.factory' ]
 
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Nours\TableBundle\Table\Factory;
+namespace Nours\TableBundle\Factory;
 
-use Nours\TableBundle\Table\Extension\ExtensionInterface;
-use Nours\TableBundle\Table\Builder\TableBuilder;
+use Nours\TableBundle\Extension\ExtensionInterface;
+use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Table\ResolvedType;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
@@ -71,7 +71,7 @@ class TableFactory implements TableFactoryInterface
             $type = $this->tableTypes[$type];
         }
 
-        // Resolve type if not
+        // Resolve type if not already resolved
         if (!$type instanceof ResolvedType) {
             $this->tableTypes[$type->getName()] = $type = new ResolvedType($type, $this->getExtensionsForType($type));
         }

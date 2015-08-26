@@ -1,9 +1,9 @@
 <?php
 
-namespace Nours\TableBundle\Table\Factory;
+namespace Nours\TableBundle\Factory;
 
 use Nours\TableBundle\Field\FieldInterface;
-use Nours\TableBundle\Table\Extension\ExtensionInterface;
+use Nours\TableBundle\Extension\ExtensionInterface;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
 use Nours\TableBundle\Table\TableInterface;

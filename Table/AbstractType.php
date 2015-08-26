@@ -4,7 +4,7 @@ namespace Nours\TableBundle\Table;
 
 use Nours\TableBundle\Field\FieldInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Nours\TableBundle\Table\Builder\TableBuilder;
+use Nours\TableBundle\Builder\TableBuilder;
 
 /**
  * Abstract type for tables.

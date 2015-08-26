@@ -1,6 +1,6 @@
 <?php
 
-namespace Nours\TableBundle\Table\Extension;
+namespace Nours\TableBundle\Extension;
 
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;

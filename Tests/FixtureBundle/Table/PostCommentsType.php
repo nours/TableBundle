@@ -11,7 +11,7 @@
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
 use Nours\TableBundle\Table\AbstractType;
-use Nours\TableBundle\Table\Builder\TableBuilder;
+use Nours\TableBundle\Builder\TableBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
