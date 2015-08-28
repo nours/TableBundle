@@ -35,7 +35,7 @@ class LabelType extends AbstractFieldType
      */
     public function buildView(View $view, FieldInterface $field, array $options)
     {
-        // todo : get this to work
+        $view->vars['labels'] = $options['labels'];
     }
 
     /**
