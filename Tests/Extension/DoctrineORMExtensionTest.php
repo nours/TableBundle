@@ -297,6 +297,9 @@ class DoctrineORMExtensionTest extends TestCase
         $this->assertEquals(3, $data[0]->getId());
     }
 
+    /**
+     * The post_status has a filter on status, having multiple values.
+     */
     public function testFilterMultipleChoice()
     {
         $this->loadFixtures();
@@ -315,6 +318,50 @@ class DoctrineORMExtensionTest extends TestCase
 
         $this->assertCount(2, $data);
         $this->assertEquals(1, $data[0]->getId());
+        $this->assertEquals(3, $data[1]->getId());
+    }
+
+    /**
+     * @see PostStatusHiddenType
+     */
+    public function testFilterNewStatus()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_status_hidden');
+
+        $table->handle(new Request(array(
+            'filter' => array(
+                'status' => '1'
+            )
+        )));
+
+        /** @var Post[] $data */
+        $data = $table->getData();
+
+        $this->assertCount(1, $data);
+        $this->assertEquals(1, $data[0]->getId());
+    }
+
+    /**
+     * @see PostStatusHiddenType
+     */
+    public function testFilterEditingAndPublishedStatus()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_status_hidden');
+
+        $table->handle(new Request(array(
+            'filter' => array(
+            )
+        )));
+
+        /** @var Post[] $data */
+        $data = $table->getData();
+
+        $this->assertCount(2, $data);
+        $this->assertEquals(2, $data[0]->getId());
         $this->assertEquals(3, $data[1]->getId());
     }
 

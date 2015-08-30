@@ -191,7 +191,7 @@ class TableFactory implements TableFactoryInterface
      */
     public function getExtensionsForType(TableTypeInterface $type)
     {
-        // Type extensions are resolved
+        // Type extensions are already resolved
         if ($type instanceof ResolvedType) {
             return $type->getExtensions();
         }
@@ -210,19 +210,7 @@ class TableFactory implements TableFactoryInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function normalizeTableOptions(array $options, array $fields)
-    {
-        foreach ($this->getExtensions() as $extension) {
-            $options = $extension->normalizeTableOptions($options, $fields);
-        }
-
-        return $options;
-    }
-
-    /**
-     * Finds recursively
+     * Find extnesions recursively
      *
      * @param $extensions
      * @param $name
@@ -237,6 +225,18 @@ class TableFactory implements TableFactoryInterface
         }
 
         $extensions[$name] = $extension;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function normalizeTableOptions(array $options, array $fields)
+    {
+        foreach ($this->getExtensions() as $extension) {
+            $options = $extension->normalizeTableOptions($options, $fields);
+        }
+
+        return $options;
     }
 
     /**

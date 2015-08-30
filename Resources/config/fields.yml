@@ -18,3 +18,7 @@ services:
   nours_table.table_field.collection:
     class: Nours\TableBundle\Field\Type\CollectionType
     tags: [ { name: 'nours_table.table_field' } ]
+
+  nours_table.table_field.hidden:
+    class: Nours\TableBundle\Field\Type\HiddenType
+    tags: [ { name: 'nours_table.table_field' } ]

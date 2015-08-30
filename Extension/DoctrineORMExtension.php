@@ -126,7 +126,12 @@ class DoctrineORMExtension extends AbstractExtension
                     return $options['alias'] . '.' . $options['property'];
                 }
                 return '_root.' . $options['property_path'];
-            }
+            },
+
+            /**
+             * Callback which filters query builder for filtered fields.
+             */
+            'filter_query_builder' => array($this, 'fieldFilter')
         ));
 
         $resolver->setAllowedTypes('sortable', 'bool');
@@ -344,11 +349,11 @@ class DoctrineORMExtension extends AbstractExtension
     /**
      *
      *
-     * @param QueryBuilder $qb
+     * @param QueryBuilder $queryBuilder
      * @param TableInterface $table
      * @param array $filter
      */
-    private function buildFilter(QueryBuilder $qb, TableInterface $table, array $filter)
+    private function buildFilter(QueryBuilder $queryBuilder, TableInterface $table, array $filter)
     {
         foreach ($filter as $name => $value) {
             $field = $table->getField($name);
@@ -358,36 +363,49 @@ class DoctrineORMExtension extends AbstractExtension
                 throw new InvalidArgumentException("Field $name is not filterable in table " . $table->getName());
             }
 
-            if ($value) {
-                $path = $field->getOption('association_path');
+            $filter = $field->getOption('filter_query_builder');
+            call_user_func($filter, $queryBuilder, $field, $value);
+        }
+    }
 
-                /**
-                 * Handle array or collections of items
-                 */
-                if (is_array($value) || $value instanceof \Traversable) {
+    /**
+     * Default field filter implementation.
+     *
+     * @param QueryBuilder $queryBuilder
+     * @param FieldInterface $field
+     * @param $value
+     */
+    public function fieldFilter(QueryBuilder $queryBuilder, FieldInterface $field, $value)
+    {
+        if ($value) {
+            $name = $field->getName();
+            $path = $field->getOption('association_path');
 
-                    $expr = $qb->expr()->orX();
-                    foreach ($value as $index => $v) {
-                        $param = 'filter_' . $name . '_' . $index;
-                        $qb->setParameter($param, $v);
+            /**
+             * Handle array or collections of items
+             */
+            if (is_array($value) || $value instanceof \Traversable) {
 
-                        if (is_object($v)) {
-                            $expr->add(":$param MEMBER OF $path");
-                        } else {
-                            $expr->add("$path = :$param");
-                        }
+                $expr = $queryBuilder->expr()->orX();
+                foreach ($value as $index => $v) {
+                    $param = 'filter_' . $name . '_' . $index;
+                    $queryBuilder->setParameter($param, $v);
+
+                    if (is_object($v)) {
+                        $expr->add(":$param MEMBER OF $path");
+                    } else {
+                        $expr->add("$path = :$param");
                     }
-
-                    $qb->andWhere($expr);
-                } else {
-                    /**
-                     * Otherwise, handles an equality operation
-                     */
-                    $qb->andWhere($path . " = :filter_$name");
-                    $qb->setParameter('filter_' . $name, $value);
                 }
-            }
 
+                $queryBuilder->andWhere($expr);
+            } else {
+                /**
+                 * Otherwise, handles an equality operation
+                 */
+                $queryBuilder->andWhere($path . " = :filter_$name");
+                $queryBuilder->setParameter('filter_' . $name, $value);
+            }
         }
     }
 

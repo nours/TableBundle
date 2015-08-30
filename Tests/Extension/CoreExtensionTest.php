@@ -57,6 +57,7 @@ class CoreExtensionTest extends TestCase
         $this->assertEquals(2,     $table->getPages());
         $this->assertEquals(50,    $table->getTotal());
         $this->assertEquals($data, $table->getData());
+        $this->assertEquals(true,  $table->getOption('pagination'));
         $this->assertEquals(null,  $table->getOption('sort'));
         $this->assertEquals('ASC', $table->getOption('order'));
     }
@@ -78,6 +79,7 @@ class CoreExtensionTest extends TestCase
             'limit' => 10,
             'pages' => 2,
             'total' => 50,
+            'pagination' => false,
             'data' => $data,
             'sort' => 'id'
         ))->createView();
@@ -88,6 +90,7 @@ class CoreExtensionTest extends TestCase
         $this->assertEquals(2,  $vars['pages']);
         $this->assertEquals(50, $vars['total']);
         $this->assertEquals($data, $vars['data']);
+        $this->assertEquals(false, $vars['pagination']);
         $this->assertEquals('id',  $vars['sort']);
         $this->assertEquals('ASC', $vars['order']);
     }

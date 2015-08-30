@@ -29,13 +29,14 @@ class CoreExtension extends AbstractExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'page'    => 1,
-            'limit'   => 10,
-            'pages'   => null,
-            'total'   => null,
-            'data'    => null,
-            'sort'    => null,
-            'order'   => 'ASC'
+            'page'       => 1,      // The current page index (1 based)
+            'limit'      => 10,     // The max item per pages
+            'pages'      => null,   // The pages count
+            'total'      => null,   // The total number items
+            'data'       => null,   // The data (if specified at create time, otherwise should be loaded in handle)
+            'pagination' => true,   // Is pagination activated
+            'sort'       => null,   // The sort field
+            'order'      => 'ASC'   // The sort order
         ));
         $resolver->setRequired('name');
     }
@@ -50,8 +51,8 @@ class CoreExtension extends AbstractExtension
             'property_path' => function(Options $options) {
                 return $options['name'];
             },
-            'width'      => null,
-            'display'  => true,
+            'width'   => null,
+            'display' => true,
         ));
 
         $resolver->setRequired('name');
@@ -63,14 +64,15 @@ class CoreExtension extends AbstractExtension
     public function buildView(View $view, TableInterface $table, array $options)
     {
         $view->vars = array_replace($view->vars, array(
-            'name'  => $table->getName(),
-            'page'  => $table->getPage(),
-            'limit' => $table->getLimit(),
-            'pages' => $table->getPages(),
-            'total' => $table->getTotal(),
-            'data'  => $table->getData(),
-            'sort'  => $options['sort'],
-            'order' => $options['order'],
+            'name'       => $table->getName(),
+            'page'       => $table->getPage(),
+            'limit'      => $table->getLimit(),
+            'pages'      => $table->getPages(),
+            'total'      => $table->getTotal(),
+            'data'       => $table->getData(),
+            'pagination' => $options['pagination'],
+            'sort'       => $options['sort'],
+            'order'      => $options['order'],
             'block_prefixes' => array('table_' . $table->getType()->getName(), 'table'),
             'cache_key' => 'table_' . $table->getType()->getName()
         ));
