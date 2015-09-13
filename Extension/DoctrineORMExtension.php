@@ -12,6 +12,7 @@ use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\Options;
@@ -215,7 +216,13 @@ class DoctrineORMExtension extends AbstractExtension
             $adapter = new DoctrineORMAdapter($queryBuilder->getQuery());
             $pager = new Pagerfanta($adapter);
 
-            $pager->setMaxPerPage($table->getLimit())->setCurrentPage($table->getPage());
+            $pager->setMaxPerPage($table->getLimit());
+
+            try {
+                $pager->setCurrentPage($table->getPage());
+            } catch (OutOfRangeCurrentPageException $exception) {
+                $pager->setCurrentPage($pager->getNbPages());
+            }
 
             // Propage pager to pagerfanta extension
             $table->setOption('pager', $pager);

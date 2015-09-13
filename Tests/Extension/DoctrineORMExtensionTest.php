@@ -386,4 +386,20 @@ class DoctrineORMExtensionTest extends TestCase
 
         $this->assertCount(3, $data);
     }
+
+    /**
+     * If the page is out of range (> last page), the ORM extension sets it to the last page.
+     */
+    public function testPageOutOfRange()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post', array(
+            'page' => 2
+        ));
+
+        $table->handle();
+
+        $this->assertEquals(1, $table->getOption('pager')->getCurrentPage());
+    }
 } 
