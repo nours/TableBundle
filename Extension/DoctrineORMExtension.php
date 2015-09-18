@@ -56,7 +56,8 @@ class DoctrineORMExtension extends AbstractExtension
         $resolver->setDefaults(array(
             'class' => null,
             'query_builder' => $defaultQueryBuilder,
-            'search' => null
+            'search' => null,
+            'query_builder_filter' => null
         ));
         $resolver->setAllowedTypes(array(
             'query_builder' => array('Doctrine\ORM\QueryBuilder', 'null')
@@ -80,7 +81,10 @@ class DoctrineORMExtension extends AbstractExtension
                 if ($association) {
                     // The property path now defaults to association.property
                     if (!$property) {
-                        throw new \DomainException("property must be set for field " . $options['name']);
+                        throw new \DomainException(sprintf(
+                            "property must be set for field %s, or provide a custom property_path",
+                            $options['name']
+                        ));
                     }
                     return $association . '.' . $property;
                 }
@@ -120,6 +124,10 @@ class DoctrineORMExtension extends AbstractExtension
             /**
              * Query path is the path of the field inside query : it's either an association,
              * or a base entity field (identified by it's property path).
+             *
+             * This expression will be used in both searching and ordering.
+             *
+             * Set a specific value if the property is a non mapped entity field.
              */
             'query_path' => function(Options $options) {
                 // Association query path
@@ -254,6 +262,12 @@ class DoctrineORMExtension extends AbstractExtension
         // Filter params comes from FormFilterExtension, and contains the validated form data
         if ($filter = $table->getOption('filter_data')) {
             $this->buildFilter($queryBuilder, $table, $filter);
+        }
+
+        // Hand made filtering
+        if ($filter = $table->getOption('query_builder_filter')) {
+            /** @var callable $filter */
+            $filter($queryBuilder);
         }
     }
 
