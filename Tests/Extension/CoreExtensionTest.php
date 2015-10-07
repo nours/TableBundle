@@ -12,6 +12,7 @@ namespace Nours\TableBundle\Tests\Extension;
 
 use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Tests\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class CoreExtensionTest
@@ -93,5 +94,28 @@ class CoreExtensionTest extends TestCase
         $this->assertEquals(false, $vars['pagination']);
         $this->assertEquals('id',  $vars['sort']);
         $this->assertEquals('ASC', $vars['order']);
+    }
+
+    /**
+     * Table's view.
+     */
+    public function testTableHandle()
+    {
+        $this->loadFixtures();
+
+        $table = $this->factory->createTable('post', array(
+            'sort' => 'status'
+        ));
+
+        $table->handle(new Request(array(
+            'page' => 1,
+            'limit' => 33,
+        )));
+
+        $this->assertEquals(1,  $table->getPage());
+        $this->assertEquals(33, $table->getLimit());
+        $this->assertEquals(1,  $table->getPages());
+        $this->assertEquals(3,  $table->getTotal());
+        $this->assertEquals('status',  $table->getOption('sort'));
     }
 }

@@ -10,6 +10,7 @@ services:
 ###################################################################
   nours_table.extension.core:
     class: Nours\TableBundle\Extension\CoreExtension
+    arguments: [ %nours_table.extension.core% ]
     tags: [ { name: nours_table.extension } ]
 
   nours_table.extension.pagerfanta:

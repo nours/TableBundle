@@ -11,6 +11,7 @@
 namespace Nours\TableBundle\Extension;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\View;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Table\TableInterface;
@@ -23,6 +24,13 @@ use Nours\TableBundle\Table\TableInterface;
  */
 class CoreExtension extends AbstractExtension
 {
+    private $params;
+
+    public function __construct(array $params)
+    {
+        $this->params = $params;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -91,6 +99,21 @@ class CoreExtension extends AbstractExtension
             'block_prefixes' => array('field_' . $field->getType()->getName(), 'field'),
             'cache_key' => 'field_' . $field->getType()->getName()
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(TableInterface $table, Request $request = null)
+    {
+        if ($request) {
+            // Override ORM parameters from request
+            $table->setOption('page',   $request->query->get($this->params['page'], $table->getOption('page')));
+            $table->setOption('limit',  $request->query->get($this->params['limit'], $table->getOption('limit')));
+            $table->setOption('sort',   $request->query->get($this->params['sort'], $table->getOption('sort')));
+            $table->setOption('order',  $request->query->get($this->params['order'], $table->getOption('order')));
+            $table->setOption('search', $request->query->get($this->params['search'], $table->getOption('search')));
+        }
     }
 
     /**

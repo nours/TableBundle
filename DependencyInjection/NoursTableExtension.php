@@ -27,6 +27,7 @@ class NoursTableExtension extends Extension
         $loader->load('fields.yml');
 
         $container->setParameter('nours_table.themes', $config['themes']);
+        $container->setParameter('nours_table.extension.core', $config['extensions']['core']);
 
 //        if ($config['extensions']['pagerfanta']) {
 //            $container
