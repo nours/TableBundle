@@ -3,6 +3,7 @@
 namespace Nours\TableBundle\Table;
 
 use Nours\TableBundle\Field\FieldInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Builder\TableBuilder;
 
@@ -58,4 +59,12 @@ interface TableTypeInterface
      * @param array $options
      */
     public function buildFieldView(View $view, FieldInterface $field, array $options);
+
+    /**
+     * Handle a request for a table
+     *
+     * @param TableInterface $table
+     * @param Request $request
+     */
+    public function handle(TableInterface $table, Request $request = null);
 }

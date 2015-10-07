@@ -3,6 +3,7 @@
 namespace Nours\TableBundle\Table;
 
 use Nours\TableBundle\Field\FieldInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Builder\TableBuilder;
 
@@ -51,6 +52,14 @@ abstract class AbstractType implements TableTypeInterface
      * {@inheritdoc}
      */
     public function buildFieldView(View $view, FieldInterface $field, array $options)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(TableInterface $table, Request $request = null)
     {
 
     }
