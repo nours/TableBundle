@@ -89,7 +89,7 @@ class CoreExtensionTest extends TestCase
         $this->assertEquals(10, $vars['limit']);
         $this->assertEquals(2,  $vars['pages']);
         $this->assertEquals(50, $vars['total']);
-        $this->assertEquals($data, $vars['data']);
+        $this->assertEquals($data, $view->getData());
         $this->assertEquals(false, $vars['pagination']);
         $this->assertEquals('id',  $vars['sort']);
         $this->assertEquals('ASC', $vars['order']);

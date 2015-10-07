@@ -148,6 +148,7 @@ class ResolvedType implements TableTypeInterface
     public function createView(TableInterface $table)
     {
         $view = new View();
+        $view->table = $table;
 
         $this->buildView($view, $table, $table->getOptions());
 

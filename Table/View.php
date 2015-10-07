@@ -26,13 +26,6 @@ class View implements \IteratorAggregate
     public $vars = array();
 
     /**
-     * The var names for serialization
-     *
-     * @var array
-     */
-    public $serializedVars = array();
-
-    /**
      * The field views
      *
      * @var View[]
@@ -45,11 +38,24 @@ class View implements \IteratorAggregate
     public $parent;
 
     /**
+     * @var TableInterface
+     */
+    public $table;
+
+    /**
      * @param View $parent
      */
     public function __construct(View $parent = null)
     {
         $this->parent = $parent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->table->getData();
     }
 
     /**

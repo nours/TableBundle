@@ -243,8 +243,10 @@ class DoctrineORMExtension extends AbstractExtension
                 $table->setPages($pager->getNbPages());
                 $table->setTotal($pager->getNbResults());
 
-                $data = $pager->getCurrentPageResults();
-                $table->setData($data instanceof \Traversable ? iterator_to_array($data) : $data);
+                $table->setDataCallback(function() use ($pager) {
+                    $data = $pager->getCurrentPageResults();
+                    return $data instanceof \Traversable ? iterator_to_array($data) : $data;
+                });
             } else {
                 // No need pager : use simple Paginator
                 $paginator = new Paginator($queryBuilder);
@@ -256,8 +258,10 @@ class DoctrineORMExtension extends AbstractExtension
                 $table->setPages(1);
                 $table->setTotal($count);
 
-                $data = $paginator->getQuery()->getResult();
-                $table->setData($data instanceof \Traversable ? iterator_to_array($data) : $data);
+                $table->setDataCallback(function() use ($paginator) {
+                    $data = $paginator->getQuery()->getResult();
+                    return $data instanceof \Traversable ? iterator_to_array($data) : $data;
+                });
             }
         }
 

@@ -69,16 +69,13 @@ class CoreExtension extends AbstractExtension
             'limit'      => $table->getLimit(),
             'pages'      => $table->getPages(),
             'total'      => $table->getTotal(),
-            'data'       => $table->getData(),
+//            'data'       => $table->getData(),
             'pagination' => $options['pagination'],
             'sort'       => $options['sort'],
             'order'      => $options['order'],
             'block_prefixes' => array('table_' . $table->getType()->getName(), 'table'),
             'cache_key' => 'table_' . $table->getType()->getName()
         ));
-
-        // Set the vars which will be exposed in serialization.
-        $view->serializedVars = array('page', 'limit', 'pages', 'total', 'data');
     }
 
     /**

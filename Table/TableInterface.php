@@ -79,6 +79,11 @@ interface TableInterface
     public function setData($data);
 
     /**
+     * @param \Closure $callback
+     */
+    public function setDataCallback($callback);
+
+    /**
      * @return array
      */
     public function getOptions();

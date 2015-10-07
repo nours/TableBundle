@@ -136,7 +136,17 @@ class Table implements TableInterface
      */
     public function getData()
     {
-        return $this->getOption('data');
+        $data     = $this->getOption('data');
+
+        /** @var \Closure $callback */
+        $callback = $this->getOption('data_callback');
+
+        if (empty($data) && $callback) {
+            $data = $callback();
+            $this->setOption('data', $data);
+        }
+
+        return $data;
     }
 
     /**
@@ -177,6 +187,16 @@ class Table implements TableInterface
     public function setData($data)
     {
         $this->setOption('data', $data);
+    }
+
+    /**
+     * Sets the data lazy loader
+     *
+     * @param \Closure $callback
+     */
+    public function setDataCallback($callback)
+    {
+        $this->setOption('data_callback', $callback);
     }
 
     /**
