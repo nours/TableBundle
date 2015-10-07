@@ -54,7 +54,7 @@ doctrine:
 
 nours_table:
     extensions:
-        pagerfanta: true
+#        pagerfanta: true
         orm: true
         form: true
     themes:

@@ -13,6 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * Changes the core default values to be loaded from the pagerfanta instance.
  *
+ * @deprecated
+ *
  * @author David Coudrier <david.coudrier@gmail.com>
  */
 class PagerfantaExtension extends AbstractExtension

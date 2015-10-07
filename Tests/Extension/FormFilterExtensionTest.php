@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FormFilterExtensionTest extends TestCase
 {
-
     public function testFormFilter()
     {
         $this->loadFixtures();

@@ -32,7 +32,7 @@ class PagerType extends AbstractType
 
     public function getExtension()
     {
-        return 'pagerfanta';
+        return 'core';
     }
 
     public function getName()

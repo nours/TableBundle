@@ -7,6 +7,7 @@ use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Nours\TableBundle\Field\Field;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
@@ -72,7 +73,6 @@ class DoctrineORMExtension extends AbstractExtension
         $resolver->setDefaults(array(
             'sortable'   => false,
             'searchable' => false,
-            'filterable' => false,
             'association' => null,  // Association for field mapping
             'property' => null,     // The property in the association
             'property_path' => function(Options $options) {
@@ -221,19 +221,44 @@ class DoctrineORMExtension extends AbstractExtension
 
 //            var_dump($queryBuilder->getQuery()->getSQL());
             // Create the pager
-            $adapter = new DoctrineORMAdapter($queryBuilder->getQuery());
-            $pager = new Pagerfanta($adapter);
 
-            $pager->setMaxPerPage($table->getLimit());
+            // Propage pager to pagerfanta extension if pagination is enabled
+            if ($table->getOption('pagination')) {
+                // Use pager fanta to build pager
+                $adapter = new DoctrineORMAdapter($queryBuilder->getQuery());
+                $pager = new Pagerfanta($adapter);
 
-            try {
-                $pager->setCurrentPage($table->getPage());
-            } catch (OutOfRangeCurrentPageException $exception) {
-                $pager->setCurrentPage($pager->getNbPages());
+                $pager->setMaxPerPage($table->getLimit());
+
+                try {
+                    $pager->setCurrentPage($table->getPage());
+                } catch (OutOfRangeCurrentPageException $exception) {
+                    // In some cases, the page number can go out of range
+                    $pager->setCurrentPage($pager->getNbPages());
+                }
+
+                // Set common data
+                $table->setPage($pager->getCurrentPage());
+                $table->setLimit($pager->getMaxPerPage());
+                $table->setPages($pager->getNbPages());
+                $table->setTotal($pager->getNbResults());
+
+                $data = $pager->getCurrentPageResults();
+                $table->setData($data instanceof \Traversable ? iterator_to_array($data) : $data);
+            } else {
+                // No need pager : use simple Paginator
+                $paginator = new Paginator($queryBuilder);
+                $count = count($paginator);
+
+                // Set common data
+                $table->setPage(1);
+                $table->setLimit($count);
+                $table->setPages(1);
+                $table->setTotal($count);
+
+                $data = $paginator->getQuery()->getResult();
+                $table->setData($data instanceof \Traversable ? iterator_to_array($data) : $data);
             }
-
-            // Propage pager to pagerfanta extension
-            $table->setOption('pager', $pager);
         }
 
     }
@@ -435,7 +460,7 @@ class DoctrineORMExtension extends AbstractExtension
      */
     public function getDependency()
     {
-        return 'pagerfanta';
+        return array('core', 'form');
     }
 
     /**

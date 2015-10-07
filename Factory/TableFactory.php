@@ -87,13 +87,13 @@ class TableFactory implements TableFactoryInterface
     }
 
 
-    protected function getOptions(TableTypeInterface $type, array $options)
+    protected function getOptions(ResolvedType $type, array $options)
     {
         // Configure options resolver
         $resolver = new OptionsResolver();
 
         // Default options
-        foreach ($this->getExtensions() as $extension) {
+        foreach ($type->getExtensions() as $extension) {
             $extension->configureOptions($resolver);
         }
 
@@ -220,8 +220,10 @@ class TableFactory implements TableFactoryInterface
         $extension = $this->getExtension($name);
 
         // Put deps first
-        if (($dep = $extension->getDependency()) && !isset($extensions[$dep])) {
-            $this->findExtensions($extensions, $dep);
+        foreach ((array)$extension->getDependency() as $dep) {
+            if (!isset($extensions[$dep])) {
+                $this->findExtensions($extensions, $dep);
+            }
         }
 
         $extensions[$name] = $extension;
@@ -257,26 +259,57 @@ class TableFactory implements TableFactoryInterface
      */
     private function sortExtensions()
     {
-        $index = array();
-        foreach ($this->extensions as $extension) {
-            $dep = $extension->getDependency() ?: '';
-            $index[$dep][] = $extension->getName();
-        }
+//        $index = array();
+//        foreach ($this->extensions as $extension) {
+//            $dependency = (array)$extension->getDependency();
+//            if ($dependency) {
+//                foreach ($dependency as $dep) {
+//                    $index[$dep][] = $extension->getName();
+//                }
+//            } else {
+//                $index[''][] = $extension->getName();
+//            }
+//        }
 
         // Ensure extensions are loaded in order
         $this->sortedExtensions = array();
-        $stack = array('');
-        while (!empty($stack)) {
-            $current = array_pop($stack);
-            if (isset($index[$current])) {
-                foreach ($index[$current] as $name) {
-                    if ($name) {
-                        $this->sortedExtensions[] = $this->extensions[$name];
-                        $stack[] = $name;
-                    }
-                }
-            }
+        foreach ($this->extensions as $extension) {
+            $this->addExtensionToSorted($extension);
         }
+
+
+//        $this->addSortedExtension($index['']);
+//        $added = array();
+//        $stack = array('');
+//        while (!empty($stack)) {
+//            $current = array_pop($stack);
+//            if (isset($index[$current])) {
+//                foreach ($index[$current] as $name) {
+//                    if ($name && !isset($added[$name])) {
+//                        $this->sortedExtensions[] = $this->extensions[$name];
+//                        $added[$name] = true;
+//                        $stack[] = $name;
+//                    }
+//                }
+//            }
+//        }
+    }
+
+
+    private function addExtensionToSorted(ExtensionInterface $extension)
+    {
+        // Add deps first
+        foreach ((array)$extension->getDependency() as $dep) {
+            $this->addExtensionToSorted($this->getExtension($dep));
+        }
+
+        // Add this one
+        $name = $extension->getName();
+        if (isset($this->sortedExtensions[$name])) {
+            return;
+        }
+
+        $this->sortedExtensions[$name] = $extension;
     }
 
     /**

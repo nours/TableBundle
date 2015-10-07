@@ -20,7 +20,7 @@ services:
     class: Nours\TableBundle\Extension\DoctrineORMExtension
 
   nours_table.extension.form:
-    class: Nours\TableBundle\Extension\FormFilterExtension
+    class: Nours\TableBundle\Extension\FormExtension
     arguments: [ '@form.factory' ]
 
 

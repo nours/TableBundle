@@ -28,11 +28,11 @@ class NoursTableExtension extends Extension
 
         $container->setParameter('nours_table.themes', $config['themes']);
 
-        if ($config['extensions']['pagerfanta']) {
-            $container
-                ->getDefinition('nours_table.extension.pagerfanta')
-                ->addTag('nours_table.extension');
-        }
+//        if ($config['extensions']['pagerfanta']) {
+//            $container
+//                ->getDefinition('nours_table.extension.pagerfanta')
+//                ->addTag('nours_table.extension');
+//        }
 
         if ($config['extensions']['orm']) {
             $container

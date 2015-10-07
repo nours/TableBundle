@@ -400,6 +400,24 @@ class DoctrineORMExtensionTest extends TestCase
 
         $table->handle();
 
-        $this->assertEquals(1, $table->getOption('pager')->getCurrentPage());
+        $this->assertEquals(1, $table->getPage());
+    }
+
+    /**
+     * Table's view.
+     */
+    public function testDisabledPagination()
+    {
+        $view = $this->factory->createTable('post', array(
+            'pagination' => false
+        ))->handle()->createView();
+
+        $vars = $view->vars;
+        $this->assertEquals(1,  $vars['page']);
+        $this->assertEquals(3, $vars['limit']);
+        $this->assertEquals(1,  $vars['pages']);
+        $this->assertEquals(3, $vars['total']);
+        $this->assertCount(3, $vars['data']);
+        $this->assertEquals(false, $vars['pagination']);
     }
 } 

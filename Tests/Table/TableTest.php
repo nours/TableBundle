@@ -99,7 +99,11 @@ class TableTest extends TestCase
         $pager->setMaxPerPage(20)->setCurrentPage(1);
 
         $table = $this->getTableFactory()->createTable('pager', array(
-            'pager' => $pager
+//            'pager' => $pager
+            'data' => $data,
+            'limit' => 20,
+            'pages' => 1,
+            'total' => 2
         ));
         $view = $table->createView();
 

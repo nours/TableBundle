@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * FormFilterExtension
+ * FormExtension
  *
  * Use form_type option on fields to provide a form type which be used for building a form for data filtering.
  *
@@ -29,7 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class FormFilterExtension extends AbstractExtension
+class FormExtension extends AbstractExtension
 {
     /**
      * @var FormFactoryInterface
@@ -151,7 +151,7 @@ class FormFilterExtension extends AbstractExtension
      */
     public function getDependency()
     {
-        return 'orm';
+        return 'core';
     }
 
     /**
