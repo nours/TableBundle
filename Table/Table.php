@@ -150,6 +150,14 @@ class Table implements TableInterface
     }
 
     /**
+     * @return bool
+     */
+    public function hasData()
+    {
+        return $this->getOption('data_callback') || $this->getOption('data');
+    }
+
+    /**
      * @param mixed $page
      */
     public function setPage($page)

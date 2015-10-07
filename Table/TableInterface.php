@@ -54,6 +54,11 @@ interface TableInterface
     public function getData();
 
     /**
+     * @return bool
+     */
+    public function hasData();
+
+    /**
      * @param integer $page
      */
     public function setPage($page);
