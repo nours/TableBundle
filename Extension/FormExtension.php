@@ -114,7 +114,13 @@ class FormExtension extends AbstractExtension
     private function buildFilterForm(FormBuilder $builder, $fields)
     {
         foreach ($fields as $field) {
-            $builder->add($field->getName(), $field->getOption('filter_type'), $field->getOption('filter_options'));
+            // Filter option may provide default values for the fields
+            $options = $field->getOption('filter_options');
+            if (isset($defaultData[$field->getName()])) {
+                $options['data'] = $defaultData[$field->getName()];
+            }
+
+            $builder->add($field->getName(), $field->getOption('filter_type'), $options);
         }
     }
 
