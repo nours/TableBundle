@@ -92,7 +92,7 @@ class FormExtension extends AbstractExtension
                 ))
             );
 
-            $this->buildFilterForm($builder, $fields);
+            $this->buildFilterForm($builder, $fields, $table->getOption('filter_data'));
             $form = $builder->getForm();
             $table->setOption('form', $form);
 
@@ -110,8 +110,9 @@ class FormExtension extends AbstractExtension
     /**
      * @param FormBuilder $builder
      * @param FieldInterface[] $fields
+     * @param array $defaultData
      */
-    private function buildFilterForm(FormBuilder $builder, $fields)
+    private function buildFilterForm(FormBuilder $builder, $fields, $defaultData)
     {
         foreach ($fields as $field) {
             // Filter option may provide default values for the fields
