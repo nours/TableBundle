@@ -381,19 +381,23 @@ class DoctrineORMExtension extends AbstractExtension
      *
      * @param QueryBuilder $queryBuilder
      * @param TableInterface $table
-     * @param $fieldName
+     * @param $sort
      */
-    private function orderQueryBuilderBy(QueryBuilder $queryBuilder, TableInterface $table, $fieldName)
+    private function orderQueryBuilderBy(QueryBuilder $queryBuilder, TableInterface $table, $sort)
     {
-        // Check field is sortable
-        $field = $table->getField($fieldName);
-        if (!$field->getOption('sortable')) {
-            throw new InvalidArgumentException("Field $fieldName is not sortable in table " . $table->getName());
+        if (!is_array($sort)) {
+            $sort = array($sort => $table->getOption('order', 'DESC'));
         }
 
-        $order = $table->getOption('order', 'DESC');
+        foreach ($sort as $fieldName => $order) {
+            // Check field is sortable
+            $field = $table->getField($fieldName);
+            if (!$field->getOption('sortable')) {
+                throw new InvalidArgumentException("Field $fieldName is not sortable in table " . $table->getName());
+            }
 
-        $queryBuilder->orderBy($field->getOption('query_path'), $order);
+            $queryBuilder->orderBy($field->getOption('query_path'), $order);
+        }
     }
 
     /**
