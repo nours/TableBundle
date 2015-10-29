@@ -46,7 +46,7 @@ class PostType extends AbstractType
             ->add('isActive', 'boolean', array(
                 'sortable' => true
             ))
-            ->add('content', 'text', array(
+            ->add('content', 'extended_text', array(
                 'searchable' => true
             ))
         ;

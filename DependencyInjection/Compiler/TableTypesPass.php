@@ -28,7 +28,14 @@ class TableTypesPass implements CompilerPassInterface
         }
         
         // And for field types
-        $ids = $container->findTaggedServiceIds('nours_table.table_field');
+        if ($ids = $container->findTaggedServiceIds('nours_table.table_field')) {
+            throw new \DomainException(sprintf(
+                "Tag nours_table.table_field are deprecated, please use nours_table.field_type instead (services %s)",
+                implode(', ', array_keys($ids))
+            ));
+        }
+
+        $ids = $container->findTaggedServiceIds('nours_table.field_type');
         foreach ($ids as $id => $tags) {
             $factory->addMethodCall('addFieldType', array(new Reference($id)));
         }

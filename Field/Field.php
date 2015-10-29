@@ -31,6 +31,11 @@ class Field implements FieldInterface
     private $name;
 
     /**
+     * @var FieldTypeInterface[]
+     */
+    private $ancestors;
+
+    /**
      * @var TableInterface
      */
     private $table;
@@ -39,18 +44,20 @@ class Field implements FieldInterface
      * @var array
      */
     private $options;
-    
+
     /**
-     * 
+     *
      * @param string $name
      * @param FieldTypeInterface $type
      * @param array $options
+     * @param FieldTypeInterface[] $ancestors
      */
-    public function __construct($name, FieldTypeInterface $type, array $options)
+    public function __construct($name, FieldTypeInterface $type, array $options, array $ancestors = array())
     {
-        $this->name    = $name;
-        $this->type    = $type;
-        $this->options = $options;
+        $this->name      = $name;
+        $this->ancestors = $ancestors;
+        $this->type      = $type;
+        $this->options   = $options;
     }
     
     /**
@@ -83,6 +90,22 @@ class Field implements FieldInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return $this->ancestors ? reset($this->ancestors) : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAncestors()
+    {
+        return $this->ancestors;
     }
 
     /**

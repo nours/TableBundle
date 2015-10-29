@@ -154,12 +154,36 @@ class TableFactory implements TableFactoryInterface
             $extension->configureFieldOptions($resolver);
         }
 
+        // Type hierarchy
+        foreach ($this->getFieldTypeAncestors($type) as $ancestor) {
+            $ancestor->configureOptions($resolver);
+        }
+
         $type->configureOptions($resolver);
         $resolver->setDefault('name', $name);
 
         $options = $resolver->resolve($options);
 
-        return $type->createField($name, $options);
+        return $type->createField($name, $options, $this->getFieldTypeAncestors($type));
+    }
+
+    /**
+     * @param FieldTypeInterface $type
+     * @return FieldTypeInterface[]
+     */
+    private function getFieldTypeAncestors(FieldTypeInterface $type)
+    {
+        $ancestors = array();
+
+        $parent = $type->getParent();
+        while ($parent) {
+            $parentType = $this->getFieldType($parent);
+            $ancestors[] = $parentType;
+
+            $parent = $parentType->getParent();
+        }
+
+        return $ancestors;
     }
 
     /**

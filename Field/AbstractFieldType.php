@@ -22,9 +22,9 @@ abstract class AbstractFieldType implements FieldTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function createField($name, array $options)
+    public function createField($name, array $options, array $ancestors)
     {
-        return new Field($name, $this, $options);
+        return new Field($name, $this, $options, $ancestors);
     }
 
     /**
@@ -40,5 +40,13 @@ abstract class AbstractFieldType implements FieldTypeInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return null;
     }
 }

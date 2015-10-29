@@ -8,26 +8,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Nours\TableBundle\Field\Type;
+namespace Nours\TableBundle\Tests\FixtureBundle\Field;
 
 use Nours\TableBundle\Field\AbstractFieldType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TextType
- *
+ * Class ExtendedTextType
+ * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class TextType extends AbstractFieldType
+class ExtendedTextType extends AbstractFieldType
 {
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function getParent()
     {
-        $resolver->setDefaults(array(
-            'strip_tags' => false
-        ));
+        return 'text';
     }
 
     /**
@@ -35,6 +32,6 @@ class TextType extends AbstractFieldType
      */
     public function getName()
     {
-        return 'text';
+        return 'extended_text';
     }
 }

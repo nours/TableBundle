@@ -1,24 +1,24 @@
 services:
   nours_table.table_field.text:
     class: Nours\TableBundle\Field\Type\TextType
-    tags: [ { name: 'nours_table.table_field' } ]
+    tags: [ { name: 'nours_table.field_type' } ]
 
   nours_table.table_field.boolean:
     class: Nours\TableBundle\Field\Type\BooleanType
-    tags: [ { name: 'nours_table.table_field' } ]
+    tags: [ { name: 'nours_table.field_type' } ]
 
   nours_table.table_field.date:
     class: Nours\TableBundle\Field\Type\DateType
-    tags: [ { name: 'nours_table.table_field' } ]
+    tags: [ { name: 'nours_table.field_type' } ]
 
   nours_table.table_field.label:
     class: Nours\TableBundle\Field\Type\LabelType
-    tags: [ { name: 'nours_table.table_field' } ]
+    tags: [ { name: 'nours_table.field_type' } ]
 
   nours_table.table_field.collection:
     class: Nours\TableBundle\Field\Type\CollectionType
-    tags: [ { name: 'nours_table.table_field' } ]
+    tags: [ { name: 'nours_table.field_type' } ]
 
   nours_table.table_field.hidden:
     class: Nours\TableBundle\Field\Type\HiddenType
-    tags: [ { name: 'nours_table.table_field' } ]
+    tags: [ { name: 'nours_table.field_type' } ]

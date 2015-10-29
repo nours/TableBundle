@@ -40,6 +40,20 @@ interface FieldInterface
     public function getName();
 
     /**
+     * Parent field element
+     *
+     * @return FieldTypeInterface|null
+     */
+    public function getParent();
+
+    /**
+     * Field hierarchy
+     *
+     * @return FieldTypeInterface[]
+     */
+    public function getAncestors();
+
+    /**
      * Property path
      *
      * @return string

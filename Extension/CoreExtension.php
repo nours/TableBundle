@@ -96,9 +96,23 @@ class CoreExtension extends AbstractExtension
             'label' => $options['label'],
             'width' => $options['width'],
             'property_path' => $options['property_path'],
-            'block_prefixes' => array('field_' . $field->getType()->getName(), 'field'),
+            'block_prefixes' => $this->buildBlockPrefixes($field),
             'cache_key' => 'field_' . $field->getType()->getName()
         ));
+    }
+
+    private function buildBlockPrefixes(FieldInterface $field)
+    {
+        // Field name first
+        $prefixes = array('field_' . $field->getType()->getName());
+
+        // Parent hierarchy
+        foreach ($field->getAncestors() as $parent) {
+            $prefixes[] = 'field_' . $parent->getName();
+        }
+
+        $prefixes[] = 'field';
+        return $prefixes;
     }
 
     /**

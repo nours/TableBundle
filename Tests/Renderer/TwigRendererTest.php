@@ -171,7 +171,7 @@ EOS;
 
         $html = $renderer->renderField($this->view->fields['content'], 'part');
 
-        $this->assertEquals('field_text_part', $html);
+        $this->assertEquals('extended', $html);
     }
 
     /**

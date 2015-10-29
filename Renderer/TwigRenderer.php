@@ -148,7 +148,10 @@ class TwigRenderer implements TwigRendererInterface
      */
     private function getBlockPrefixes(View $view, $part = null)
     {
+        // Default prefixes (@see CoreExtension)
         $blockNames = $view->vars['block_prefixes'];
+
+        // If specific part is asked, append it to block names
         if ($part) {
             $blockNames = array_map(function($blockName) use ($part) {
                 return $blockName . '_' . $part;
@@ -156,21 +159,5 @@ class TwigRenderer implements TwigRendererInterface
         }
 
         return $blockNames;
-    }
-
-    /**
-     * @param $template
-     * @param string|array $blocks
-     */
-    private function assertTemplateFound($template, $blocks)
-    {
-        if (empty($template)) {
-            $blocks = (array)$blocks;
-
-            throw new \RuntimeException(sprintf(
-                "Block%s %s not found in table themes (%s)",
-                count($blocks) > 1 ? 's' : '', implode(', ', $blocks), implode(', ', $this->templateNames)
-            ));
-        }
     }
 }

@@ -17,11 +17,13 @@ interface FieldTypeInterface
 {
     /**
      * Creates a field for this type.
-     * 
+     *
      * @param string $name
      * @param array $options
+     * @param array $ancestors
+     * @return FieldInterface
      */
-    public function createField($name, array $options);
+    public function createField($name, array $options, array $ancestors);
     
     /**
      * The name of this field type.
@@ -29,6 +31,13 @@ interface FieldTypeInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * This type can inherit another's properties returning it's name by this function.
+     *
+     * @return string|null
+     */
+    public function getParent();
     
     /**
      * Configures default options for this field.

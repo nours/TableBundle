@@ -26,3 +26,8 @@ services:
   tests.table.pager:
     class: Nours\TableBundle\Tests\FixtureBundle\Table\PagerType
     tags: [ { name: 'nours_table.table_type' } ]
+
+
+  tests.table.field.extended_text:
+    class: Nours\TableBundle\Tests\FixtureBundle\Field\ExtendedTextType
+    tags: [ { name: 'nours_table.field_type' } ]
