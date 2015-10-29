@@ -11,6 +11,7 @@
 namespace Nours\TableBundle\Table;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Builder\TableBuilder;
+use Nours\TableBundle\Field\FieldTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Extension\ExtensionInterface;
@@ -115,6 +116,10 @@ class ResolvedType implements TableTypeInterface
 
                 $fieldView = new View($view);
 
+                foreach (array_reverse($field->getAncestors()) as $parent) {
+                    /** @var FieldTypeInterface $parent */
+                    $parent->buildView($fieldView, $field, $fieldOptions);
+                }
                 $type->buildView($fieldView, $field, $fieldOptions);
                 $tableType->buildFieldView($fieldView, $field, $fieldOptions);
 

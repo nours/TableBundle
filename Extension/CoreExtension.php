@@ -9,6 +9,7 @@
  */
 
 namespace Nours\TableBundle\Extension;
+use Doctrine\Common\Inflector\Inflector;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\View;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,11 +41,17 @@ class CoreExtension extends AbstractExtension
             'page'       => 1,      // The current page index (1 based)
             'limit'      => 10,     // The max item per pages
             'pages'      => null,   // The pages count
-            'total'      => null,   // The total number items
+            'total'      => function(Options $options) {   // The total number items
+                if ($data = $options['data']) {
+                    return count($data);
+                }
+                return null;
+            },
             'data'       => null,   // The data (if specified at create time, otherwise should be loaded in handle)
             'pagination' => true,   // Is pagination activated
             'sort'       => null,   // The sort field
-            'order'      => 'ASC'   // The sort order
+            'order'      => 'ASC',  // The sort order
+            'url'        => null    // Set to use ajax data loading
         ));
         $resolver->setRequired('name');
     }
@@ -55,7 +62,9 @@ class CoreExtension extends AbstractExtension
     public function configureFieldOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'label' => null,
+            'label' => function(Options $options) {
+                return $options['name'];
+            },
             'property_path' => function(Options $options) {
                 return $options['name'];
             },
@@ -81,8 +90,9 @@ class CoreExtension extends AbstractExtension
             'pagination' => $options['pagination'],
             'sort'       => $options['sort'],
             'order'      => $options['order'],
+            'url'        => $options['url'],
             'block_prefixes' => array('table_' . $table->getType()->getName(), 'table'),
-            'cache_key' => 'table_' . $table->getType()->getName()
+            'cache_key'  => 'table_' . $table->getType()->getName()
         ));
     }
 
@@ -97,7 +107,8 @@ class CoreExtension extends AbstractExtension
             'width' => $options['width'],
             'property_path' => $options['property_path'],
             'block_prefixes' => $this->buildBlockPrefixes($field),
-            'cache_key' => 'field_' . $field->getType()->getName()
+            'cache_key' => 'field_' . $field->getType()->getName(),
+            'class_name' => Inflector::classify($field->getName())
         ));
     }
 

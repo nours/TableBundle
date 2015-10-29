@@ -72,7 +72,7 @@ class TableTest extends TestCase
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $fieldView);
         $vars = $fieldView->vars;
         $this->assertEquals('isActive', $vars['name']);
-        $this->assertEquals(null, $vars['label']);
+        $this->assertEquals('isActive', $vars['label']);
         $this->assertEquals('isActive', $vars['property_path']);
         $this->assertEquals('yes', $vars['true_text']);
         $this->assertEquals('no', $vars['false_text']);

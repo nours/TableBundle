@@ -3,19 +3,10 @@
     <testsuites>
         <testsuite name="NoursTableBundle test suite">
             <directory suffix="Test.php">./Tests</directory>
+            <exclude>./Tests/web</exclude>
         </testsuite>
     </testsuites>
     <php>
         <server name="KERNEL_DIR" value="./Tests/app/" />
     </php>
-    <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 </phpunit>

@@ -1,0 +1,21 @@
+{
+  "name": "nours/table-bundle",
+  "version": "1.0.0",
+  "authors": [
+    "David Coudrier <david.coudrier@gmail.com>"
+  ],
+  "description": "Assets pour tests",
+  "license": "",
+  "private": true,
+  "dependencies": {
+    "font-awesome": "fontawesome#~4.4.0",
+    "jquery-form": "~3.46.0",
+    "object-path": "~0.9.3",
+    "TableDnD": "~0.9.1",
+    "bootstrap-table": "~1.9.1",
+    "bootstrap": "~3.3.5"
+  },
+  "resolutions": {
+    "bootstrap-table": "~1.9.1"
+  }
+}

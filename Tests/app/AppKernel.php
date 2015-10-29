@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Nours\TableBundle\NoursTableBundle(),
             new Nours\TableBundle\Tests\FixtureBundle\FixtureBundle(),
@@ -33,6 +34,6 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_test.yml');
+        $loader->load(__DIR__.'/config/config_' .$this->getEnvironment() . '.yml');
     }
 }

@@ -1,0 +1,10 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block content %}
+    {{ render_table(table) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ render_table(table, 'javascript') }}
+{% endblock %}

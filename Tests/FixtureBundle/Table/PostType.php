@@ -31,7 +31,7 @@ class PostType extends AbstractType
             ->add('id', 'text', array(
                 'sortable' => true
             ))
-            ->add('status', 'text', array(
+            ->add('status', 'label', array(
                 'sortable' => true,
                 'searchable' => true,
                 'filter_type' => 'choice',
@@ -41,13 +41,19 @@ class PostType extends AbstractType
                         Post::STATUS_EDITING => 'editing',
                         Post::STATUS_PUBLISHED => 'published',
                     )
+                ),
+                'labels' => array(
+                    Post::STATUS_NEW => array('style' => 'danger'),
+                    Post::STATUS_EDITING => array('style' => 'warning'),
+                    Post::STATUS_PUBLISHED => array('style' => 'success')
                 )
             ))
             ->add('isActive', 'boolean', array(
                 'sortable' => true
             ))
             ->add('content', 'extended_text', array(
-                'searchable' => true
+                'searchable' => true,
+                'truncate' => 20
             ))
         ;
     }

@@ -1,91 +1,126 @@
 
-{% block table_html %}
-    <table class="table table-stripped bootstrap-table" id="table_{{ table.name }}">
-        <thead>
-        {% for field in table.fields %}
-            <th {{ block('header_attributes') -}}>{{ field.label|trans }}</th>
-        {% endfor %}
-        </thead>
+{% block table %}
+    <table class="table table-stripped bootstrap-table" id="table_{{ name }}">
     </table>
 {% endblock %}
 
 
 {% block table_javascript %}
     <script type="text/javascript">
-        {% for field in table.fields %}
-            formatter_{{ field.name }} = {{ table_field(field, 'formatter') }}
-        {% endfor %}
         $(function() {
-            $('#table_{{ table.name }}').bootstrapTable({
-                pagination: true,
-                sidePagination: 'server',
-                {#data: {{ table.data|serialize|raw }},#}
-                totalRows: {{ table.total }},
-                pageNumber: {{ table.page }},
-                pageSize: {{ table.limit }},
-                search: true,
-                queryParams: function(params) {
-                    return {
-                        page: params.pageNumber,
-                        limit: params.pageSize,
-                        q: params.searchText,
-                        orderBy: params.sortName,
-                        order: params.sortName ? params.sortOrder : null
-                    };
-                },
-                url: '{{ table.url }}'
-                {%- if row_style %},
-                rowStyle: {{ row_style|raw }}
-                {% endif %}
-            });
+            var Table = function(element) {
+                this.table = $(element)
+
+                this.table.data('Table', this)
+
+                var options = {
+                    pagination: true,
+                    sidePagination: '{% if url %}server{% else %}client{% endif %}',
+                    {%- if not url %}data: {{ table.data|serialize|raw }},{% endif -%}
+                    totalRows: {{ total }},
+                    pageNumber: {{ page }},
+                    pageSize: {{ limit }},
+                    search: true,
+                    queryParams: $.proxy(this.queryParams, this),
+                    responseHandler: $.proxy(this.responseHandler, this)
+                    {%- if url %}, url: '{{ url }}'{% endif -%}
+                    {%- if row_style %}, rowStyle: {{ row_style|raw }}
+                    {% endif %}, columns: [
+                        {% for field in table.fields -%}
+                        {{- render_table_field(field, 'definition') -}}
+                        {%- if not loop.last %},{% endif -%}
+                        {%- endfor %}
+                    ]
+                }
+
+                this.table.bootstrapTable(options);
+            }
+
+            Table.prototype.queryParams = function(params) {
+                return {
+                    page: params.pageNumber,
+                    limit: params.pageSize,
+                    q: params.searchText,
+                    orderBy: params.sortName,
+                    order: params.sortName ? params.sortOrder : null
+                }
+            }
+
+            Table.prototype.responseHandler = function(res) {
+                return {
+                    total: res.total,
+                    rows: res.data
+                }
+            }
+
+            {% for field in table.fields %}
+            Table.prototype.formatter{{ field.vars.class_name }} = {{ render_table_field(field, 'formatter') }}
+            {% endfor %}
+
+            new Table('#table_{{ name }}')
         });
     </script>
 {% endblock %}
 
 
-{% block header_attributes %}
-    data-field="{{ field.path }}" data-formatter="formatter_{{ field.name }}"
-    {%- if field.width %} data-width="{{ field.width }}"{% endif %}
-    {%- if field.sortable %} data-sortable="true"{% endif %}
+{% block field_definition %}
+{
+    field: '{{ field.vars.property_path }}',
+    title: '{{ field.vars.label|trans }}',
+    formatter: Table.prototype.formatter{{ field.vars.class_name }}
+    {%- if field.width %},width: '{{ field.width }}'{% endif %}
+    {%- if field.sortable %},sortable: true{% endif %}
+}
 {% endblock %}
 
 
-{% block field_text %}
-    function (value) {
+{% block field_text_formatter %}
+function (value, row, index) {
+    value = objectPath.get(row, '{{ property_path }}')
+    {% if strip_tags %}
+    if (!value) return null
+    value = value.replace(/(<([^>]+)>)/igm,"").replace(/(&nbsp;|\r\n|\n|\r)/g, ' ')
+    {% endif %}
+    {% if truncate %}
+    value = '<abbr title="' + value + '">' + value.substr(0, {{ truncate }}) + '...</abbr>'
+    {% endif %}
     return value
-    }
+}
 {% endblock %}
 
-{% block field_boolean %}
-    function (value) {
+{% block field_boolean_formatter %}
+function (value, row, index) {
+    value = objectPath.get(row, '{{ property_path }}')
     return value ? '<i class="fa fa-fw fa-check"></i>' : '<i class="fa fa-fw fa-times"></i>'
-    }
+}
 {% endblock %}
 
 
-{% block field_date %}
-    function (value) {
+{% block field_date_formatter %}
+function (value, row, index) {
+    value = objectPath.get(row, '{{ property_path }}')
     var date = Date.parse(value)
     if (!isNaN(date)) {
-    date = new Date(date)
-    return date.toLocaleString()
+        date = new Date(date)
+        return date.toLocaleString()
     }
     return null;
-    }
+}
 {% endblock %}
 
 
-{% block field_label %}
-    function (value) {
+{% block field_label_formatter %}
+function (value, row, index) {
+    value = objectPath.get(row, '{{ property_path }}')
     var style = 'default', label = ''
     switch (value) {
     {% for t, d in labels %}
         case '{{ t }}':
         style = '{{ d.style }}'
-        label = '{{ d.label|trans }}'
+        label = '{{ d.label|default(t)|trans }}'
         break;
     {% endfor %}
     }
     return '<span class="label label-'+style+'">'+label+'</span>'
-    }
+}
 {% endblock %}

@@ -11,6 +11,9 @@
 namespace Nours\TableBundle\Field\Type;
 
 use Nours\TableBundle\Field\AbstractFieldType;
+use Nours\TableBundle\Field\FieldInterface;
+use Nours\TableBundle\Table\View;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -23,10 +26,22 @@ class TextType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
+    public function buildView(View $view, FieldInterface $field, array $options)
+    {
+        $view->vars['strip_tags'] = $options['strip_tags'];
+        $view->vars['truncate']   = $options['truncate'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'strip_tags' => false
+            'strip_tags' => function(Options $options) {
+                return $options['truncate'] ? true : false;
+            },
+            'truncate' => null
         ));
     }
 
