@@ -34,7 +34,7 @@ class TableExtensionTest extends TestCase
     {
         parent::setUp();
 
-        $this->renderer = $this->getMockBuilder('Nours\TableBundle\Renderer\TwigRendererInterface')
+        $this->renderer = $this->getMockBuilder('Nours\TableBundle\Renderer\TableRendererInterface')
             ->disableOriginalConstructor()
             ->getMock();
 

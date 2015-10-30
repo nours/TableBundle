@@ -2,7 +2,7 @@
 
 namespace Nours\TableBundle\Twig\Extension;
 
-use Nours\TableBundle\Renderer\TwigRendererInterface;
+use Nours\TableBundle\Renderer\TableRendererInterface;
 use Nours\TableBundle\Table\View;
 
 /**
@@ -12,14 +12,14 @@ use Nours\TableBundle\Table\View;
 class TableExtension extends \Twig_Extension
 {
 	/**
-	 * @var TwigRendererInterface
+	 * @var TableRendererInterface
 	 */
 	private $renderer;
 	
 	/**
-	 * @param TwigRendererInterface $renderer
+	 * @param TableRendererInterface $renderer
 	 */
-	public function __construct(TwigRendererInterface $renderer)
+	public function __construct(TableRendererInterface $renderer)
 	{
 		$this->renderer = $renderer;
 	}
@@ -29,7 +29,6 @@ class TableExtension extends \Twig_Extension
 	 */
 	public function initRuntime(\Twig_Environment $environment)
 	{
-		$this->renderer->setEnvironment($environment);
 	}
 	
 	/**

@@ -13,9 +13,6 @@ services:
     arguments: [ %nours_table.extension.core% ]
     tags: [ { name: nours_table.extension } ]
 
-  nours_table.extension.pagerfanta:
-    class: Nours\TableBundle\Extension\PagerfantaExtension
-
   nours_table.extension.orm:
     arguments: [ '@doctrine.orm.entity_manager' ]
     class: Nours\TableBundle\Extension\DoctrineORMExtension
@@ -38,7 +35,7 @@ services:
 ###################################################################
   nours_table.table_renderer.twig:
     class: Nours\TableBundle\Renderer\TwigRenderer
-    arguments: [ '%nours_table.themes%' ]
+    arguments: [ @service_container, '%nours_table.themes%' ]
 
 ###################################################################
 ## Serializer handler

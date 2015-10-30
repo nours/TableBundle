@@ -1,19 +1,23 @@
 <?php
+/*
+ * This file is part of TableBundle.
+ *
+ * (c) David Coudrier <david.coudrier@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Nours\TableBundle\Renderer;
 
 use Nours\TableBundle\Table\View;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class TwigRenderer implements TwigRendererInterface
+class TwigRenderer implements TableRendererInterface
 {
-    /**
-     * @var \Twig_Environment
-     */
-    private $environment;
-    
     /**
      * @var \Twig_Template[]
      */
@@ -33,35 +37,35 @@ class TwigRenderer implements TwigRendererInterface
      * @var array
      */
     private $cacheBlockNames = array();
+    private $container;
 
     /**
-     * 
+     *
+     * @param ContainerInterface $container
      * @param array $templates
      */
-    public function __construct(array $templates)
+    public function __construct(ContainerInterface $container, array $templates)
     {
+        $this->container     = $container;
         $this->templateNames = $templates;
     }
 
-
+    /**
+     * Loads the templates used by current theme.
+     */
     private function loadTemplates()
     {
         if (!empty($this->templates)) {
             return;
         }
 
+        // Avoid dependencies issues with the table extension
+        $twig = $this->container->get('twig');
+
         $this->templates = array();
         foreach ($this->templateNames as $name) {
-            $this->templates[] = $this->environment->loadTemplate($name);
+            $this->templates[] = $twig->loadTemplate($name);
         }
-    }
-    
-    /**
-     * @param \Twig_Environment $environment
-     */
-    public function setEnvironment(\Twig_Environment $environment)
-    {
-        $this->environment = $environment;
     }
 
     /**
