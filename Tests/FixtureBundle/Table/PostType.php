@@ -55,6 +55,13 @@ class PostType extends AbstractType
                 'searchable' => true,
                 'truncate' => 20
             ))
+            ->add('prototype', 'prototype', array(
+                'prototype' => 'Post __id__ (__status__)',
+                'mappings' => array(
+                    '__id__' => 'id',
+                    '__status__' => 'status'
+                )
+            ))
         ;
     }
 

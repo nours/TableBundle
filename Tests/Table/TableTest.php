@@ -52,7 +52,7 @@ class TableTest extends TestCase
         $this->assertEquals(1, $vars['page']);
         $this->assertEquals(15, $vars['limit']);
 
-        $this->assertCount(4, $view->fields);
+        $this->assertCount(5, $view->fields);
 
         $fieldView = $view->fields['id'];
         $this->assertInstanceOf('Nours\TableBundle\Table\View', $fieldView);

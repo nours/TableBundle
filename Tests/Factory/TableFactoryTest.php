@@ -137,8 +137,8 @@ class TableFactoryTest extends TestCase
         $this->assertEquals('post', $table->getName());
         $this->assertEquals('post', $table->getOption('name'));
 
-        // The type have 4 fields
-        $this->assertCount(4, $table->getFields());
+        // The type have 5 fields
+        $this->assertCount(5, $table->getFields());
 
         // All fields must have references to their table
         foreach ($table->getFields() as $field) {

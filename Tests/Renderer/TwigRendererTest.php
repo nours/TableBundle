@@ -65,6 +65,8 @@ field=isActive
 property_path=isActive
 field=content
 property_path=content
+field=prototype
+property_path=prototype
 
 EOS;
 

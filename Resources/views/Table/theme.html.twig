@@ -124,3 +124,19 @@ function (value, row, index) {
     return '<span class="label label-'+style+'">'+label+'</span>'
 }
 {% endblock %}
+
+
+{%- block field_prototype_formatter -%}
+function (value, row, index) {
+    var html = '{{ render_table_field(field)|raw }}',
+        mappings = {{ mappings|json_encode|raw }}
+    $.each(mappings, function(placeholder, property_path) {
+        html = html.replace(placeholder, objectPath.get(row, property_path))
+    })
+    return html
+}
+{%- endblock -%}
+
+{%- block field_prototype -%}
+{{ prototype|raw }}
+{%- endblock -%}
