@@ -11,6 +11,8 @@
 namespace Nours\TableBundle\Field\Type;
 
 use Nours\TableBundle\Field\AbstractFieldType;
+use Nours\TableBundle\Field\FieldInterface;
+use Nours\TableBundle\Table\View;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,13 +34,22 @@ class CollectionType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
+    public function buildView(View $view, FieldInterface $field, array $options)
+    {
+        $view->vars['separator'] = $options['separator'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        // Fixes the property_path to omit the association extension
+        // property_path is relative to the objects in collection field not the main data
         $resolver->setDefaults(array(
             'property_path' => function(Options $options) {
                 return $options['property'];
-            }
+            },
+            'separator' => ', '
         ));
     }
 }

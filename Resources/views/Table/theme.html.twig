@@ -96,6 +96,21 @@ function (value, row, index) {
 {% endblock %}
 
 
+{% block field_collection_formatter %}
+function (value, row, index) {
+    var html = '', first = true
+    $.each(value, function(index, object) {
+        if (!first) {
+            html += '{{ separator }}'
+        }
+        first = false
+        html += objectPath.get(object, '{{ property_path }}')
+    })
+    return html
+}
+{% endblock %}
+
+
 {% block field_date_formatter %}
 function (value, row, index) {
     value = objectPath.get(row, '{{ property_path }}')
