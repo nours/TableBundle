@@ -65,11 +65,11 @@
 
 {% block field_definition %}
 {
-    field: '{{ field.vars.property_path }}',
-    title: '{{ field.vars.label|trans }}',
-    formatter: Table.prototype.formatter{{ field.vars.class_name }}
-    {%- if field.width %},width: '{{ field.width }}'{% endif %}
-    {%- if field.sortable %},sortable: true{% endif %}
+    field: '{{ property_path }}',
+    title: '{{ label|trans }}',
+    formatter: Table.prototype.formatter{{ class_name }}
+    {%- if width %},width: '{{ width }}'{% endif %}
+    {%- if sortable %},sortable: true{% endif %}
 }
 {% endblock %}
 
