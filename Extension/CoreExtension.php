@@ -91,8 +91,7 @@ class CoreExtension extends AbstractExtension
             'sort'       => $options['sort'],
             'order'      => $options['order'],
             'url'        => $options['url'],
-            'block_prefixes' => array('table_' . $table->getType()->getName(), 'table'),
-            'cache_key'  => 'table_' . $table->getType()->getName()
+            'block_prefixes' => array('table_' . $table->getType()->getName(), 'table')
         ));
     }
 
@@ -107,7 +106,6 @@ class CoreExtension extends AbstractExtension
             'width' => $options['width'],
             'property_path' => $options['property_path'],
             'block_prefixes' => $this->buildBlockPrefixes($field),
-            'cache_key' => 'field_' . $field->getType()->getName(),
             'class_name' => Inflector::classify($field->getName())
         ));
     }

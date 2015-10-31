@@ -24,7 +24,7 @@
                     queryParams: $.proxy(this.queryParams, this),
                     responseHandler: $.proxy(this.responseHandler, this)
                     {%- if url %}, url: '{{ url }}'{% endif -%}
-                    {%- if row_style %}, rowStyle: {{ row_style|raw }}
+                    {%- if row_style is defined %}, rowStyle: {{ row_style|raw }}
                     {% endif %}, columns: [
                         {% for field in table.fields -%}
                         {{- render_table_field(field, 'definition') -}}

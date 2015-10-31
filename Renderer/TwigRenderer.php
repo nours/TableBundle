@@ -28,15 +28,6 @@ class TwigRenderer implements TableRendererInterface
      */
     private $templateNames;
 
-    /**
-     * @var array
-     */
-    private $cacheTemplates = array();
-
-    /**
-     * @var array
-     */
-    private $cacheBlockNames = array();
     private $container;
 
     /**
@@ -86,19 +77,14 @@ class TwigRenderer implements TableRendererInterface
     }
 
     /**
-     * @param $cacheKey
      * @param array $blockNames
      * @param array $context
      * @return string
      */
-    private function renderBlock($cacheKey, array $blockNames, array $context)
+    private function renderBlock(array $blockNames, array $context)
     {
         $template  = null;
         $blockName = null;
-        if (isset($this->cacheTemplates[$cacheKey])) {
-            $template = $this->cacheTemplates[$cacheKey];
-            $blockName = $this->cacheBlockNames[$cacheKey];
-        }
 
         if (!isset($template)) {
             // Search the template for first block available
@@ -130,7 +116,7 @@ class TwigRenderer implements TableRendererInterface
         $context = $tableView->vars;
         $context['table'] = $tableView;
 
-        return $this->renderBlock($tableView->vars['cache_key'], $this->getBlockPrefixes($tableView, $part), $context);
+        return $this->renderBlock($this->getBlockPrefixes($tableView, $part), $context);
     }
     
     /**
@@ -142,7 +128,7 @@ class TwigRenderer implements TableRendererInterface
         $context['table'] = $fieldView->parent;
         $context['field'] = $fieldView;
 
-        return $this->renderBlock($fieldView->vars['cache_key'], $this->getBlockPrefixes($fieldView, $part), $context);
+        return $this->renderBlock($this->getBlockPrefixes($fieldView, $part), $context);
     }
 
     /**

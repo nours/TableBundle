@@ -44,6 +44,7 @@ class PostController extends Controller
                 'Content-Type' => 'application/json'
             ));
         }
+
         return $this->render('post/index.html.twig', array(
             'table' => $table->createView()
         ));
