@@ -155,6 +155,8 @@ class FormExtension extends AbstractExtension
         if ($form = $options['form']) {
             $view->vars['form'] = $form->createView();
             $view->vars['form_theme'] = $options['form_theme'];
+        } else {
+            $view->vars['form'] = null;
         }
     }
 
