@@ -53,6 +53,4 @@ doctrine:
         auto_mapping: true
 
 nours_table:
-    extensions:
-        orm: true
-        form: true
+    form_theme: form.html.twig

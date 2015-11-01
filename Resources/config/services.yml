@@ -19,7 +19,10 @@ services:
 
   nours_table.extension.form:
     class: Nours\TableBundle\Extension\FormExtension
-    arguments: [ '@form.factory' ]
+    arguments: [ '@form.factory', %nours_table.form_theme% ]
+
+  nours_table.extension.bootstrap_table:
+    class: Nours\TableBundle\Extension\BootstrapTableExtension
 
 
 ###################################################################

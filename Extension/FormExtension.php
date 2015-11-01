@@ -36,12 +36,15 @@ class FormExtension extends AbstractExtension
      */
     private $formFactory;
 
+    private $formTheme;
+
     /**
      * @param FormFactoryInterface $formFactory
      */
-    public function __construct(FormFactoryInterface $formFactory)
+    public function __construct(FormFactoryInterface $formFactory, $formTheme)
     {
         $this->formFactory = $formFactory;
+        $this->formTheme   = $formTheme;
     }
 
     /**
@@ -52,6 +55,7 @@ class FormExtension extends AbstractExtension
         $resolver->setDefaults(array(
             'form_name' => 'filter',
             'form_type' => 'form',
+            'form_theme' => $this->formTheme,
             'form_options' => array(),
             'filter_data' => array(),
             'form' => null
@@ -150,6 +154,7 @@ class FormExtension extends AbstractExtension
         /** @var FormInterface $form */
         if ($form = $options['form']) {
             $view->vars['form'] = $form->createView();
+            $view->vars['form_theme'] = $options['form_theme'];
         }
     }
 

@@ -85,11 +85,7 @@ class ResolvedType implements TableTypeInterface
      */
     public function handle(TableInterface $table, Request $request = null)
     {
-        // Loop over extensions (in reverse order), and stops when one did populate data
-        // Configuration can propagate from most dependant extensions to least
-        // They will be able to share config using table options
-        $extensions = $this->extensions;
-        while (($extension = array_shift($extensions)) && !$table->hasData()) {
+        foreach ($this->extensions as $extension) {
             /** @var ExtensionInterface $extension */
             $extension->handle($table, $request);
         }

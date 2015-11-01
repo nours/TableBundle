@@ -214,6 +214,11 @@ class DoctrineORMExtension extends AbstractExtension
      */
     public function handle(TableInterface $table, Request $request = null)
     {
+        // Do not handle if $table has data
+        if ($table->hasData()) {
+            return;
+        }
+
         /** @var QueryBuilder $queryBuilder */
         if ($queryBuilder = $table->getOption('query_builder')) {
             // Filter Querybuilder if parameter in request

@@ -1,65 +1,95 @@
 
 {% block table %}
-    <table class="table table-stripped bootstrap-table" id="table_{{ name }}">
-    </table>
+    <div id="{{ id_toolbar }}">
+        {% if form %}
+            {% if form_theme %}
+                {% form_theme form form_theme %}
+            {% endif %}
+            {{ form(form) }}
+        {% endif %}
+    </div>
+    <table class="table table-stripped bootstrap-table" id="table_{{ name }}"></table>
 {% endblock %}
 
 
 {% block table_javascript %}
     <script type="text/javascript">
         $(function() {
-            var Table = function(element) {
+            var Table = function(element, options) {
                 this.table = $(element)
+                this.form  = $('#{{ id_toolbar }} form')
 
                 this.table.data('Table', this)
 
-                var options = {
-                    pagination: true,
-                    sidePagination: '{% if url %}server{% else %}client{% endif %}',
-                    {%- if not url %}data: {{ table.data|serialize|raw }},{% endif -%}
-                    totalRows: {{ total }},
-                    pageNumber: {{ page }},
-                    pageSize: {{ limit }},
-                    search: true,
+                options = $.extend({
                     queryParams: $.proxy(this.queryParams, this),
-                    responseHandler: $.proxy(this.responseHandler, this)
-                    {%- if url %}, url: '{{ url }}'{% endif -%}
-                    {%- if row_style is defined %}, rowStyle: {{ row_style|raw }}
-                    {% endif %}, columns: [
+                    queryParamsType: 'other',
+                    responseHandler: $.proxy(this.responseHandler, this),
+                    columns: [
                         {% for field in table.fields -%}
                         {{- render_table_field(field, 'definition') -}}
                         {%- if not loop.last %},{% endif -%}
                         {%- endfor %}
                     ]
-                }
+                }, options)
 
                 this.table.bootstrapTable(options);
+                this.form.on('change', 'input, select', $.proxy(this.refresh, this))
             }
 
             Table.prototype.queryParams = function(params) {
-                return {
+                var queryParams = $.extend({
                     page: params.pageNumber,
-                    limit: params.pageSize,
-                    q: params.searchText,
-                    orderBy: params.sortName,
-                    order: params.sortName ? params.sortOrder : null
+                    limit: params.pageSize
+                }, this.getFormData());
+                if (params.searchText) {
+                    queryParams.search = params.searchText
                 }
-            }
+                if (params.sortName) {
+                    queryParams.sort = params.sortName;
+                    queryParams.order = params.sortName ? params.sortOrder : null
+                }
+                return queryParams
+            };
 
             Table.prototype.responseHandler = function(res) {
                 return {
                     total: res.total,
                     rows: res.data
                 }
-            }
+            };
+
+            Table.prototype.refresh = function() {
+                this.table.bootstrapTable('refresh');
+            };
+
+            Table.prototype.getFormData = function() {
+                var data = {};
+                var serialized = this.form.serializeArray();
+                $.each(serialized, function() {
+                    var name = this.name, value = this.value;
+                    if (data[name] !== undefined) {
+                        if (!data[name].push) {
+                            data[name] = [ data[name] ];
+                        }
+                        data[name].push(value || '');
+                    } else {
+                        data[name] = value || '';
+                    }
+                });
+                return data;
+            };
 
             {% for field in table.fields %}
             Table.prototype.formatter{{ field.vars.class_name }} = {{ render_table_field(field, 'formatter') }}
             {% endfor %}
 
-            new Table('#table_{{ name }}')
+            new Table('#table_{{ name }}', {{ configs|json_encode|raw }})
         });
     </script>
+    {% if form %}
+        {{ form_javascript(form) }}
+    {% endif %}
 {% endblock %}
 
 

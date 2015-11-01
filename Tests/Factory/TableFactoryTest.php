@@ -29,10 +29,11 @@ class TableFactoryTest extends TestCase
     {
         $extensions = $this->factory->getExtensions();
 
-        $this->assertCount(3, $extensions);
+        $this->assertCount(4, $extensions);
         $this->assertInstanceOf('Nours\TableBundle\Extension\CoreExtension', $extensions['core']);
         $this->assertInstanceOf('Nours\TableBundle\Extension\FormExtension', $extensions['form']);
         $this->assertInstanceOf('Nours\TableBundle\Extension\DoctrineORMExtension', $extensions['orm']);
+        $this->assertInstanceOf('Nours\TableBundle\Extension\BootstrapTableExtension', $extensions['bootstrap_table']);
     }
 
     /**

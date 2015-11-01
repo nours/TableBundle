@@ -27,6 +27,7 @@ class NoursTableExtension extends Extension
         $loader->load('fields.yml');
 
         $container->setParameter('nours_table.themes', $config['themes']);
+        $container->setParameter('nours_table.form_theme', $config['form_theme']);
         $container->setParameter('nours_table.extension.core', $config['extensions']['core']);
 
         if ($config['extensions']['orm']) {
@@ -38,6 +39,13 @@ class NoursTableExtension extends Extension
         if ($config['extensions']['form']) {
             $container
                 ->getDefinition('nours_table.extension.form')
+                ->addTag('nours_table.extension')
+            ;
+        }
+
+        if ($config['extensions']['bootstrap_table']) {
+            $container
+                ->getDefinition('nours_table.extension.bootstrap_table')
                 ->addTag('nours_table.extension')
             ;
         }
