@@ -414,16 +414,14 @@ class DoctrineORMExtension extends AbstractExtension
      */
     private function buildFilter(QueryBuilder $queryBuilder, TableInterface $table, array $filter)
     {
-        foreach ($filter as $name => $value) {
-            $field = $table->getField($name);
+        foreach ($table->getFields() as $field) {
+            if ($field->getOption('filterable')) {
+                $name = $field->getName();
+                $value = isset($filter[$name]) ? $filter[$name] : null;
 
-            // todo : check this elsewhere
-            if (!$field->getOption('filterable')) {
-                throw new InvalidArgumentException("Field $name is not filterable in table " . $table->getName());
+                $filter = $field->getOption('filter_query_builder');
+                call_user_func($filter, $queryBuilder, $field, $value);
             }
-
-            $filter = $field->getOption('filter_query_builder');
-            call_user_func($filter, $queryBuilder, $field, $value);
         }
     }
 

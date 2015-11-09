@@ -124,6 +124,7 @@ class FormExtension extends AbstractExtension
             if (isset($defaultData[$field->getName()])) {
                 $options['data'] = $defaultData[$field->getName()];
             }
+            $options['required'] = false;   // All filters are not required
 
             $builder->add($field->getName(), $field->getOption('filter_type'), $options);
         }
