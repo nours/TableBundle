@@ -419,8 +419,8 @@ class DoctrineORMExtension extends AbstractExtension
                 $name = $field->getName();
                 $value = isset($filter[$name]) ? $filter[$name] : null;
 
-                $filter = $field->getOption('filter_query_builder');
-                call_user_func($filter, $queryBuilder, $field, $value);
+                $closure = $field->getOption('filter_query_builder');
+                call_user_func($closure, $queryBuilder, $field, $value);
             }
         }
     }
