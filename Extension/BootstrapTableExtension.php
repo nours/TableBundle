@@ -64,7 +64,6 @@ class BootstrapTableExtension extends AbstractExtension
     public function buildFieldView(View $view, FieldInterface $field, array $options)
     {
         $view->vars['formatter_name'] = $field->getTable()->getName() . '_' . $field->getName();
-        $view->vars['label']          = $view->vars['label'] ?: ($field->getTable()->getOption('resource')->getFullName() . '.' . $field->getName());
     }
 
     /**
