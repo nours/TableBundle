@@ -12,6 +12,7 @@ namespace Nours\TableBundle\Extension;
 use Nours\TableBundle\Table\View;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
@@ -64,6 +65,7 @@ class BootstrapTableExtension extends AbstractExtension
     public function buildFieldView(View $view, FieldInterface $field, array $options)
     {
         $view->vars['formatter_name'] = $field->getTable()->getName() . '_' . $field->getName();
+        $view->vars['configs']        = $options['configs'];
     }
 
     /**
@@ -73,6 +75,16 @@ class BootstrapTableExtension extends AbstractExtension
     {
         $resolver->setDefaults(array(
             'row_style' => null
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureFieldOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'configs' => array()
         ));
     }
 

@@ -94,13 +94,13 @@
 
 
 {% block field_definition %}
-{
+$.merge({
     field: '{{ property_path }}',
     title: '{{ label|trans }}',
     formatter: Table.prototype.formatter{{ class_name }}
     {%- if width %},width: '{{ width }}'{% endif %}
     {%- if sortable %},sortable: true{% endif %}
-}
+}, {{ configs|escape('js') }})
 {% endblock %}
 
 
