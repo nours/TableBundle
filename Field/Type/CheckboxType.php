@@ -29,7 +29,8 @@ class CheckboxType extends AbstractFieldType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('configs', array(
-            'checkbox' => true
+            'checkbox' => true,
+            'title' => 'blabla'
         ));
     }
 }

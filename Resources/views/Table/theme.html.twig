@@ -1,4 +1,5 @@
 
+{# Table html theme #}
 {% block table %}
     <div id="{{ id_toolbar }}">
         {% if form %}
@@ -93,14 +94,23 @@
 {% endblock %}
 
 
+{# Field definition #}
 {% block field_definition %}
-$.merge({
+$.extend({
     field: '{{ property_path }}',
     title: '{{ label|trans }}',
     formatter: Table.prototype.formatter{{ class_name }}
     {%- if width %},width: '{{ width }}'{% endif %}
     {%- if sortable %},sortable: true{% endif %}
-}, {{ configs|escape('js') }})
+}, {{ configs|json_encode|raw }})
+{% endblock %}
+
+
+{# Field formatters #}
+{% block field_formatter %}
+    function (value, row, index) {
+    return value
+    }
 {% endblock %}
 
 
