@@ -85,7 +85,7 @@
             Table.prototype.formatter{{ field.vars.class_name }} = {{ render_table_field(field, 'formatter') }}
             {% endfor %}
 
-            {{ render_table(field, 'javascript_extra') }}
+            {{ render_table(table, 'javascript_extra') }}
 
             new Table('#table_{{ name }}', {{ configs|json_encode|raw }})
         });
@@ -96,7 +96,7 @@
 {% endblock %}
 
 
-{% block field_javascript_extra %}{% endblock %}
+{% block table_javascript_extra %}{% endblock %}
 
 
 {# Field definition #}

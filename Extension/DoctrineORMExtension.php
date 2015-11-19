@@ -244,7 +244,7 @@ class DoctrineORMExtension extends AbstractExtension
 
                 // Set common data
                 $table->setPage($pager->getCurrentPage());
-                $table->setLimit($pager->getMaxPerPage());
+//                $table->setLimit($pager->getMaxPerPage());
                 $table->setPages($pager->getNbPages());
                 $table->setTotal($pager->getNbResults());
 
@@ -259,7 +259,7 @@ class DoctrineORMExtension extends AbstractExtension
 
                 // Set common data
                 $table->setPage(1);
-                $table->setLimit($count);
+//                $table->setLimit($count);
                 $table->setPages(1);
                 $table->setTotal($count);
 
