@@ -26,3 +26,7 @@ services:
   nours_table.table_field.prototype:
     class: Nours\TableBundle\Field\Type\PrototypeType
     tags: [ { name: 'nours_table.field_type' } ]
+
+  nours_table.table_field.checkbox:
+    class: Nours\TableBundle\Field\Type\CheckboxType
+    tags: [ { name: 'nours_table.field_type' } ]
