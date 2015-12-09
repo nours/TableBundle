@@ -12,7 +12,6 @@ namespace Nours\TableBundle\Extension;
 use Nours\TableBundle\Table\View;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
@@ -55,6 +54,10 @@ class BootstrapTableExtension extends AbstractExtension
             $configs['row_style'] = $rowStyle;
         }
 
+        if ($configs['cookie'] = $options['cookie']) {
+            $configs['cookieIdTable'] = 'table_' . $table->getName();
+        }
+
         $view->vars['configs']    = $configs;
         $view->vars['id_toolbar'] = $idToolbar;
     }
@@ -74,7 +77,8 @@ class BootstrapTableExtension extends AbstractExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'row_style' => null
+            'row_style'     => null,
+            'cookie'        => false
         ));
     }
 
