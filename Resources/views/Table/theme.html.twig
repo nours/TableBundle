@@ -136,7 +136,7 @@ function (value, row, index) {
 {% block field_boolean_formatter %}
 function (value, row, index) {
     value = objectPath.get(row, '{{ property_path }}');
-    return value ? '<i class="fa fa-fw fa-check"></i>' : '<i class="fa fa-fw fa-times"></i>'
+    return value ? '{{ true_text|raw }}' : '{{ false_text|raw }}'
 }
 {% endblock %}
 
