@@ -17,10 +17,10 @@
     <script type="text/javascript">
         $(function() {
             var Table = function(element, options) {
-                this.table = $(element)
-                this.form  = $('#{{ id_toolbar }} form')
+                this.table = $(element);
+                this.form  = $('#{{ id_toolbar }} form');
 
-                this.table.data('Table', this)
+                this.table.data('Table', this);
 
                 options = $.extend({
                     queryParams: $.proxy(this.queryParams, this),
@@ -32,11 +32,11 @@
                         {%- if not loop.last %},{% endif -%}
                         {%- endfor %}
                     ]
-                }, options)
+                }, options);
 
                 this.table.bootstrapTable(options);
                 this.form.on('change', 'input, select', $.proxy(this.refresh, this))
-            }
+            };
 
             Table.prototype.queryParams = function(params) {
                 var queryParams = $.extend({
@@ -135,7 +135,7 @@ function (value, row, index) {
 
 {% block field_boolean_formatter %}
 function (value, row, index) {
-    value = objectPath.get(row, '{{ property_path }}')
+    value = objectPath.get(row, '{{ property_path }}');
     return value ? '<i class="fa fa-fw fa-check"></i>' : '<i class="fa fa-fw fa-times"></i>'
 }
 {% endblock %}
@@ -143,13 +143,13 @@ function (value, row, index) {
 
 {% block field_collection_formatter %}
 function (value, row, index) {
-    var html = '', first = true
-    $.each(value, function(index, object) {
+    var html = '', first = true;
+    $.each(objectPath.get(row, '{{ property_path }}'), function(index, object) {
         if (!first) {
             html += '{{ separator }}'
         }
-        first = false
-        html += objectPath.get(object, '{{ property_path }}')
+        first = false;
+        html += {% if text_path %}objectPath.get(object, '{{ property_path }}'){% else %}object{% endif %}
     })
     return html
 }
@@ -158,21 +158,21 @@ function (value, row, index) {
 
 {% block field_date_formatter %}
 function (value, row, index) {
-    value = objectPath.get(row, '{{ property_path }}')
-    var date = Date.parse(value)
+    value = objectPath.get(row, '{{ property_path }}');
+    var date = Date.parse(value);
     if (!isNaN(date)) {
-        date = new Date(date)
+        date = new Date(date);
         return date.toLocaleString()
     }
-    return null;
+    return null
 }
 {% endblock %}
 
 
 {% block field_label_formatter %}
 function (value, row, index) {
-    value = objectPath.get(row, '{{ property_path }}')
-    var style = 'default', label = ''
+    value = objectPath.get(row, '{{ property_path }}');
+    var style = 'default', label = '';
     switch (value) {
     {% for t, d in labels %}
         case '{{ t }}':
