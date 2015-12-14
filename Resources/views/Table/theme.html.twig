@@ -102,7 +102,7 @@
 {# Field definition #}
 {% block field_definition %}
 $.extend({
-    field: '{{ property_path }}',
+    field: '{{ name }}',
     title: '{{ label|trans }}',
     formatter: Table.prototype.formatter{{ class_name }}
     {%- if width %},width: '{{ width }}'{% endif %}
@@ -149,7 +149,7 @@ function (value, row, index) {
             html += '{{ separator }}'
         }
         first = false;
-        html += {% if text_path %}objectPath.get(object, '{{ property_path }}'){% else %}object{% endif %}
+        html += {% if text_path %}objectPath.get(object, '{{ text_path }}'){% else %}object{% endif %}
     })
     return html
 }
