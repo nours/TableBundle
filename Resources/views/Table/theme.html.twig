@@ -34,9 +34,13 @@
                     ]
                 }, options);
 
+                this.onInit(options)
+
                 this.table.bootstrapTable(options);
                 this.form.on('change', 'input, select', $.proxy(this.refresh, this))
             };
+
+            Table.prototype.onInit = function(options) {};
 
             Table.prototype.queryParams = function(params) {
                 var queryParams = $.extend({
