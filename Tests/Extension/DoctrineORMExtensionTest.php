@@ -414,10 +414,33 @@ class DoctrineORMExtensionTest extends TestCase
 
         $vars = $view->vars;
         $this->assertEquals(1, $vars['page']);
-        $this->assertEquals(3, $vars['limit']);
+        $this->assertEquals(10, $vars['limit']);
         $this->assertEquals(1, $vars['pages']);
         $this->assertEquals(3, $vars['total']);
         $this->assertCount(3, $view->getData());
         $this->assertEquals(false, $vars['pagination']);
+    }
+
+    /**
+     * The post_status table has a filter using a LIKE operator instead of equality.
+     *
+     * @see FixtureBundle\Fixtures\LoadAll
+     */
+    public function testFilterUsingLikeOperator()
+    {
+        $table = $this->factory->createTable('post_status');
+
+        $table->handle(new Request(array(
+            'filter' => array(
+                'content' => 'post'
+            )
+        )));
+
+        /** @var Post[] $data */
+        $data = $table->getData();
+
+        $this->assertCount(2, $data);
+        $this->assertEquals(2, $data[0]->getId());
+        $this->assertEquals(3, $data[1]->getId());
     }
 } 

@@ -2,7 +2,6 @@
 
 namespace Nours\TableBundle\Extension;
 
-
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
@@ -140,7 +139,14 @@ class DoctrineORMExtension extends AbstractExtension
             /**
              * Callback which filters query builder for filtered fields.
              */
-            'filter_query_builder' => array($this, 'fieldFilter')
+            'filter_query_builder' => array($this, 'fieldFilter'),
+
+            /**
+             * Comparison operator for default filter
+             *
+             * @see fieldFilter
+             */
+            'filter_operator' => Query\Expr\Comparison::EQ
         ));
 
         $resolver->setAllowedTypes('sortable', 'bool');
@@ -458,10 +464,21 @@ class DoctrineORMExtension extends AbstractExtension
                 $queryBuilder->andWhere($expr);
             } else {
                 /**
-                 * Otherwise, handles an equality operation
+                 * Single value filter.
                  */
-                $queryBuilder->andWhere($path . " = :filter_$name");
-                $queryBuilder->setParameter('filter_' . $name, $value);
+                $operator = $field->getOption('filter_operator');
+                $comparison = new Query\Expr\Comparison($path, $operator, ':filter_' . $name);
+
+                // Fix LIKE operators value (append and prepend %)
+                // todo : parameterize this ?
+                if ($operator == 'LIKE' || $operator == 'NOT LIKE') {
+                    $value = '%' . $value . '%';
+                }
+
+                $queryBuilder
+                    ->andWhere($comparison)
+                    ->setParameter('filter_' . $name, $value)
+                ;
             }
         }
     }

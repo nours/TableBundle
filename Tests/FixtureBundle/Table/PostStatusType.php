@@ -45,6 +45,11 @@ class PostStatusType extends AbstractType
                     'expanded' => true
                 )
             ))
+            ->add('content', 'text', array(
+                'sortable' => true,
+                'filter_type' => 'text',
+                'filter_operator' => 'LIKE'
+            ))
         ;
     }
 
