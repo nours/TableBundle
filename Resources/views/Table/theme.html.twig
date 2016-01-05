@@ -34,7 +34,7 @@
                     ]
                 }, options);
 
-                this.onInit(options)
+                this.onInit(options);
 
                 this.table.bootstrapTable(options);
                 this.form.on('change', 'input, select', $.proxy(this.refresh, this))
@@ -126,8 +126,9 @@ $.extend({
 {% block field_text_formatter %}
 function (value, row, index) {
     value = objectPath.get(row, '{{ property_path }}')
+    value = value || {{ empty_value|json_encode|raw }}
     {% if strip_tags %}
-    if (!value) return null
+    if (!value) return {{ empty_value|json_encode|raw }}
     value = value.replace(/(<([^>]+)>)/igm,"").replace(/(&nbsp;|\r\n|\n|\r)/g, ' ')
     {% endif %}
     {% if truncate %}

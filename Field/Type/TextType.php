@@ -28,8 +28,9 @@ class TextType extends AbstractFieldType
      */
     public function buildView(View $view, FieldInterface $field, array $options)
     {
-        $view->vars['strip_tags'] = $options['strip_tags'];
-        $view->vars['truncate']   = $options['truncate'];
+        $view->vars['strip_tags']  = $options['strip_tags'];
+        $view->vars['truncate']    = $options['truncate'];
+        $view->vars['empty_value'] = $options['empty_value'];
     }
 
     /**
@@ -41,7 +42,8 @@ class TextType extends AbstractFieldType
             'strip_tags' => function(Options $options) {
                 return $options['truncate'] ? true : false;
             },
-            'truncate' => null
+            'truncate' => null,
+            'empty_value' => null
         ));
     }
 
