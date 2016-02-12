@@ -35,8 +35,9 @@ class CollectionType extends AbstractFieldType
      */
     public function buildView(View $view, FieldInterface $field, array $options)
     {
-        $view->vars['separator'] = $options['separator'];
-        $view->vars['text_path'] = $options['text_path'];
+        $view->vars['separator']  = $options['separator'];
+        $view->vars['text_path']  = $options['text_path'];
+        $view->vars['empty_text'] = $options['empty_text'];
     }
 
     /**
@@ -46,8 +47,9 @@ class CollectionType extends AbstractFieldType
     {
         // property_path is relative to the objects in collection field not the main data
         $resolver->setDefaults(array(
-            'text_path' => null,
-            'separator' => ', '
+            'text_path'  => null,
+            'separator'  => ', ',
+            'empty_text' => null
         ));
     }
 }

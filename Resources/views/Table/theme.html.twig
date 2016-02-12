@@ -156,7 +156,7 @@ function (value, row, index) {
         first = false;
         html += {% if text_path %}objectPath.get(object, '{{ text_path }}'){% else %}object{% endif %}
     })
-    return html
+    return html{% if empty_text %} || {{ empty_text|json_encode|raw }}{% endif %}
 }
 {% endblock %}
 
