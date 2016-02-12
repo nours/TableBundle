@@ -38,6 +38,7 @@ class CollectionType extends AbstractFieldType
         $view->vars['separator']  = $options['separator'];
         $view->vars['text_path']  = $options['text_path'];
         $view->vars['empty_text'] = $options['empty_text'];
+        $view->vars['truncate']   = $options['truncate'];
     }
 
     /**
@@ -49,7 +50,8 @@ class CollectionType extends AbstractFieldType
         $resolver->setDefaults(array(
             'text_path'  => null,
             'separator'  => ', ',
-            'empty_text' => null
+            'empty_text' => null,
+            'truncate'   => null
         ));
     }
 }

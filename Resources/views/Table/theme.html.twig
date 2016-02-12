@@ -156,7 +156,11 @@ function (value, row, index) {
         first = false;
         html += {% if text_path %}objectPath.get(object, '{{ text_path }}'){% else %}object{% endif %}
     })
-    return html{% if empty_text %} || {{ empty_text|json_encode|raw }}{% endif %}
+    html = html{% if empty_text %} || {{ empty_text|json_encode|raw }}{% endif %}
+    {% if truncate %}
+        html = '<abbr title="' + html + '">' + html.substr(0, {{ truncate }}) + '...</abbr>'
+    {% endif %}
+    return html
 }
 {% endblock %}
 
