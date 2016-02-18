@@ -57,7 +57,8 @@ class DoctrineORMExtension extends AbstractExtension
             'class' => null,
             'query_builder' => $defaultQueryBuilder,
             'search' => null,
-            'query_builder_filter' => null
+            'query_builder_filter' => null,
+            'fetch_join_collection' => true
         ));
         $resolver->setAllowedTypes(array(
             'query_builder' => array('Doctrine\ORM\QueryBuilder', 'null')
@@ -236,7 +237,7 @@ class DoctrineORMExtension extends AbstractExtension
             // Propage pager to pagerfanta extension if pagination is enabled
             if ($table->getOption('pagination')) {
                 // Use pager fanta to build pager
-                $adapter = new DoctrineORMAdapter($queryBuilder->getQuery());
+                $adapter = new DoctrineORMAdapter($queryBuilder->getQuery(), $table->getOption('fetch_join_collection'));
                 $pager = new Pagerfanta($adapter);
 
                 $pager->setMaxPerPage($table->getLimit());
@@ -260,7 +261,7 @@ class DoctrineORMExtension extends AbstractExtension
                 });
             } else {
                 // No need pager : use simple Paginator
-                $paginator = new Paginator($queryBuilder);
+                $paginator = new Paginator($queryBuilder, $table->getOption('fetch_join_collection'));
                 $count = count($paginator);
 
                 // Set common data
