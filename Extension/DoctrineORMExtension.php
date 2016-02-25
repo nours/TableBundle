@@ -137,6 +137,10 @@ class DoctrineORMExtension extends AbstractExtension
                 return '_root.' . $options['property_path'];
             },
 
+            'order_path' => function(Options $options) {
+                return $options['query_path'];
+            },
+
             /**
              * Callback which filters query builder for filtered fields.
              */
@@ -408,7 +412,7 @@ class DoctrineORMExtension extends AbstractExtension
                 throw new InvalidArgumentException("Field $fieldName is not sortable in table " . $table->getName());
             }
 
-            $queryBuilder->orderBy($field->getOption('query_path'), $order);
+            $queryBuilder->orderBy($field->getOption('order_path'), $order);
         }
     }
 
