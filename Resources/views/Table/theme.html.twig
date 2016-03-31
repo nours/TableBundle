@@ -149,13 +149,16 @@ function (value, row, index) {
 {% block field_collection_formatter %}
 function (value, row, index) {
     var html = '', first = true;
-    $.each(objectPath.get(row, '{{ property_path }}'), function(index, object) {
-        if (!first) {
-            html += '{{ separator }}';
-        }
-        first = false;
-        html += {% if text_path %}objectPath.get(object, '{{ text_path }}'){% else %}object{% endif %};
-    })
+    value = objectPath.get(row, '{{ property_path }}');
+    if (value.length) {
+        $.each(value, function(index, object) {
+            if (!first) {
+                html += '{{ separator }}';
+            }
+            first = false;
+            html += {% if text_path %}objectPath.get(object, '{{ text_path }}'){% else %}object{% endif %};
+        })
+    }
     {% if empty_text %}html = html || {{ empty_text|json_encode|raw }};{% endif %}
     {% if truncate %}
         html = '<abbr title="' + html + '">' + html.substr(0, {{ truncate }}) + '...</abbr>';
