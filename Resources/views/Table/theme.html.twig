@@ -125,14 +125,14 @@ $.extend({
 
 {% block field_text_formatter %}
 function (value, row, index) {
-    value = objectPath.get(row, '{{ property_path }}')
-    value = value || {{ empty_value|json_encode|raw }}
+    value = objectPath.get(row, '{{ property_path }}');
+    value = value || {{ empty_value|json_encode|raw }};
     {% if strip_tags %}
-    if (!value) return {{ empty_value|json_encode|raw }}
-    value = value.replace(/(<([^>]+)>)/igm,"").replace(/(&nbsp;|\r\n|\n|\r)/g, ' ')
+    if (!value) return {{ empty_value|json_encode|raw }};
+    value = value.replace(/(<([^>]+)>)/igm,"").replace(/(&nbsp;|\r\n|\n|\r)/g, ' ');
     {% endif %}
     {% if truncate %}
-    value = '<abbr title="' + value + '">' + value.substr(0, {{ truncate }}) + '...</abbr>'
+    value = '<abbr title="' + value + '">' + value.substr(0, {{ truncate }}) + '...</abbr>';
     {% endif %}
     return value
 }
@@ -151,14 +151,14 @@ function (value, row, index) {
     var html = '', first = true;
     $.each(objectPath.get(row, '{{ property_path }}'), function(index, object) {
         if (!first) {
-            html += '{{ separator }}'
+            html += '{{ separator }}';
         }
         first = false;
-        html += {% if text_path %}objectPath.get(object, '{{ text_path }}'){% else %}object{% endif %}
+        html += {% if text_path %}objectPath.get(object, '{{ text_path }}'){% else %}object{% endif %};
     })
-    html = html{% if empty_text %} || {{ empty_text|json_encode|raw }}{% endif %}
+    {% if empty_text %}html = html || {{ empty_text|json_encode|raw }};{% endif %}
     {% if truncate %}
-        html = '<abbr title="' + html + '">' + html.substr(0, {{ truncate }}) + '...</abbr>'
+        html = '<abbr title="' + html + '">' + html.substr(0, {{ truncate }}) + '...</abbr>';
     {% endif %}
     return html
 }
@@ -185,8 +185,8 @@ function (value, row, index) {
     switch (value) {
     {% for t, d in labels %}
         case '{{ t }}':
-        style = '{{ d.style }}'
-        label = '{{ d.label|default(t)|trans }}'
+        style = '{{ d.style }}';
+        label = '{{ d.label|default(t)|trans }}';
         break;
     {% endfor %}
     }
@@ -198,7 +198,7 @@ function (value, row, index) {
 {%- block field_prototype_formatter -%}
 function (value, row, index) {
     var html = '{{ render_table_field(field)|raw }}',
-        mappings = {{ mappings|json_encode|raw }}
+        mappings = {{ mappings|json_encode|raw }};
     $.each(mappings, function(placeholder, property_path) {
         html = html.replace(placeholder, objectPath.get(row, property_path))
     })
