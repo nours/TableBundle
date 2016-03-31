@@ -150,7 +150,7 @@ function (value, row, index) {
 function (value, row, index) {
     var html = '', first = true;
     value = objectPath.get(row, '{{ property_path }}');
-    if (value.length) {
+    if (value) {
         $.each(value, function(index, object) {
             if (!first) {
                 html += '{{ separator }}';
