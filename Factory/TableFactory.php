@@ -12,16 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TableFactory implements TableFactoryInterface
 {
     /**
-     * @var array
-     */
-    private $tableTypes = array();
-    
-    /**
-     * @var array
-     */
-    private $fieldTypes = array();
-
-    /**
      * @var ExtensionInterface[]
      */
     private $extensions = array();
@@ -32,19 +22,21 @@ class TableFactory implements TableFactoryInterface
     private $sortedExtensions;
 
     /**
-     * {@inheritdoc}
+     * @var TypesRegistryInterface
      */
-    public function addTableType(TableTypeInterface $type)
-    {
-        $this->tableTypes[$type->getName()] = $type;
-    }
-    
+    private $registry;
+
+    /**
+     * @var ResolvedType[]
+     */
+    private $resolveTableTypes;
+
     /**
      * {@inheritdoc}
      */
-    public function addFieldType(FieldTypeInterface $type)
+    public function __construct(TypesRegistryInterface $registry)
     {
-        $this->fieldTypes[$type->getName()] = $type;
+        $this->registry = $registry;
     }
 
     /**
@@ -64,18 +56,17 @@ class TableFactory implements TableFactoryInterface
     public function createTable($type, array $options = array())
     {
         if (!$type instanceof TableTypeInterface) {
-            if (!isset($this->tableTypes[$type])) {
-                $this->throwBadTableTypeException($type);
-            }
-            
-            $type = $this->tableTypes[$type];
+            $type = $this->registry->getTableType($type);
         }
+
+        $typeName = $type->getName();
 
         // Resolve type if not already resolved
-        if (!$type instanceof ResolvedType) {
-            $this->tableTypes[$type->getName()] = $type = new ResolvedType($type, $this->getExtensionsForType($type));
+        if (isset($this->resolveTableTypes[$typeName])) {
+            $type = $this->resolveTableTypes[$typeName];
+        } else {
+            $this->resolveTableTypes[$typeName] = $type = new ResolvedType($type, $this->getExtensionsForType($type));
         }
-
 
         // Make options from type
         $options = $this->getOptions($type, $options);
@@ -138,11 +129,7 @@ class TableFactory implements TableFactoryInterface
     public function createField($name, $type, array $options = array(), array $extensions = array())
     {
         if (!$type instanceof FieldTypeInterface) {
-            if (!isset($this->fieldTypes[$type])) {
-                $this->throwBadFieldTypeException($type);
-            }
-            
-            $type = $this->fieldTypes[$type];
+            $type = $this->getFieldType($type);
         }
 
         // Configure options resolver
@@ -191,11 +178,7 @@ class TableFactory implements TableFactoryInterface
      */
     public function getFieldType($name)
     {
-        if (!isset($this->fieldTypes[$name])) {
-            $this->throwBadFieldTypeException($name);
-        }
-
-        return $this->fieldTypes[$name];
+        return $this->registry->getFieldType($name);
     }
 
     /**
@@ -334,31 +317,5 @@ class TableFactory implements TableFactoryInterface
         }
 
         $this->sortedExtensions[$name] = $extension;
-    }
-
-    /**
-     * @param $type
-     * @throw \InvalidArgumentException
-     */
-    private function throwBadTableTypeException($type)
-    {
-        $message = "Table type '%s' is not registered in factory. " .
-            "Maybe you forgot to declare service using nours_table.table_type tag or there is a typo in type name. " .
-            "Known type are (%s)";
-
-        throw new \InvalidArgumentException(sprintf($message, $type, implode(', ', array_keys($this->tableTypes))));
-    }
-
-    /**
-     * @param $type
-     * @throw \InvalidArgumentException
-     */
-    private function throwBadFieldTypeException($type)
-    {
-        $message = "Unknown field type '%s'. " .
-            "Maybe you forgot to declare service using nours_table.field_type tag or there is a typo in type name. " .
-            "Known type are (%s)";
-
-        throw new \InvalidArgumentException(sprintf($message, $type, implode(', ', array_keys($this->fieldTypes))));
     }
 }

@@ -15,16 +15,12 @@ class TableTypesPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('nours_table.factory')) {
-            return;
-        }
-        
-        $factory = $container->getDefinition('nours_table.factory');
+        $registry = $container->getDefinition('nours_table.types_registry');
         
         // Search for table types
         $ids = $container->findTaggedServiceIds('nours_table.table_type');
         foreach ($ids as $id => $tags) {
-            $factory->addMethodCall('addTableType', array(new Reference($id)));
+            $registry->addMethodCall('addTableType', array(new Reference($id)));
         }
         
         // And for field types
@@ -37,7 +33,7 @@ class TableTypesPass implements CompilerPassInterface
 
         $ids = $container->findTaggedServiceIds('nours_table.field_type');
         foreach ($ids as $id => $tags) {
-            $factory->addMethodCall('addFieldType', array(new Reference($id)));
+            $registry->addMethodCall('addFieldType', array(new Reference($id)));
         }
     }
 }

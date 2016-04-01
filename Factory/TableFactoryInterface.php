@@ -13,20 +13,6 @@ interface TableFactoryInterface
     /**
      * Adds a table type into the factory.
      *
-     * @param TableTypeInterface $type
-     */
-    public function addTableType(TableTypeInterface $type);
-
-    /**
-     * Adds a field type into the factory.
-     *
-     * @param FieldTypeInterface $type
-     */
-    public function addFieldType(FieldTypeInterface $type);
-
-    /**
-     * Adds a table type into the factory.
-     *
      * @param ExtensionInterface $extension
      */
     public function addTableExtension(ExtensionInterface $extension);

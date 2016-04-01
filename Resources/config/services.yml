@@ -2,8 +2,12 @@ services:
 ###################################################################
 ## Factory
 ###################################################################
+  nours_table.types_registry:
+    class: Nours\TableBundle\Factory\TypesRegistry
+
   nours_table.factory:
     class: Nours\TableBundle\Factory\TableFactory
+    arguments: [ '@nours_table.types_registry' ]
 
 ###################################################################
 ## Extensions
