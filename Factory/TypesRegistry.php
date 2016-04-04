@@ -9,6 +9,7 @@
  */
 
 namespace Nours\TableBundle\Factory;
+
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
 
@@ -31,19 +32,17 @@ class TypesRegistry implements TypesRegistryInterface
     private $fieldTypes = array();
 
     /**
-     * {@inheritdoc}
+     * @param TableTypeInterface $type
      */
-    public function addTableType(TableTypeInterface $type)
+    public function setTableType(TableTypeInterface $type)
     {
         $this->tableTypes[$type->getName()] = $type;
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @deprecated
+     * @param FieldTypeInterface $type
      */
-    public function addFieldType(FieldTypeInterface $type)
+    public function setFieldType(FieldTypeInterface $type)
     {
         $this->fieldTypes[$type->getName()] = $type;
     }
@@ -78,7 +77,7 @@ class TypesRegistry implements TypesRegistryInterface
      */
     private function throwBadTableTypeException($type)
     {
-        $message = "Table type '%s' is not registered in factory. " .
+        $message = "Table type '%s' is not registered in registry. " .
             "Maybe you forgot to declare service using nours_table.table_type tag or there is a typo in type name. " .
             "Known type are (%s)";
 

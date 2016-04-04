@@ -33,4 +33,7 @@ interface TypesRegistryInterface
      * @return FieldTypeInterface
      */
     public function getFieldType($name);
+
+    public function setTableType(TableTypeInterface $type);
+    public function setFieldType(FieldTypeInterface $type);
 }

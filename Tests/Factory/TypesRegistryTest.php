@@ -3,6 +3,8 @@
 namespace Nours\TableBundle\Tests\Factory;
 
 use Nours\TableBundle\Factory\TypesRegistry;
+use Nours\TableBundle\Field\Type\TextType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 
 class TypesRegistryTest extends TestCase
@@ -16,7 +18,7 @@ class TypesRegistryTest extends TestCase
     {
         parent::setUp();
 
-        $this->registry = $this->get('nours_table.types_registry');
+        $this->registry = new TypesRegistry();
     }
 
     /**
@@ -24,11 +26,10 @@ class TypesRegistryTest extends TestCase
      */
     public function testGetTableType()
     {
-        $type = $this->registry->getTableType('post');
-        $this->assertInstanceOf('Nours\TableBundle\Tests\FixtureBundle\Table\PostType', $type);
+        $type = new PostType();
+        $this->registry->setTableType($type);
 
-        $type = $this->registry->getTableType('pager');
-        $this->assertInstanceOf('Nours\TableBundle\Tests\FixtureBundle\Table\PagerType', $type);
+        $this->assertSame($type, $this->registry->getTableType('post'));
     }
 
     /**
@@ -36,19 +37,9 @@ class TypesRegistryTest extends TestCase
      */
     public function testGetDefaultFieldType()
     {
-        $type = $this->registry->getFieldType('text');
-        $this->assertInstanceOf('Nours\TableBundle\Field\Type\TextType', $type);
+        $type = new TextType();
+        $this->registry->setFieldType($type);
 
-        $type = $this->registry->getFieldType('collection');
-        $this->assertInstanceOf('Nours\TableBundle\Field\Type\CollectionType', $type);
-    }
-
-    /**
-     * Test FixtureBundle field types
-     */
-    public function testGetFixtureBundleFieldType()
-    {
-        $type = $this->registry->getFieldType('extended_text');
-        $this->assertInstanceOf('Nours\TableBundle\Tests\FixtureBundle\Field\ExtendedTextType', $type);
+        $this->assertSame($type,  $this->registry->getFieldType('text'));
     }
 }

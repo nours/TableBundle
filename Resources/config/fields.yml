@@ -1,32 +1,32 @@
 services:
   nours_table.table_field.text:
     class: Nours\TableBundle\Field\Type\TextType
-    tags: [ { name: 'nours_table.field_type' } ]
+    tags: [ { name: 'nours_table.field_type', alias: 'text' } ]
 
   nours_table.table_field.boolean:
     class: Nours\TableBundle\Field\Type\BooleanType
-    tags: [ { name: 'nours_table.field_type' } ]
+    tags: [ { name: 'nours_table.field_type', alias: 'boolean' } ]
 
   nours_table.table_field.date:
     class: Nours\TableBundle\Field\Type\DateType
-    tags: [ { name: 'nours_table.field_type' } ]
+    tags: [ { name: 'nours_table.field_type', alias: 'date' } ]
 
   nours_table.table_field.label:
     class: Nours\TableBundle\Field\Type\LabelType
-    tags: [ { name: 'nours_table.field_type' } ]
+    tags: [ { name: 'nours_table.field_type', alias: 'label' } ]
 
   nours_table.table_field.collection:
     class: Nours\TableBundle\Field\Type\CollectionType
-    tags: [ { name: 'nours_table.field_type' } ]
+    tags: [ { name: 'nours_table.field_type', alias: 'collection' } ]
 
   nours_table.table_field.hidden:
     class: Nours\TableBundle\Field\Type\HiddenType
-    tags: [ { name: 'nours_table.field_type' } ]
+    tags: [ { name: 'nours_table.field_type', alias: 'hidden' } ]
 
   nours_table.table_field.prototype:
     class: Nours\TableBundle\Field\Type\PrototypeType
-    tags: [ { name: 'nours_table.field_type' } ]
+    tags: [ { name: 'nours_table.field_type', alias: 'prototype' } ]
 
   nours_table.table_field.checkbox:
     class: Nours\TableBundle\Field\Type\CheckboxType
-    tags: [ { name: 'nours_table.field_type' } ]
+    tags: [ { name: 'nours_table.field_type', alias: 'checkbox' } ]

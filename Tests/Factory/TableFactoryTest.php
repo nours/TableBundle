@@ -48,13 +48,18 @@ class TableFactoryTest extends TestCase
     }
 
     /**
-     * The bundle comes with types
+     * Tests the bundled field types
      */
-    public function testGetType()
+    public function testGetFieldType()
     {
-        $text = $this->factory->getFieldType('text');
-
-        $this->assertEquals('text', $text->getName());
+        $this->factory->getFieldType('boolean');
+        $this->factory->getFieldType('checkbox');
+        $this->factory->getFieldType('collection');
+        $this->factory->getFieldType('date');
+        $this->factory->getFieldType('hidden');
+        $this->factory->getFieldType('label');
+        $this->factory->getFieldType('prototype');
+        $this->factory->getFieldType('text');
     }
 
     /**

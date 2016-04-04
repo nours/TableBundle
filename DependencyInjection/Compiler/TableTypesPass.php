@@ -15,12 +15,22 @@ class TableTypesPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $registry = $container->getDefinition('nours_table.types_registry');
+        $registry = $container->getDefinition('nours_table.registry.dependency_injection');
+        $tableServices = $fieldServices = array();
         
         // Search for table types
         $ids = $container->findTaggedServiceIds('nours_table.table_type');
         foreach ($ids as $id => $tags) {
-            $registry->addMethodCall('addTableType', array(new Reference($id)));
+            $alias = isset($tags[0]['alias']) ? $tags[0]['alias'] : null;
+
+            if ($alias) {
+                $tableServices[$alias] = $id;
+            } else {
+                trigger_error(sprintf(
+                    "Declaring service %s with nours_table.table_type tag without alias is deprecated", $id
+                ), E_USER_DEPRECATED);
+                $registry->addMethodCall('setTableType', array(new Reference($id)));
+            }
         }
         
         // And for field types
@@ -33,7 +43,19 @@ class TableTypesPass implements CompilerPassInterface
 
         $ids = $container->findTaggedServiceIds('nours_table.field_type');
         foreach ($ids as $id => $tags) {
-            $registry->addMethodCall('addFieldType', array(new Reference($id)));
+            $alias = isset($tags[0]['alias']) ? $tags[0]['alias'] : null;
+
+            if ($alias) {
+                $fieldServices[$alias] = $id;
+            } else {
+                trigger_error(sprintf(
+                    "Declaring service %s with nours_table.field_type tag without alias is deprecated", $id
+                ), E_USER_DEPRECATED);
+                $registry->addMethodCall('setFieldType', array(new Reference($id)));
+            }
         }
+
+        $registry->replaceArgument(1, $tableServices);
+        $registry->replaceArgument(2, $fieldServices);
     }
 }
