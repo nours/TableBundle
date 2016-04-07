@@ -30,7 +30,7 @@ class BootstrapTableExtension extends AbstractExtension
         $idToolbar = $table->getName() . '_toolbar';
 
         $configs = array(
-            'pagination' => $options['pagination'] && ($table->getPages() > 1),
+            'pagination' => $options['pagination'],
             'pageNumber' => $table->getPage(),
             'totalRows'  => $table->getTotal(),
             'pageSize'   => $table->getLimit(),
