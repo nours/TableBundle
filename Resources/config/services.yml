@@ -49,7 +49,7 @@ services:
 ###################################################################
   nours_table.table_renderer.twig:
     class: Nours\TableBundle\Renderer\TwigRenderer
-    arguments: [ @service_container, '%nours_table.themes%' ]
+    arguments: [ '@service_container', '%nours_table.themes%' ]
 
 ###################################################################
 ## Serializer handler
