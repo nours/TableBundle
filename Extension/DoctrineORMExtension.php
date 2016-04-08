@@ -11,9 +11,6 @@ use Nours\TableBundle\Field\Field;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Exception\OutOfRangeCurrentPageException;
-use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -235,50 +232,32 @@ class DoctrineORMExtension extends AbstractExtension
             // Filter Querybuilder if parameter in request
             $this->filterQueryBuilder($queryBuilder, $table);
 
-//            var_dump($queryBuilder->getQuery()->getSQL());
-            // Create the pager
+            // Create the paginator
+            $paginator = new Paginator($queryBuilder, $table->getOption('fetch_join_collection'));
+            $page  = $table->getPage();
+            $limit = $table->getLimit();
 
-            // Propage pager to pagerfanta extension if pagination is enabled
+            $total = count($paginator);
+            $pages = ceil($total / $limit);
+
             if ($table->getOption('pagination')) {
-                // Use pager fanta to build pager
-                $adapter = new DoctrineORMAdapter($queryBuilder->getQuery(), $table->getOption('fetch_join_collection'));
-                $pager = new Pagerfanta($adapter);
-
-                $pager->setMaxPerPage($table->getLimit());
-
-                try {
-                    $pager->setCurrentPage($table->getPage());
-                } catch (OutOfRangeCurrentPageException $exception) {
-                    // In some cases, the page number can go out of range
-                    $pager->setCurrentPage($pager->getNbPages());
+                if ($page > $pages) {
+                    // Fix page out of range
+                    $table->setPage($page = $pages);
                 }
 
-                // Set common data
-                $table->setPage($pager->getCurrentPage());
-//                $table->setLimit($pager->getMaxPerPage());
-                $table->setPages($pager->getNbPages());
-                $table->setTotal($pager->getNbResults());
-
-                $table->setDataCallback(function() use ($pager) {
-                    $data = $pager->getCurrentPageResults();
-                    return $data instanceof \Traversable ? iterator_to_array($data) : $data;
-                });
-            } else {
-                // No need pager : use simple Paginator
-                $paginator = new Paginator($queryBuilder, $table->getOption('fetch_join_collection'));
-                $count = count($paginator);
-
-                // Set common data
-                $table->setPage(1);
-//                $table->setLimit($count);
-                $table->setPages(1);
-                $table->setTotal($count);
-
-                $table->setDataCallback(function() use ($paginator) {
-                    $data = $paginator->getQuery()->getResult();
-                    return $data instanceof \Traversable ? iterator_to_array($data) : $data;
-                });
+                $paginator->getQuery()
+                    ->setFirstResult($limit * max(0, $page - 1))
+                    ->setMaxResults($limit);
             }
+
+            $table->setPages($pages);
+            $table->setTotal($total);
+
+            $table->setDataCallback(function() use ($paginator) {
+                $data = $paginator->getQuery()->getResult();
+                return $data instanceof \Traversable ? iterator_to_array($data) : $data;
+            });
         }
 
     }

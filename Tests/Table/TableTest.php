@@ -11,8 +11,6 @@
 namespace Nours\TableBundle\Tests\Table;
 
 use Nours\TableBundle\Tests\TestCase;
-use Pagerfanta\Adapter\FixedAdapter;
-use Pagerfanta\Pagerfanta;
 
 /**
  * Class TableTest
@@ -94,12 +92,8 @@ class TableTest extends TestCase
             array('id' => 1),
             array('id' => 2)
         );
-        $adapter = new FixedAdapter(2, $data);
-        $pager = new Pagerfanta($adapter);
-        $pager->setMaxPerPage(20)->setCurrentPage(1);
 
         $table = $this->getTableFactory()->createTable('pager', array(
-//            'pager' => $pager
             'data' => $data,
             'limit' => 20,
             'pages' => 1,
