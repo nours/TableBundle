@@ -10,6 +10,7 @@
 
 namespace Nours\TableBundle\Tests\Table;
 
+use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Tests\TestCase;
 
 /**
@@ -116,16 +117,8 @@ class TableTest extends TestCase
     {
         $serializer = $this->get('jms_serializer');
 
-        $data = array(
-            array('id' => 1),
-            array('id' => 2)
-        );
-
         $table = $this->getTableFactory()->createTable('pager', array(
-            'data' => $data,
-            'limit' => 20,
-            'pages' => 1,
-            'total' => 2,
+            'data' => array(),
             'json_vars' => array(
                 'expected' => 'foo'
             )
@@ -136,12 +129,34 @@ class TableTest extends TestCase
 
         $object = json_decode($serialized, true);
 
-        $this->assertEquals(1, $object['page']);
-        $this->assertEquals(20, $object['limit']);
-        $this->assertEquals(1, $object['pages']);
-        $this->assertEquals(2, $object['total']);
-        $this->assertEquals($data, $object['data']);
         $this->assertEquals('foo', $object['expected']);
+    }
+
+    public function testViewExtraCallbackJsonSerialization()
+    {
+        $serializer = $this->get('jms_serializer');
+        $data = array(
+            array('id' => 1),
+            array('id' => 2)
+        );
+
+        $table = $this->getTableFactory()->createTable('pager', array(
+            'data' => $data,
+            'json_vars' => function(TableInterface $table) {
+                return array(
+                    'foo' => $table->getData(),
+                    'foo_count' => 42
+                );
+            }
+        ));
+        $view = $table->createView();
+
+        $serialized = $serializer->serialize($view, 'json');
+
+        $object = json_decode($serialized, true);
+
+        $this->assertEquals($data, $object['foo']);
+        $this->assertEquals(42, $object['foo_count']);
     }
 
 

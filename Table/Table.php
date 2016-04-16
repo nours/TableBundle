@@ -156,6 +156,10 @@ class Table implements TableInterface
     {
         $vars = $this->getOption('json_vars');
 
+        if (is_callable($vars)) {
+            $vars = $vars($this);
+        }
+
         return array_merge(array(
             'page'  => $this->getPage(),
             'limit' => $this->getLimit(),
