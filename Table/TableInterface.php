@@ -116,4 +116,9 @@ interface TableInterface
      * @return TableInterface
      */
     public function handle(Request $request = null);
+
+    /**
+     * @return array
+     */
+    public function toJson();
 }

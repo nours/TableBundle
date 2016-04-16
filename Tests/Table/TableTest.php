@@ -112,6 +112,38 @@ class TableTest extends TestCase
         $this->assertEquals($data, $object['data']);
     }
 
+    public function testViewExtraJsonSerialization()
+    {
+        $serializer = $this->get('jms_serializer');
+
+        $data = array(
+            array('id' => 1),
+            array('id' => 2)
+        );
+
+        $table = $this->getTableFactory()->createTable('pager', array(
+            'data' => $data,
+            'limit' => 20,
+            'pages' => 1,
+            'total' => 2,
+            'json_vars' => array(
+                'expected' => 'foo'
+            )
+        ));
+        $view = $table->createView();
+
+        $serialized = $serializer->serialize($view, 'json');
+
+        $object = json_decode($serialized, true);
+
+        $this->assertEquals(1, $object['page']);
+        $this->assertEquals(20, $object['limit']);
+        $this->assertEquals(1, $object['pages']);
+        $this->assertEquals(2, $object['total']);
+        $this->assertEquals($data, $object['data']);
+        $this->assertEquals('foo', $object['expected']);
+    }
+
 
     public function testCreateAnotherView()
     {

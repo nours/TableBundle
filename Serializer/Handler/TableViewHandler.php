@@ -47,14 +47,6 @@ class TableViewHandler implements SubscribingHandlerInterface
     {
         $table = $view->table;
 
-        $data = array(
-            'page'       => $table->getPage(),
-            'limit'      => $table->getLimit(),
-            'pages'      => $table->getPages(),
-            'total'      => $table->getTotal(),
-            'data'       => $table->getData(),
-        );
-
-        return $visitor->visitArray($data, $type, $context);
+        return $visitor->visitArray($table->toJson(), $type, $context);
     }
 }

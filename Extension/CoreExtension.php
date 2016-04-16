@@ -51,7 +51,8 @@ class CoreExtension extends AbstractExtension
             'pagination' => true,   // Is pagination activated
             'sort'       => null,   // The sort field
             'order'      => 'ASC',  // The sort order
-            'url'        => null    // Set to use ajax data loading
+            'url'        => null,   // Set to use ajax data loading
+            'json_vars'  => array()
         ));
         $resolver->setRequired('name');
     }

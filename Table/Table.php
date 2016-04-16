@@ -150,6 +150,22 @@ class Table implements TableInterface
     }
 
     /**
+     * @return array
+     */
+    public function toJson()
+    {
+        $vars = $this->getOption('json_vars');
+
+        return array_merge(array(
+            'page'  => $this->getPage(),
+            'limit' => $this->getLimit(),
+            'pages' => $this->getPages(),
+            'total' => $this->getTotal(),
+            'data'  => $this->getData(),
+        ), $vars);
+    }
+
+    /**
      * @return bool
      */
     public function hasData()
