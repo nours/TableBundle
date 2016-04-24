@@ -391,7 +391,7 @@ class DoctrineORMExtension extends AbstractExtension
                 throw new InvalidArgumentException("Field $fieldName is not sortable in table " . $table->getName());
             }
 
-            $queryBuilder->orderBy($field->getOption('order_path'), $order);
+            $queryBuilder->addOrderBy($field->getOption('order_path'), $order);
         }
     }
 
