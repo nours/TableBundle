@@ -291,7 +291,7 @@ class DoctrineORMExtension extends AbstractExtension
         // Hand made filtering
         if ($filter = $table->getOption('query_builder_filter')) {
             /** @var callable $filter */
-            $filter($queryBuilder);
+            $filter($queryBuilder, $table);
         }
     }
 
