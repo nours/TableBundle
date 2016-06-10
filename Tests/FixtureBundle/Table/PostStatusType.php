@@ -39,10 +39,11 @@ class PostStatusType extends AbstractType
                 'filter_type' => ChoiceType::class,
                 'filter_options' => array(
                     'choices' => array(
-                        Post::STATUS_NEW => 'new',
-                        Post::STATUS_EDITING => 'editing',
-                        Post::STATUS_PUBLISHED => 'published',
+                        'new' => Post::STATUS_NEW,
+                        'editing' => Post::STATUS_EDITING,
+                        'published' => Post::STATUS_PUBLISHED,
                     ),
+                    'choices_as_values' => true,
                     'multiple' => true,
                     'expanded' => true
                 )

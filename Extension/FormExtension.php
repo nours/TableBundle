@@ -13,6 +13,7 @@ namespace Nours\TableBundle\Extension;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -54,7 +55,7 @@ class FormExtension extends AbstractExtension
     {
         $resolver->setDefaults(array(
             'form_name' => 'filter',
-            'form_type' => 'form',
+            'form_type' => FormType::class,
             'form_theme' => $this->formTheme,
             'form_options' => array(),
             'filter_data' => array(),
