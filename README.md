@@ -1,6 +1,5 @@
 NoursTableBundle
 ================
 
-Implements a table representation for building datagrids.
+Implements a table representation for building data tables.
 
-First stable version.

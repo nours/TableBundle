@@ -1,7 +1,7 @@
 {
     "name": "nours/table-bundle",
     "type": "library",
-    "description": "Table implementation for Symfony2",
+    "description": "Table bundle for Symfony",
     "homepage": "https://github.com/nours/TableBundle",
     "license": "MIT",
     "authors": [
@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.5",
         "symfony/options-resolver": "~2.8",
         "symfony/dependency-injection": "~2.8",
         "symfony/twig-bundle": "~2.8",
@@ -30,7 +30,6 @@
         "doctrine/data-fixtures": "~1.1"
     },
     "suggest" : {
-        "pagerfanta/pagerfanta": "Integrated using pagerfanta extension",
         "doctrine/orm": "Integrated using orm extension"
     },
     "autoload": {
