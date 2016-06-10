@@ -15,6 +15,7 @@ use Doctrine\ORM\QueryBuilder;
 use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -34,7 +35,7 @@ class PostStatusHiddenType extends AbstractType
                 'sortable' => true
             ))
             ->add('status', 'hidden', array(
-                'filter_type' => 'checkbox',
+                'filter_type' => CheckboxType::class,
                 'filter_options' => array(
                 ),
                 'filter_query_builder' => function(QueryBuilder $queryBuilder, FieldInterface $field, $value) {

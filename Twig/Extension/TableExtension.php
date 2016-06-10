@@ -9,7 +9,7 @@ use Nours\TableBundle\Table\View;
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class TableExtension extends \Twig_Extension
+class TableExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
 {
 	/**
 	 * @var TableRendererInterface
@@ -45,8 +45,8 @@ class TableExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'render_table' => new \Twig_Function_Method($this, 'renderTable', array('is_safe' => array('html'))),
-            'render_table_field' => new \Twig_Function_Method($this, 'renderField', array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('render_table', array($this, 'renderTable'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('render_table_field', array($this, 'renderField'), array('is_safe' => array('html'))),
         );
     }
     

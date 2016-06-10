@@ -13,6 +13,7 @@ namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Table\AbstractType;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -34,7 +35,7 @@ class PostType extends AbstractType
             ->add('status', 'label', array(
                 'sortable' => true,
                 'searchable' => true,
-                'filter_type' => 'choice',
+                'filter_type' => ChoiceType::class,
                 'filter_options' => array(
                     'choices' => array(
                         Post::STATUS_NEW => 'new',

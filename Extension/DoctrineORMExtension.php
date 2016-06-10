@@ -57,9 +57,7 @@ class DoctrineORMExtension extends AbstractExtension
             'query_builder_filter' => null,
             'fetch_join_collection' => true
         ));
-        $resolver->setAllowedTypes(array(
-            'query_builder' => array('Doctrine\ORM\QueryBuilder', 'null')
-        ));
+        $resolver->setAllowedTypes('query_builder', array('Doctrine\ORM\QueryBuilder', 'null'));
     }
 
     /**

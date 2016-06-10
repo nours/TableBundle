@@ -12,6 +12,7 @@ namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
 use Nours\TableBundle\Table\AbstractType;
 use Nours\TableBundle\Builder\TableBuilder;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -34,11 +35,11 @@ class PostCommentsType extends AbstractType
             'display' => false,
             'association' => true,
             'property_path' => 'comment',
-            'filter_type' => 'entity',
+            'filter_type' => EntityType::class,
             'filter_options' => array(
                 'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Comment',
                 'multiple' => true,
-                'property' => 'comment'
+                'choice_label' => 'comment'
             )
         ));
     }

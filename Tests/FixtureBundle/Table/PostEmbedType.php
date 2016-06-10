@@ -13,6 +13,7 @@ namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Table\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
  * Class PostEmbedType
@@ -41,10 +42,10 @@ class PostEmbedType extends AbstractType
                 'filterable' => true,
                 'association' => true,
                 'property' => 'name',
-                'filter_type' => 'entity',
+                'filter_type' => EntityType::class,
                 'filter_options' => array(
                     'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Author',
-                    'property' => 'name'
+                    'choice_label' => 'name'
                 )
             ))
             ->add('author_email', 'text', array(
