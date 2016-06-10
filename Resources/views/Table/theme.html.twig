@@ -94,9 +94,6 @@
             new Table('#table_{{ name }}', {{ configs|json_encode|raw }})
         });
     </script>
-    {% if form %}
-        {{ form_javascript(form) }}
-    {% endif %}
 {% endblock %}
 
 
