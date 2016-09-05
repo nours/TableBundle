@@ -37,7 +37,8 @@ class BootstrapTableExtension extends AbstractExtension
             'url'        => $options['url'],
             'sidePagination' => $options['url'] ? 'server' : 'client',
             'search'     => $table->getOption('searchable'),
-            'toolbar'    => '#' . $idToolbar
+            'toolbar'    => '#' . $idToolbar,
+            'showRefresh' => $options['show_refresh']
         );
 
         if ($url = $options['url']) {
@@ -48,7 +49,7 @@ class BootstrapTableExtension extends AbstractExtension
         }
         if ($sort = $options['sort']) {
             $configs['sortName']  = $sort;
-            $configs['sortOrder'] = $options['order'] ?: 'ASC';
+            $configs['sortOrder'] = strtolower($options['order'] ?: 'ASC');
         }
         if ($rowStyle = $options['row_style']) {
             $configs['row_style'] = $rowStyle;
@@ -60,6 +61,9 @@ class BootstrapTableExtension extends AbstractExtension
 
         $view->vars['configs']    = $configs;
         $view->vars['id_toolbar'] = $idToolbar;
+
+        $attrs = $options['attr'];
+        $view->vars['attr'] = $attrs;
     }
 
     /**
@@ -78,7 +82,9 @@ class BootstrapTableExtension extends AbstractExtension
     {
         $resolver->setDefaults(array(
             'row_style'     => null,
-            'cookie'        => false
+            'cookie'        => false,
+            'show_refresh'  => false, // Show refresh button
+            'attr' => array()  // Table attributes
         ));
     }
 
@@ -88,7 +94,7 @@ class BootstrapTableExtension extends AbstractExtension
     public function configureFieldOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'configs' => array()
+            'configs' => array(),
         ));
     }
 

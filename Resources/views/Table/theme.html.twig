@@ -36,6 +36,7 @@
 
                 this.onInit(options);
 
+                this.table.on('post-body.bs.table', $.proxy(this.onPostBody, this));
                 this.table.bootstrapTable(options);
                 this.form.on('change', 'input, select', $.proxy(this.refresh, this))
             };
@@ -85,13 +86,22 @@
                 return data;
             };
 
+            Table.prototype.onPostBody = function(event) {
+                {% for field in table.fields %}
+                {% set initializer = render_table_field(field, 'initializer') %}
+                {% if initializer %}
+                ({{ initializer }})(event);
+                {% endif %}
+                {% endfor %}
+            };
+
             {% for field in table.fields %}
             Table.prototype.formatter{{ field.vars.class_name }} = {{ render_table_field(field, 'formatter') }}
             {% endfor %}
 
             {{ render_table(table, 'javascript_extra') }}
 
-            new Table('#table_{{ name }}', {{ configs|json_encode|raw }})
+            new Table('#table_{{ name }}', {{ configs|json_encode|raw }});
         });
     </script>
 {% endblock %}
@@ -110,6 +120,11 @@ $.extend({
     {%- if sortable %},sortable: true{% endif %}
 }, {{ configs|json_encode|raw }})
 {% endblock %}
+
+
+{# Field initializers (called on post-body event) #}
+{% block field_initializer -%}
+{%- endblock %}
 
 
 {# Field formatters #}
