@@ -90,13 +90,13 @@
                 {% for field in table.fields %}
                 {% set initializer = render_table_field(field, 'initializer') %}
                 {% if initializer %}
-                ({{ initializer }})(event);
+                ({{ initializer|raw }})(event);
                 {% endif %}
                 {% endfor %}
             };
 
             {% for field in table.fields %}
-            Table.prototype.formatter{{ field.vars.class_name }} = {{ render_table_field(field, 'formatter') }}
+            Table.prototype.formatter{{ field.vars.class_name }} = {{ render_table_field(field, 'formatter')|raw }}
             {% endfor %}
 
             {{ render_table(table, 'javascript_extra') }}
