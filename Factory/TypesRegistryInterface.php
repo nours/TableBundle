@@ -23,14 +23,14 @@ interface TypesRegistryInterface
     /**
      * @param string $name
      *
-     * @return TableTypeInterface
+     * @return TableTypeInterface|null
      */
     public function getTableType($name);
 
     /**
      * @param string $name
      *
-     * @return FieldTypeInterface
+     * @return FieldTypeInterface|null
      */
     public function getFieldType($name);
 

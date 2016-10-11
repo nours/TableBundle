@@ -4,8 +4,11 @@ namespace Nours\TableBundle\Tests\Factory;
 
 use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Field\FieldInterface;
+use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Tests\FixtureBundle\Field\FQCNFieldType;
 use Nours\TableBundle\Tests\FixtureBundle\Table\PagerType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 
 class TableFactoryTest extends TestCase
@@ -133,6 +136,32 @@ class TableFactoryTest extends TestCase
     /**
      * Text type
      */
+    public function testCreateFieldUsingFQCN()
+    {
+        /** @var FieldInterface $field */
+        $field = $this->factory->createField('test', TextType::class, array(
+            'label' => 'The Text Field',
+            'sortable' => true,
+            'searchable' => true
+        ));
+        $this->assertNotNull($field);
+        $this->assertEquals('test', $field->getName());
+        $this->assertEquals('text', $field->getTypeName());
+    }
+
+    /**
+     * Text type
+     */
+    public function testCreateFQCNField()
+    {
+        /** @var FieldInterface $field */
+        $field = $this->factory->createField('test', FQCNFieldType::class);
+        $this->assertNotNull($field);
+    }
+
+    /**
+     * Text type
+     */
     public function testCreateTable()
     {
         /** @var TableInterface $table */
@@ -155,5 +184,16 @@ class TableFactoryTest extends TestCase
         $this->assertTrue($table->getOption('sortable'));
 //        $this->assertTrue($table->getOption('searchable'));
 //        $this->assertTrue($table->getOption('filterable'));
+    }
+
+    /**
+     * Create table using class notation
+     */
+    public function testCreateTableUsingFQCN()
+    {
+        $table = $this->factory->createTable(PostType::class);
+
+        $this->assertNotNull($table);
+        $this->assertEquals('post', $table->getName());
     }
 } 

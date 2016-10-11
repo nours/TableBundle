@@ -17,8 +17,19 @@ interface TableTypeInterface
      * The name of the table type, should be unique in application.
      *
      * @return string
+     *
+     * @deprecated Use class names instead
      */
     public function getName();
+
+    /**
+     * The name of the block prefix for rendering.
+     *
+     * Defaults to snake cased of type class name.
+     *
+     * @return string
+     */
+    public function getBlockPrefix();
 
     /**
      * The name of the extension to load.

@@ -83,26 +83,22 @@ class TwigRenderer implements TableRendererInterface
      */
     private function renderBlock(array $blockNames, array $context)
     {
-        $template  = null;
-        $blockName = null;
+        $template = $blockName = null;
 
-        if (!isset($template)) {
-            // Search the template for first block available
-            foreach ($blockNames as $name) {
-                if ($found = $this->getTemplateForBlock($name)) {
-                    $template  = $found;
-                    $blockName = $name;
-                    break;
-                }
+        // Search the template for first block available
+        foreach ($blockNames as $name) {
+            if ($template = $this->getTemplateForBlock($name)) {
+                $blockName = $name;
+                break;
             }
+        }
 
-            // Throw if no matching blocks are found
-            if (empty($template)) {
-                throw new \RuntimeException(sprintf(
-                    "Block%s %s not found in table themes (%s)",
-                    count($blockNames) > 1 ? 's' : '', implode(', ', $blockNames), implode(', ', $this->templateNames)
-                ));
-            }
+        // Throw if no matching blocks are found
+        if (empty($template)) {
+            throw new \RuntimeException(sprintf(
+                "Block%s %s not found in table themes (%s)",
+                count($blockNames) > 1 ? 's' : '', implode(', ', $blockNames), implode(', ', $this->templateNames)
+            ));
         }
 
         return $template->renderBlock($blockName, $context);

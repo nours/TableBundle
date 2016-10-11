@@ -3,6 +3,7 @@
 namespace Nours\TableBundle\Tests\Factory;
 
 
+use Nours\RestAdminBundle\Tests\FixtureBundle\Fixtures\LoadAll;
 use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
 use Nours\TableBundle\Tests\TestCase;
@@ -52,7 +53,7 @@ class DoctrineORMExtensionTest extends TestCase
             'order' => 'DESC'
         ));
 
-        $this->setExpectedException("InvalidArgumentException");
+        $this->expectException("InvalidArgumentException");
 
         $table->handle();
     }
@@ -424,7 +425,7 @@ class DoctrineORMExtensionTest extends TestCase
     /**
      * The post_status table has a filter using a LIKE operator instead of equality.
      *
-     * @see FixtureBundle\Fixtures\LoadAll
+     * @see LoadAll
      */
     public function testFilterUsingLikeOperator()
     {

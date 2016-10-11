@@ -24,3 +24,13 @@ field={{ name }}
 property_path={{ property_path }}
 {%- endblock %}
 
+
+{% block table_f_q_c_n_table %}
+FQCNTableType
+{% for field in table %}{{ render_table_field(field) }}{% endfor %}
+{%- endblock %}
+
+
+{% block field_f_q_c_n_field %}
+FQCNFieldType
+{%- endblock %}

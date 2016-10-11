@@ -4,6 +4,7 @@ namespace Nours\TableBundle\Tests\Renderer;
 
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
+use Nours\TableBundle\Tests\FixtureBundle\Table\FQCNTableType;
 use Nours\TableBundle\Tests\TestCase;
 use Nours\TableBundle\Renderer\TwigRenderer;
 
@@ -36,6 +37,21 @@ class TwigRendererTest extends TestCase
 
         $this->table = $this->createTable('post');
         $this->view = $this->table->createView();
+    }
+
+    /**
+     * Render a FQCN loaded table
+     */
+    public function testRenderFQCNTable()
+    {
+        $table = $this->createTable(FQCNTableType::class);
+        $view = $table->createView();
+
+        $renderer = $this->getRenderer();
+
+        $html = $renderer->renderTable($view);
+
+        $this->assertEquals("FQCNTableType\nFQCNFieldType", $html);
     }
 
     /**
@@ -212,7 +228,7 @@ EOS;
      */
     public function testRenderTableThrowsIfBlockNotFound()
     {
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
 
         $this->getRenderer()->renderTable($this->view, 'foo');
     }
@@ -222,7 +238,7 @@ EOS;
      */
     public function testRenderFieldThrowsIfBlockNotFound()
     {
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
 
         $this->getRenderer()->renderField($this->view->fields['id'], 'bar');
     }

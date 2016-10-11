@@ -70,19 +70,17 @@ class DependencyInjectionRegistry implements TypesRegistryInterface
         if (!isset($this->tableTypes[$name])) {
             // Lazy load type
             if (!isset($this->tableServices[$name])) {
-                throw new \InvalidArgumentException(sprintf(
-                    "Unknown table type %s (available : %s)", $name, implode(', ', array_keys($this->tableServices))
-                ));
+                return null;
             }
 
             $type = $this->container->get($this->tableServices[$name]);
 
-            if ($type->getName() != $name) {
-                throw new \InvalidArgumentException(sprintf(
-                    "Table type service alias (%s) for service '%s' do not match type name (%s)",
-                    $name, $this->tableServices[$name], $type->getName()
-                ));
-            }
+//            if ($type->getName() != $name) {
+//                throw new \InvalidArgumentException(sprintf(
+//                    "Table type service alias (%s) for service '%s' do not match type name (%s)",
+//                    $name, $this->tableServices[$name], $type->getName()
+//                ));
+//            }
 
             $this->tableTypes[$name] = $type;
         }
@@ -98,21 +96,18 @@ class DependencyInjectionRegistry implements TypesRegistryInterface
     public function getFieldType($name)
     {
         if (!isset($this->fieldTypes[$name])) {
-            // Lazy load type
             if (!isset($this->fieldServices[$name])) {
-                throw new \InvalidArgumentException(sprintf(
-                    "Unknown field type for lazy loading %s, available are : (%s)", $name, implode(', ', array_keys($this->fieldServices))
-                ));
+                return null;
             }
 
             $type = $this->container->get($this->fieldServices[$name]);
 
-            if ($type->getName() != $name) {
-                throw new \InvalidArgumentException(sprintf(
-                    "Field type service alias (%s) for service '%s' do not match type name (%s)",
-                    $name, $this->tableServices[$name], $type->getName()
-                ));
-            }
+//            if ($type->getName() != $name) {
+//                throw new \InvalidArgumentException(sprintf(
+//                    "Field type service alias (%s) for service '%s' do not match type name (%s)",
+//                    $name, $this->tableServices[$name], $type->getName()
+//                ));
+//            }
 
             $this->fieldTypes[$name] = $type;
         }

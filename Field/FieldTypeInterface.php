@@ -33,6 +33,13 @@ interface FieldTypeInterface
     public function getName();
 
     /**
+     * The name of the block prefix for rendering.
+     *
+     * @return string
+     */
+    public function getBlockPrefix();
+
+    /**
      * This type can inherit another's properties returning it's name by this function.
      *
      * @return string|null

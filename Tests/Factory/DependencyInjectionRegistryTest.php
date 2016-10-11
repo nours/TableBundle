@@ -38,25 +38,25 @@ class DependencyInjectionRegistryTest extends TestCase
         $this->assertSame($this->getContainer()->get('tests.table.post'), $this->registry->getTableType('post'));
     }
 
-    /**
-     * Test FixtureBundle table types
-     */
-    public function testGetTableTypeThrowsIfTableNameDoNotExist()
-    {
-        $this->setExpectedException('InvalidArgumentException');
+//    /**
+//     * Test FixtureBundle table types
+//     */
+//    public function testGetTableTypeThrowsIfTableNameDoNotExist()
+//    {
+//        $this->setExpectedException('InvalidArgumentException');
+//
+//        $this->registry->getTableType('baz');
+//    }
 
-        $this->registry->getTableType('baz');
-    }
-
-    /**
-     * Test FixtureBundle table types
-     */
-    public function testGetTableTypeThrowsIfTableNameDoNotMatchAlias()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-
-        $this->registry->getTableType('foo_bar');
-    }
+//    /**
+//     * Test FixtureBundle table types
+//     */
+//    public function testGetTableTypeThrowsIfTableNameDoNotMatchAlias()
+//    {
+//        $this->setExpectedException('InvalidArgumentException');
+//
+//        $this->registry->getTableType('foo_bar');
+//    }
 
     /**
      * Test FixtureBundle field types
@@ -67,23 +67,23 @@ class DependencyInjectionRegistryTest extends TestCase
         $this->assertSame($this->getContainer()->get('nours_table.table_field.boolean'), $this->registry->getFieldType('boolean'));
     }
 
-    /**
-     * Test FixtureBundle field types
-     */
-    public function testGetFieldTypeThrowsIfTableNameDoNotExist()
-    {
-        $this->setExpectedException('InvalidArgumentException');
+//    /**
+//     * Test FixtureBundle field types
+//     */
+//    public function testGetFieldTypeThrowsIfTableNameDoNotExist()
+//    {
+//        $this->setExpectedException('InvalidArgumentException');
+//
+//        $this->registry->getFieldType('foo');
+//    }
 
-        $this->registry->getFieldType('foo');
-    }
-
-    /**
-     * Test FixtureBundle field types
-     */
-    public function testGetFieldTypeThrowsIfTableNameDoNotMatchAlias()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-
-        $this->registry->getFieldType('foo_bar');
-    }
+//    /**
+//     * Test FixtureBundle field types
+//     */
+//    public function testGetFieldTypeThrowsIfTableNameDoNotMatchAlias()
+//    {
+//        $this->setExpectedException('InvalidArgumentException');
+//
+//        $this->registry->getFieldType('foo_bar');
+//    }
 }

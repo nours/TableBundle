@@ -92,7 +92,7 @@ class CoreExtension extends AbstractExtension
             'sort'       => $options['sort'],
             'order'      => $options['order'],
             'url'        => $options['url'],
-            'block_prefixes' => array('table_' . $table->getType()->getName(), 'table')
+            'block_prefixes' => array('table_' . $table->getType()->getBlockPrefix(), 'table')
         ));
     }
 
@@ -114,11 +114,11 @@ class CoreExtension extends AbstractExtension
     private function buildBlockPrefixes(FieldInterface $field)
     {
         // Field name first
-        $prefixes = array('field_' . $field->getType()->getName());
+        $prefixes = array('field_' . $field->getType()->getBlockPrefix());
 
         // Parent hierarchy
         foreach ($field->getAncestors() as $parent) {
-            $prefixes[] = 'field_' . $parent->getName();
+            $prefixes[] = 'field_' . $parent->getBlockPrefix();
         }
 
         $prefixes[] = 'field';

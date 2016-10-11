@@ -11,6 +11,7 @@
 namespace Nours\TableBundle\Field;
 
 use Nours\TableBundle\Table\View;
+use Nours\TableBundle\Util\Inflector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * 
@@ -48,5 +49,28 @@ abstract class AbstractFieldType implements FieldTypeInterface
     public function getParent()
     {
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        // Backward compatibility
+        if ($name = $this->getName()) {
+            return $name;
+        }
+
+        $reflection = new \ReflectionClass($this);
+
+        return Inflector::prefixFromClass($reflection->getShortName());
     }
 }

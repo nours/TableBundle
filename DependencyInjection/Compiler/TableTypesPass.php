@@ -4,7 +4,6 @@ namespace Nours\TableBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Register table and table field types into the table factory.
@@ -24,13 +23,14 @@ class TableTypesPass implements CompilerPassInterface
             $alias = isset($tags[0]['alias']) ? $tags[0]['alias'] : null;
 
             if ($alias) {
-                $tableServices[$alias] = $id;
-            } else {
                 trigger_error(sprintf(
-                    "Declaring service %s with nours_table.table_type tag without alias is deprecated", $id
+                    "Using alias for table type %s is deprecated, please remove them and use FQCNs", $id
                 ), E_USER_DEPRECATED);
-                $registry->addMethodCall('setTableType', array(new Reference($id)));
+
+                $tableServices[$alias] = $id;
             }
+
+            $tableServices[$container->getDefinition($id)->getClass()] = $id;
         }
         
         // And for field types
@@ -46,13 +46,14 @@ class TableTypesPass implements CompilerPassInterface
             $alias = isset($tags[0]['alias']) ? $tags[0]['alias'] : null;
 
             if ($alias) {
-                $fieldServices[$alias] = $id;
-            } else {
                 trigger_error(sprintf(
-                    "Declaring service %s with nours_table.field_type tag without alias is deprecated", $id
+                    "Using alias for field type %s is deprecated, please remove them and use FQCNs", $id
                 ), E_USER_DEPRECATED);
-                $registry->addMethodCall('setFieldType', array(new Reference($id)));
+
+                $fieldServices[$alias] = $id;
             }
+
+            $fieldServices[$container->getDefinition($id)->getClass()] = $id;
         }
 
         $registry->replaceArgument(1, $tableServices);

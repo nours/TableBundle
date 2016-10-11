@@ -53,7 +53,7 @@ class TypesRegistry implements TypesRegistryInterface
     public function getTableType($name)
     {
         if (!isset($this->tableTypes[$name])) {
-            $this->throwBadTableTypeException($name);
+            return null;
         }
 
         return $this->tableTypes[$name];
@@ -65,35 +65,35 @@ class TypesRegistry implements TypesRegistryInterface
     public function getFieldType($name)
     {
         if (!isset($this->fieldTypes[$name])) {
-            $this->throwBadFieldTypeException($name);
+            return null;
         }
 
         return $this->fieldTypes[$name];
     }
-
-    /**
-     * @param $type
-     * @throw \InvalidArgumentException
-     */
-    private function throwBadTableTypeException($type)
-    {
-        $message = "Table type '%s' is not registered in registry. " .
-            "Maybe you forgot to declare service using nours_table.table_type tag or there is a typo in type name. " .
-            "Known type are (%s)";
-
-        throw new \InvalidArgumentException(sprintf($message, $type, implode(', ', array_keys($this->tableTypes))));
-    }
-
-    /**
-     * @param $type
-     * @throw \InvalidArgumentException
-     */
-    private function throwBadFieldTypeException($type)
-    {
-        $message = "Unknown field type '%s'. " .
-            "Maybe you forgot to declare service using nours_table.field_type tag or there is a typo in type name. " .
-            "Known type are (%s)";
-
-        throw new \InvalidArgumentException(sprintf($message, $type, implode(', ', array_keys($this->fieldTypes))));
-    }
+//
+//    /**
+//     * @param $type
+//     * @throw \InvalidArgumentException
+//     */
+//    private function throwBadTableTypeException($type)
+//    {
+//        $message = "Table type '%s' is not registered in registry. " .
+//            "Maybe you forgot to declare service using nours_table.table_type tag or there is a typo in type name. " .
+//            "Known type are (%s)";
+//
+//        throw new \InvalidArgumentException(sprintf($message, $type, implode(', ', array_keys($this->tableTypes))));
+//    }
+//
+//    /**
+//     * @param $type
+//     * @throw \InvalidArgumentException
+//     */
+//    private function throwBadFieldTypeException($type)
+//    {
+//        $message = "Unknown field type '%s'. " .
+//            "Maybe you forgot to declare service using nours_table.field_type tag or there is a typo in type name. " .
+//            "Known type are (%s)";
+//
+//        throw new \InvalidArgumentException(sprintf($message, $type, implode(', ', array_keys($this->fieldTypes))));
+//    }
 }

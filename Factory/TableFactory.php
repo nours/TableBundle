@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of TableBundle.
+ *
+ * (c) David Coudrier <david.coudrier@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Nours\TableBundle\Factory;
 
@@ -56,7 +64,7 @@ class TableFactory implements TableFactoryInterface
     public function createTable($type, array $options = array())
     {
         if (!$type instanceof TableTypeInterface) {
-            $type = $this->registry->getTableType($type);
+            $type = $this->getTableType($type);
         }
 
         $typeName = $type->getName();
@@ -98,11 +106,11 @@ class TableFactory implements TableFactoryInterface
     /**
      * Creates the table builder for a table type.
      *
-     * @param TableTypeInterface $type
+     * @param ResolvedType $type
      * @param array $options
      * @return TableBuilder
      */
-    protected function createBuilder(TableTypeInterface $type, array $options)
+    protected function createBuilder(ResolvedType $type, array $options)
     {
         $builder = new TableBuilder($type, $this, $options);
         $extensions = $this->getExtensionsForType($type);
@@ -178,7 +186,43 @@ class TableFactory implements TableFactoryInterface
      */
     public function getFieldType($name)
     {
-        return $this->registry->getFieldType($name);
+        $type = $this->registry->getFieldType($name);
+
+        // FQCN lazy-loading
+        if (empty($type)) {
+            if (class_exists($name)) {
+                if (!in_array('Nours\TableBundle\Field\FieldTypeInterface', class_implements($name))) {
+                    throw new \InvalidArgumentException(sprintf("Field type %s must implement FieldTypeInterface", $name));
+                }
+                $type = new $name;
+            } else {
+                throw new \InvalidArgumentException(sprintf("Field type %s unknown", $name));
+            }
+        }
+
+        return $type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTableType($name)
+    {
+        $type = $this->registry->getTableType($name);
+
+        // FQCN lazy-loading
+        if (empty($type)) {
+            if (class_exists($name)) {
+                if (!in_array('Nours\TableBundle\Table\TableTypeInterface', class_implements($name))) {
+                    throw new \InvalidArgumentException(sprintf("Table type %s must implement FieldTypeInterface", $name));
+                }
+                $type = new $name;
+            } else {
+                throw new \InvalidArgumentException(sprintf("Table type %s unknown", $name));
+            }
+        }
+
+        return $type;
     }
 
     /**

@@ -11,6 +11,8 @@
 namespace Nours\TableBundle\Tests\Table;
 
 use Nours\TableBundle\Table\TableInterface;
+use Nours\TableBundle\Tests\FixtureBundle\Table\FQCNTableType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 
 /**
@@ -159,7 +161,6 @@ class TableTest extends TestCase
         $this->assertEquals(42, $object['foo_count']);
     }
 
-
     public function testCreateAnotherView()
     {
         $table = $this->getTableFactory()->createTable('post_embed');
@@ -169,5 +170,24 @@ class TableTest extends TestCase
         $fieldView = $view->fields['author'];
         $vars = $fieldView->vars;
         $this->assertEquals('author.name', $vars['property_path']);
+    }
+
+    public function testBlockPrefix()
+    {
+        $table = $this->createTable(PostType::class);
+
+        $prefix = $table->getType()->getBlockPrefix();
+        $this->assertEquals('post', $prefix);
+    }
+
+    public function testBlockPrefixFromAnonymous()
+    {
+        $table = $this->createTable(FQCNTableType::class);
+
+        $prefix = $table->getType()->getBlockPrefix();
+        $this->assertEquals('f_q_c_n_table', $prefix);
+
+        $view = $table->createView();
+        $this->assertContains('table_f_q_c_n_table', $view->vars['block_prefixes']);
     }
 }

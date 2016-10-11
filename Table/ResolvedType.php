@@ -64,6 +64,14 @@ class ResolvedType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function getBlockPrefix()
+    {
+        return $this->type->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $this->type->configureOptions($resolver);
