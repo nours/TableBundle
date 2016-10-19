@@ -144,7 +144,9 @@ function (value, row, index) {
     value = value.replace(/(<([^>]+)>)/igm,"").replace(/(&nbsp;|\r\n|\n|\r)/g, ' ');
     {% endif %}
     {% if truncate %}
-    value = '<abbr title="' + value + '">' + value.substr(0, {{ truncate }}) + '...</abbr>';
+    if (value.length > {{ truncate }}) {
+        value = '<abbr title="' + value + '">' + value.substr(0, {{ truncate }}) + '...</abbr>';
+    }
     {% endif %}
     return value
 }
