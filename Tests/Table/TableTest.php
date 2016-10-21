@@ -52,6 +52,7 @@ class TableTest extends TestCase
         $vars = $view->vars;
         $this->assertEquals(1, $vars['page']);
         $this->assertEquals(15, $vars['limit']);
+        $this->assertEquals('post', $vars['name']);
 
         $this->assertCount(5, $view->fields);
 

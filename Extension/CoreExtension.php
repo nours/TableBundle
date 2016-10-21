@@ -92,7 +92,7 @@ class CoreExtension extends AbstractExtension
             'sort'       => $options['sort'],
             'order'      => $options['order'],
             'url'        => $options['url'],
-            'block_prefixes' => array('table_' . $table->getType()->getBlockPrefix(), 'table')
+            'block_prefixes' => array('table_' . $table->getType()->getBlockPrefix(), 'table'),
         ));
     }
 
