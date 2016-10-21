@@ -228,7 +228,7 @@ EOS;
      */
     public function testRenderTableThrowsIfBlockNotFound()
     {
-        $this->expectException('RuntimeException');
+        $this->setExpectedException('RuntimeException');
 
         $this->getRenderer()->renderTable($this->view, 'foo');
     }
@@ -238,7 +238,7 @@ EOS;
      */
     public function testRenderFieldThrowsIfBlockNotFound()
     {
-        $this->expectException('RuntimeException');
+        $this->setExpectedException('RuntimeException');
 
         $this->getRenderer()->renderField($this->view->fields['id'], 'bar');
     }

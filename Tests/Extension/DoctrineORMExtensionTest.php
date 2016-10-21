@@ -53,7 +53,7 @@ class DoctrineORMExtensionTest extends TestCase
             'order' => 'DESC'
         ));
 
-        $this->expectException("InvalidArgumentException");
+        $this->setExpectedException("InvalidArgumentException");
 
         $table->handle();
     }
