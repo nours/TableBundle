@@ -46,6 +46,7 @@ class FormFilterExtensionTest extends TestCase
         $table = $this->createTable('post');
 
         $view = $table->createView();
+//        var_dump($table->getType());die;
 
         $form = $view->vars['form'];
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $form);

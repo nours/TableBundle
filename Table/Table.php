@@ -258,7 +258,7 @@ class Table implements TableInterface
     public function createView()
     {
         // A table need to be handled before creating view
-        return $this->handle()->type->createView($this);
+        return $this->handle()->getType()->createView($this);
     }
 
     /**

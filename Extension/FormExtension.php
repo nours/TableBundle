@@ -14,7 +14,7 @@ use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,11 +113,11 @@ class FormExtension extends AbstractExtension
     }
 
     /**
-     * @param FormBuilder $builder
+     * @param FormBuilderInterface $builder
      * @param FieldInterface[] $fields
      * @param array $defaultData
      */
-    private function buildFilterForm(FormBuilder $builder, $fields, $defaultData)
+    private function buildFilterForm(FormBuilderInterface $builder, $fields, $defaultData)
     {
         foreach ($fields as $field) {
             // Filter option may provide default values for the fields
@@ -155,7 +155,9 @@ class FormExtension extends AbstractExtension
     {
         /** @var FormInterface $form */
         if ($form = $options['form']) {
-            $view->vars['form'] = $form->createView();
+            $formView = $form->createView();
+            $view->vars['form'] = $formView;
+            $view->vars['form_id'] = $formView->vars['id'];
             $view->vars['form_theme'] = $options['form_theme'];
         } else {
             $view->vars['form'] = null;

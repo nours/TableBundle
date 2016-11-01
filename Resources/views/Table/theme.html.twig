@@ -18,7 +18,7 @@
         $(function() {
             var Table = function(element, options) {
                 this.table = $(element);
-                this.form  = $('#{{ id_toolbar }} form');
+                this.form  = {% if form %}$('#{{ form_id }}'){% else %}$(){% endif %};
 
                 this.table.data('Table', this);
 
