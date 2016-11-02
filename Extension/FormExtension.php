@@ -55,7 +55,7 @@ class FormExtension extends AbstractExtension
     {
         $resolver->setDefaults(array(
             'form_name' => 'filter',
-            'form_type' => FormType::class,
+            'form_type' => null,
             'form_theme' => $this->formTheme,
             'form_options' => array(),
             'filter_data' => array(),
@@ -85,11 +85,14 @@ class FormExtension extends AbstractExtension
      */
     public function handle(TableInterface $table, Request $request = null)
     {
-        // Build the form if table has fields for filtering
-        if ($fields = $this->getFilterFields($table)) {
+        $formType = $table->getOption('form_type');
+        $fields   = $this->getFilterFields($table);
+
+        // Build the form if table has fields for filtering or a custom form type
+        if ($formType || $fields) {
             $builder = $this->formFactory->createNamedBuilder(
                 $table->getOption('form_name'),
-                $table->getOption('form_type'),
+                $formType ?: FormType::class,
                 null,
                 array_replace($table->getOption('form_options'), array(
                     'method' => 'GET',
