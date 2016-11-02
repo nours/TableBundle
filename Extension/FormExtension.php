@@ -93,14 +93,14 @@ class FormExtension extends AbstractExtension
             $builder = $this->formFactory->createNamedBuilder(
                 $table->getOption('form_name'),
                 $formType ?: FormType::class,
-                null,
+                $table->getOption('filter_data'),
                 array_replace($table->getOption('form_options'), array(
                     'method' => 'GET',
                     'csrf_protection' => false
                 ))
             );
 
-            $this->buildFilterForm($builder, $fields, $table->getOption('filter_data'));
+            $this->buildFilterForm($builder, $fields);
             $form = $builder->getForm();
             $table->setOption('form', $form);
 
@@ -118,16 +118,13 @@ class FormExtension extends AbstractExtension
     /**
      * @param FormBuilderInterface $builder
      * @param FieldInterface[] $fields
-     * @param array $defaultData
      */
-    private function buildFilterForm(FormBuilderInterface $builder, $fields, $defaultData)
+    private function buildFilterForm(FormBuilderInterface $builder, $fields)
     {
         foreach ($fields as $field) {
             // Filter option may provide default values for the fields
             $options = $field->getOption('filter_options');
-            if (isset($defaultData[$field->getName()])) {
-                $options['data'] = $defaultData[$field->getName()];
-            }
+
             $options['required'] = false;   // All filters are not required
 
             $builder->add($field->getName(), $field->getOption('filter_type'), $options);

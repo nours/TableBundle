@@ -220,6 +220,10 @@ class DoctrineORMExtensionTest extends TestCase
         $this->assertCount(2, $data);
         $this->assertEquals(2, $data[0]->getId());
         $this->assertEquals(1, $data[1]->getId());
+
+        // Check filter data has been passed to form elements
+        $form = $table->getOption('form');
+        $this->assertSame($author, $form->get('author')->getData());
     }
 
     public function testFilterUsingAssociationFieldForm()
