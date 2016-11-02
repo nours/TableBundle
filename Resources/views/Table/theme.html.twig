@@ -42,6 +42,15 @@
                 this.form.on('keyup', 'input[type=text]', $.proxy(this.onKeyUp, this));
             };
 
+            Table.prototype.onKeyUp = function() {
+                if (this.timeoutId) {
+                    clearTimeout(this.timeoutId);
+                    this.timeoutId = undefined;
+                }
+
+                this.timeoutId = setTimeout($.proxy(this.refresh, this), 400);
+            };
+
             Table.prototype.onInit = function(options) {};
 
             Table.prototype.queryParams = function(params) {
