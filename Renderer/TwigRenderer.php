@@ -61,7 +61,7 @@ class TwigRenderer implements TableRendererInterface
 
     /**
      * @param string $blockName
-     * @return \Twig_Template
+     * @return \Twig_TemplateWrapper
      */
     private function getTemplateForBlock($blockName)
     {
