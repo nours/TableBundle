@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class TwigRenderer implements TableRendererInterface
 {
     /**
-     * @var \Twig_Template[]
+     * @var \Twig_TemplateWrapper[]
      */
     private $templates;
 
@@ -55,7 +55,7 @@ class TwigRenderer implements TableRendererInterface
 
         $this->templates = array();
         foreach ($this->templateNames as $name) {
-            $this->templates[] = $twig->loadTemplate($name);
+            $this->templates[] = $twig->load($name);
         }
     }
 
