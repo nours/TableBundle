@@ -42,6 +42,13 @@ class Author
      *
      * @ORM\Column(type="string")
      */
+    private $lastname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
     private $email;
 
     /**
@@ -73,6 +80,30 @@ class Author
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @param string $lastname
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullname()
+    {
+        return $this->name . ' ' . $this->lastname;
     }
 
     /**

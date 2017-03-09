@@ -123,6 +123,8 @@ class DoctrineORMExtension extends AbstractExtension
              * This expression will be used in both searching and ordering.
              *
              * Set a specific value if the property is a non mapped entity field.
+             *
+             * Can also be an array, in order to support searching and ordering over multiple fields for one column.
              */
             'query_path' => function(Options $options) {
                 // Association query path
@@ -132,6 +134,9 @@ class DoctrineORMExtension extends AbstractExtension
                 return '_root.' . $options['property_path'];
             },
 
+            /**
+             * Path for ordering.
+             */
             'order_path' => function(Options $options) {
                 return $options['query_path'];
             },
@@ -362,7 +367,9 @@ class DoctrineORMExtension extends AbstractExtension
         /** @var Field $field */
         foreach ($fields as $field) {
             if ($field->getOption('searchable')) {
-                $expr->add($field->getOption('query_path') . ' LIKE :search');
+                foreach ((array)$field->getOption('query_path') as $queryPath) {
+                    $expr->add($queryPath . ' LIKE :search');
+                }
             }
         }
 
@@ -389,7 +396,9 @@ class DoctrineORMExtension extends AbstractExtension
                 throw new InvalidArgumentException("Field $fieldName is not sortable in table " . $table->getName());
             }
 
-            $queryBuilder->addOrderBy($field->getOption('order_path'), $order);
+            foreach ((array)$field->getOption('order_path') as $orderBy) {
+                $queryBuilder->addOrderBy($orderBy, $order);
+            }
         }
     }
 

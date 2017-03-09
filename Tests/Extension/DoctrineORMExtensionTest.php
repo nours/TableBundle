@@ -448,4 +448,57 @@ class DoctrineORMExtensionTest extends TestCase
         $this->assertEquals(2, $data[0]->getId());
         $this->assertEquals(3, $data[1]->getId());
     }
+
+    /**
+     * Search by a multi field column.
+     */
+    public function testSearchWithMultiFieldAssociation()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_comment_author');
+
+        $table->handle(new Request(array(
+            'search' => 'Foo'
+        )));
+
+        $data = $table->getData();
+
+        $this->assertCount(2, $data);
+    }
+
+    /**
+     * Search by a multi field column.
+     */
+    public function testOrderByMultiFieldAssociation()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createTable('post_comment_author');
+
+        $table->handle(new Request(array(
+            'sort'  => array(
+                'author' => 'ASC',
+                'id' => 'DESC'
+            )
+        )));
+
+        $data = $table->getData();
+
+        $this->assertCount(3, $data);
+        /** @var Post $post1 */
+        /** @var Post $post2 */
+        /** @var Post $post3 */
+        $post1 = $data[0];
+        $post2 = $data[1];
+        $post3 = $data[2];
+
+        $this->assertEquals(3, $post1->getId());
+        $this->assertEquals(2, $post2->getId());
+        $this->assertEquals(1, $post3->getId());
+
+        $this->assertEquals('Bar', $post1->getAuthor()->getLastname());
+        $this->assertEquals('Foo', $post2->getAuthor()->getLastname());
+        $this->assertEquals('Foo', $post3->getAuthor()->getLastname());
+    }
 } 

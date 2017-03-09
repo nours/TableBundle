@@ -65,7 +65,7 @@ class Post
     private $embed;
 
     /**
-     * @var string
+     * @var Author
      *
      * @ORM\ManyToOne(targetEntity="Author")
      */
@@ -94,6 +94,14 @@ class Post
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return Author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 
     /**

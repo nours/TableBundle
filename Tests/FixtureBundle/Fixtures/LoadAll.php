@@ -27,12 +27,14 @@ class LoadAll extends AbstractFixture
     {
         $author = new Author();
         $author->setName('author 1');
+        $author->setLastname('Foo');
         $author->setEmail('author@authorship.org');
 
         $manager->persist($author);
 
         $author2 = new Author();
         $author2->setName('author 2');
+        $author2->setLastname('Bar');
         $author2->setEmail('author2@authorship.org');
 
         $manager->persist($author2);
@@ -75,8 +77,6 @@ class LoadAll extends AbstractFixture
         $manager->persist($comment);
 
         $manager->persist($post);
-
-        $manager->persist($author);
 
         $manager->flush();
     }
