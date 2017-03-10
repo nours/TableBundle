@@ -18,7 +18,7 @@
         $(function() {
             var Table = function(element, options) {
                 this.table = $(element);
-                this.form  = {% if form %}$('#{{ form_id }}'){% else %}$(){% endif %};
+                this.form  = {% if form %}$('#{{ form_id }}').closest('form'){% else %}$(){% endif %};
 
                 this.table.data('Table', this);
 
@@ -93,7 +93,11 @@
                         data[name] = value || '';
                     }
                 });
-                return data;
+
+                var event = $.Event('form-data.table', { formData: data });
+                this.table.trigger(event);
+
+                return event.formData;
             };
 
             Table.prototype.onPostBody = function(event) {
