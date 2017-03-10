@@ -32,16 +32,17 @@ class PostCommentsType extends AbstractType
                 'sortable' => true
             ))
             ->add('comments', 'collection', array(
-            'display' => false,
-            'association' => true,
-            'property_path' => 'comment',
-            'filter_type' => EntityType::class,
-            'filter_options' => array(
-                'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Comment',
-                'multiple' => true,
-                'choice_label' => 'comment'
-            )
-        ));
+                'display' => false,
+                'association' => true,
+                'property_path' => 'comment',
+                'filter_type' => EntityType::class,
+                'filter_options' => array(
+                    'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Comment',
+                    'multiple' => true,
+                    'choice_label' => 'comment'
+                )
+            ))
+        ;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nours\TableBundle\Tests\Factory;
+namespace Nours\TableBundle\Tests\Extension;
 
 
 use Nours\RestAdminBundle\Tests\FixtureBundle\Fixtures\LoadAll;
@@ -253,7 +253,7 @@ class DoctrineORMExtensionTest extends TestCase
 
         $table->handle(new Request(array(
             'filter' => array(
-                'comments' => array(2)
+                'comments' => array('2')
             )
         )));
 
@@ -267,7 +267,7 @@ class DoctrineORMExtensionTest extends TestCase
         $table = $this->createTable('post_comments');
         $table->handle(new Request(array(
             'filter' => array(
-                'comments' => array(1)
+                'comments' => array('1')
             )
         )));
 
