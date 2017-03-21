@@ -215,7 +215,7 @@ function (value, row, index) {
     var style = 'default', label = '';
     switch (value) {
     {% for t, d in labels %}
-        case {{ t|json_encode }}:
+        case {{ t|json_encode|raw }}:
         style = '{{ d.style }}';
         label = '{{ d.label|default(t)|trans }}';
         break;
