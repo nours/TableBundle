@@ -258,8 +258,7 @@ class DoctrineORMExtension extends AbstractExtension
             $table->setTotal($total);
 
             $table->setDataCallback(function() use ($paginator) {
-                $data = $paginator->getQuery()->getResult();
-                return $data instanceof \Traversable ? iterator_to_array($data) : $data;
+                return $paginator->getIterator()->getArrayCopy();
             });
         }
 
