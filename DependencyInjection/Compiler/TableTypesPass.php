@@ -23,10 +23,6 @@ class TableTypesPass implements CompilerPassInterface
             $alias = isset($tags[0]['alias']) ? $tags[0]['alias'] : null;
 
             if ($alias) {
-                trigger_error(sprintf(
-                    "Using alias for table type %s is deprecated, please remove them and use FQCNs", $id
-                ), E_USER_DEPRECATED);
-
                 $tableServices[$alias] = $id;
             }
 
@@ -46,10 +42,6 @@ class TableTypesPass implements CompilerPassInterface
             $alias = isset($tags[0]['alias']) ? $tags[0]['alias'] : null;
 
             if ($alias) {
-                trigger_error(sprintf(
-                    "Using alias for field type %s is deprecated, please remove them and use FQCNs", $id
-                ), E_USER_DEPRECATED);
-
                 $fieldServices[$alias] = $id;
             }
 

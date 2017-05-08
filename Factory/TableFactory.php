@@ -200,6 +200,13 @@ class TableFactory implements TableFactoryInterface
             }
         }
 
+        // Type name deprecation error
+        if ($name !== get_class($type)) {
+            trigger_error(sprintf(
+                "Using alias %s for field type %s is deprecated, please remove them and use FQCNs", $name, get_class($type)
+            ), E_USER_DEPRECATED);
+        }
+
         return $type;
     }
 
@@ -220,6 +227,13 @@ class TableFactory implements TableFactoryInterface
             } else {
                 throw new \InvalidArgumentException(sprintf("Table type %s unknown", $name));
             }
+        }
+
+        // Type name deprecation error
+        if ($name !== get_class($type)) {
+            trigger_error(sprintf(
+                "Using alias %s for table type %s is deprecated, please remove them and use FQCNs", $name, get_class($type)
+            ), E_USER_DEPRECATED);
         }
 
         return $type;
