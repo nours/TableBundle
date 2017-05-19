@@ -67,7 +67,7 @@ class TableFactory implements TableFactoryInterface
             $type = $this->getTableType($type);
         }
 
-        $typeName = $type->getName();
+        $typeName = get_class($type);
 
         // Resolve type if not already resolved
         if (isset($this->resolveTableTypes[$typeName])) {

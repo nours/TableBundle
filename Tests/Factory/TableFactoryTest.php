@@ -8,6 +8,7 @@ use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Tests\FixtureBundle\Field\FQCNFieldType;
 use Nours\TableBundle\Tests\FixtureBundle\Table\PagerType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostCommentsType;
 use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 
@@ -195,5 +196,17 @@ class TableFactoryTest extends TestCase
 
         $this->assertNotNull($table);
         $this->assertEquals('post', $table->getName());
+    }
+
+    /**
+     * Calling createTable multiple times returns correct instance.
+     */
+    public function testCreateTableMultipleTimes()
+    {
+        $tablePost    = $this->factory->createTable(PostType::class);
+        $tableComment = $this->factory->createTable(PostCommentsType::class);
+
+        $this->assertEquals('post', $tablePost->getName());
+        $this->assertEquals('post_comments', $tableComment->getName());
     }
 } 
