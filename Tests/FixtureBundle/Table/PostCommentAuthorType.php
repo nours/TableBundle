@@ -40,7 +40,7 @@ class PostCommentAuthorType extends AbstractType
                 'property'    => 'name',
                 'sortable'    => true,
                 'searchable'  => true,
-                'query_path'  => array( 'author.lastname', 'author.name'  )
+                'query_path'  => array( 'lastname', 'author.name'  )
             ))
             ->add('authorEmail', 'text', array(
                 'association' => 'author',

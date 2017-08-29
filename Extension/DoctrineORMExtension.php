@@ -367,7 +367,7 @@ class DoctrineORMExtension extends AbstractExtension
         foreach ($fields as $field) {
             if ($field->getOption('searchable')) {
                 foreach ((array)$field->getOption('query_path') as $queryPath) {
-                    $expr->add($queryPath . ' LIKE :search');
+                    $expr->add($this->fixQueryPath($queryPath, $field) . ' LIKE :search');
                 }
             }
         }
@@ -396,9 +396,24 @@ class DoctrineORMExtension extends AbstractExtension
             }
 
             foreach ((array)$field->getOption('order_path') as $orderBy) {
-                $queryBuilder->addOrderBy($orderBy, $order);
+                $queryBuilder->addOrderBy($this->fixQueryPath($orderBy, $field), $order);
             }
         }
+    }
+
+    /**
+     * @param string $path
+     * @param FieldInterface $field
+     *
+     * @return string
+     */
+    private function fixQueryPath($path, FieldInterface $field)
+    {
+        if (false === strpos($path, '.')) {
+            $path = $field->getOption('alias') . '.' . $path;
+        }
+
+        return $path;
     }
 
     /**
