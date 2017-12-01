@@ -55,6 +55,13 @@ class CoreExtension extends AbstractExtension
             'json_vars'  => array()
         ));
         $resolver->setRequired('name');
+
+        $resolver->setNormalizer('page', function(Options $options, $value) {
+            return filter_var($value, FILTER_VALIDATE_INT);
+        });
+        $resolver->setNormalizer('limit', function(Options $options, $value) {
+            return filter_var($value, FILTER_VALIDATE_INT);
+        });
     }
 
     /**
@@ -132,8 +139,8 @@ class CoreExtension extends AbstractExtension
     {
         if ($request) {
             // Override ORM parameters from request
-            $table->setOption('page',   $request->query->get($this->params['page'], $table->getOption('page')));
-            $table->setOption('limit',  $request->query->get($this->params['limit'], $table->getOption('limit')));
+            $table->setPage($request->query->get($this->params['page'], $table->getOption('page')));
+            $table->setLimit($request->query->get($this->params['limit'], $table->getOption('limit')));
             $table->setOption('sort',   $request->query->get($this->params['sort'], $table->getOption('sort')));
             $table->setOption('order',  $request->query->get($this->params['order'], $table->getOption('order')));
             $table->setOption('search', $request->query->get($this->params['search'], $table->getOption('search')));

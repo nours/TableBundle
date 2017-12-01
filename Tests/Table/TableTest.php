@@ -30,13 +30,35 @@ class TableTest extends TestCase
     public function testGetOptions()
     {
         $table = $this->createTable('post', array(
-            'page' => 2,
-            'limit' => 15
+            'page'  => '2',
+            'limit' => '15'
         ));
 
         $options = $table->getOptions();
-        $this->assertEquals(2, $options['page']);
-        $this->assertEquals(15, $options['limit']);
+        $this->assertSame(2, $options['page']);
+        $this->assertSame(15, $options['limit']);
+    }
+
+    public function testSetPage()
+    {
+        $table = $this->createTable('post');
+
+        $table->setPage('123');
+        $this->assertSame(123, $table->getPage());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $table->setPage('invalid');
+    }
+
+    public function testSetLimit()
+    {
+        $table = $this->createTable('post');
+
+        $table->setLimit('123');
+        $this->assertSame(123, $table->getLimit());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $table->setLimit('invalid');
     }
 
     public function testCreateView()

@@ -182,6 +182,10 @@ class Table implements TableInterface
      */
     public function setPage($page)
     {
+        $page = filter_var($page, FILTER_VALIDATE_INT);
+        if (false === $page) {
+            throw new \InvalidArgumentException('Page must be integer');
+        }
         $this->setOption('page', $page);
     }
 
@@ -190,6 +194,10 @@ class Table implements TableInterface
      */
     public function setLimit($limit)
     {
+        $limit = filter_var($limit, FILTER_VALIDATE_INT);
+        if (false === $limit) {
+            throw new \InvalidArgumentException('Limit must be integer');
+        }
         $this->setOption('limit', $limit);
     }
 
