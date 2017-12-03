@@ -38,6 +38,14 @@ class ResolvedType implements TableTypeInterface
     }
 
     /**
+     * @return string
+     */
+    public function getCacheKey()
+    {
+        return get_class($this->type);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getExtension()

@@ -50,6 +50,32 @@ class PostController extends Controller
         ));
     }
 
+    /**
+     * @Route("/table-theme", name="post_table_theme")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function tableThemeAction(Request $request)
+    {
+        $table = $this->get('nours_table.factory')->createTable('post', array(
+            'url' => $this->generateUrl('post_index'),
+            'data' => $this->getData()
+        ));
+
+        $table->handle($request);
+
+        if ($request->isXmlHttpRequest()) {
+            return new Response($this->get('jms_serializer')->serialize($table->createView(), 'json'), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
+        return $this->render('post/table_theme.html.twig', array(
+            'table' => $table->createView()
+        ));
+    }
+
 
     private function getData()
     {

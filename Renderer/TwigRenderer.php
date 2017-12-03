@@ -28,7 +28,12 @@ class TwigRenderer implements TableRendererInterface
      */
     private $templateNames;
 
+    /**
+     * @var ContainerInterface
+     */
     private $container;
+
+    private $themes = array();
 
     /**
      *
@@ -41,33 +46,55 @@ class TwigRenderer implements TableRendererInterface
         $this->templateNames = $templates;
     }
 
+    private function getCacheKey(View $view)
+    {
+        $cacheKey = $view->table->getType()->getCacheKey();
+
+        return $cacheKey;
+    }
+
+    /**
+     * Sets a theme for a table view
+     *
+     * @param View $view
+     * @param $themes
+     */
+    public function setTheme(View $view, $themes)
+    {
+        $cacheKey = $this->getCacheKey($view);
+
+        $this->themes[$cacheKey] = $themes;
+    }
+
     /**
      * Loads the templates used by current theme.
      */
-    private function loadTemplates()
+    private function loadTemplates(array $themes)
     {
-        if (!empty($this->templates)) {
-            return;
-        }
-
         // Avoid dependencies issues with the table extension
         $twig = $this->container->get('twig');
 
-        $this->templates = array();
-        foreach ($this->templateNames as $name) {
-            $this->templates[] = $twig->load($name);
+        $templates = array();
+        foreach ($themes as $theme) {
+            if (!isset($this->templates[$theme])) {
+                $this->templates[$theme] = $twig->load($theme);
+            }
+
+            $templates[] = $this->templates[$theme];
         }
+
+        return $templates;
     }
 
     /**
      * @param string $blockName
      * @return \Twig_TemplateWrapper
      */
-    private function getTemplateForBlock($blockName)
+    private function getTemplateForBlock($blockName, array $themes)
     {
-        $this->loadTemplates();
+        $templates = $this->loadTemplates($themes);
 
-        foreach ($this->templates as $template) {
+        foreach ($templates as $template) {
             if ($template->hasBlock($blockName)) {
                 return $template;
             }
@@ -78,16 +105,24 @@ class TwigRenderer implements TableRendererInterface
 
     /**
      * @param array $blockNames
+     * @param string $cacheKey
      * @param array $context
+     *
      * @return string
+     * @throws \Throwable
      */
-    private function renderBlock(array $blockNames, array $context)
+    private function renderBlock(array $blockNames, $cacheKey, array $context)
     {
         $template = $blockName = null;
 
+        $themes = $this->templateNames;
+        if (isset($this->themes[$cacheKey])) {
+            $themes = array_merge($this->themes[$cacheKey], $this->templateNames);
+        }
+
         // Search the template for first block available
         foreach ($blockNames as $name) {
-            if ($template = $this->getTemplateForBlock($name)) {
+            if ($template = $this->getTemplateForBlock($name, $themes)) {
                 $blockName = $name;
                 break;
             }
@@ -112,7 +147,11 @@ class TwigRenderer implements TableRendererInterface
         $context = $tableView->vars;
         $context['table'] = $tableView;
 
-        return $this->renderBlock($this->getBlockPrefixes($tableView, $part), $context);
+        return $this->renderBlock(
+            $this->getBlockPrefixes($tableView, $part),
+            $this->getCacheKey($tableView),
+            $context
+        );
     }
     
     /**
@@ -124,7 +163,11 @@ class TwigRenderer implements TableRendererInterface
         $context['table'] = $fieldView->parent;
         $context['field'] = $fieldView;
 
-        return $this->renderBlock($this->getBlockPrefixes($fieldView, $part), $context);
+        return $this->renderBlock(
+            $this->getBlockPrefixes($fieldView, $part),
+            $this->getCacheKey($fieldView->parent),
+            $context
+        );
     }
 
     /**

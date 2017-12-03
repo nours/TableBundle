@@ -41,7 +41,6 @@ services:
 ###################################################################
   nours_table.twig.extension:
     class: Nours\TableBundle\Twig\Extension\TableExtension
-    arguments: [ '@nours_table.table_renderer.twig' ]
     tags: [ { name: twig.extension } ]
 
 ###################################################################
@@ -50,6 +49,7 @@ services:
   nours_table.table_renderer.twig:
     class: Nours\TableBundle\Renderer\TwigRenderer
     arguments: [ '@service_container', '%nours_table.themes%' ]
+    tags: [ { name: twig.runtime } ]
 
 ###################################################################
 ## Serializer handler
