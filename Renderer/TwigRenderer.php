@@ -11,7 +11,6 @@
 namespace Nours\TableBundle\Renderer;
 
 use Nours\TableBundle\Table\View;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author David Coudrier <david.coudrier@gmail.com>
@@ -26,24 +25,29 @@ class TwigRenderer implements TableRendererInterface
     /**
      * @var string
      */
-    private $templateNames;
+    private $defaultThemes;
 
     /**
-     * @var ContainerInterface
+     * @var \Twig_Environment
      */
-    private $container;
+    private $twig;
 
+    /**
+     * Cache for table themes
+     *
+     * @var array
+     */
     private $themes = array();
 
     /**
      *
-     * @param ContainerInterface $container
-     * @param array $templates
+     * @param \Twig_Environment $twig
+     * @param array $defaultThemes
      */
-    public function __construct(ContainerInterface $container, array $templates)
+    public function __construct(\Twig_Environment $twig, array $defaultThemes)
     {
-        $this->container     = $container;
-        $this->templateNames = $templates;
+        $this->twig          = $twig;
+        $this->defaultThemes = $defaultThemes;
     }
 
     private function getCacheKey(View $view)
@@ -71,16 +75,17 @@ class TwigRenderer implements TableRendererInterface
      */
     private function loadTemplates(array $themes)
     {
-        // Avoid dependencies issues with the table extension
-        $twig = $this->container->get('twig');
-
         $templates = array();
         foreach ($themes as $theme) {
-            if (!isset($this->templates[$theme])) {
-                $this->templates[$theme] = $twig->load($theme);
+            $key = is_object($theme) ? spl_object_hash($theme) : $theme;
+
+            if (!isset($this->templates[$key])) {
+                $template = $this->twig->load($theme);
+
+                $this->templates[$key] = $template;
             }
 
-            $templates[] = $this->templates[$theme];
+            $templates[] = $this->templates[$key];
         }
 
         return $templates;
@@ -115,9 +120,9 @@ class TwigRenderer implements TableRendererInterface
     {
         $template = $blockName = null;
 
-        $themes = $this->templateNames;
+        $themes = $this->defaultThemes;
         if (isset($this->themes[$cacheKey])) {
-            $themes = array_merge($this->themes[$cacheKey], $this->templateNames);
+            $themes = array_merge($this->themes[$cacheKey], $this->defaultThemes);
         }
 
         // Search the template for first block available
@@ -132,7 +137,7 @@ class TwigRenderer implements TableRendererInterface
         if (empty($template)) {
             throw new \RuntimeException(sprintf(
                 "Block%s %s not found in table themes (%s)",
-                count($blockNames) > 1 ? 's' : '', implode(', ', $blockNames), implode(', ', $this->templateNames)
+                count($blockNames) > 1 ? 's' : '', implode(', ', $blockNames), implode(', ', $this->defaultThemes)
             ));
         }
 

@@ -48,7 +48,7 @@ services:
 ###################################################################
   nours_table.table_renderer.twig:
     class: Nours\TableBundle\Renderer\TwigRenderer
-    arguments: [ '@service_container', '%nours_table.themes%' ]
+    arguments: [ '@twig', '%nours_table.themes%' ]
     tags: [ { name: twig.runtime } ]
 
 ###################################################################
