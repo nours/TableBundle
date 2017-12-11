@@ -166,6 +166,16 @@ function (value, row, index) {
 }
 {% endblock %}
 
+
+{# Number field #}
+{%- block field_number_formatter -%}
+function (value, row, index) {
+    value = objectPath.get(row, '{{ property_path }}');
+    if (undefined == value) return
+    return value.toString();
+}
+{%- endblock -%}
+
 {% block field_boolean_formatter %}
 function (value, row, index) {
     value = objectPath.get(row, '{{ property_path }}');
