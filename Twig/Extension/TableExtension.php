@@ -5,6 +5,7 @@ namespace Nours\TableBundle\Twig\Extension;
 use Nours\TableBundle\Renderer\TableRendererInterface;
 use Nours\TableBundle\Table\View;
 use Nours\TableBundle\Twig\TokenParser\TableThemeTokenParser;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * 
@@ -12,7 +13,7 @@ use Nours\TableBundle\Twig\TokenParser\TableThemeTokenParser;
  */
 class TableExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
 {
-	/**
+    /**
      * {@inheritdoc}
 	 */
 	public function initRuntime(\Twig_Environment $environment)

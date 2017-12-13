@@ -3,6 +3,7 @@
 namespace Nours\TableBundle;
 
 use Nours\TableBundle\DependencyInjection\Compiler\TableExtensionsPass;
+use Nours\TableBundle\DependencyInjection\Compiler\TwigExtensionPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Nours\TableBundle\DependencyInjection\Compiler\TableTypesPass;
@@ -14,8 +15,8 @@ class NoursTableBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-//        $container->addCompilerPass(new PersistenceFactoryPass());
         $container->addCompilerPass(new TableTypesPass());
         $container->addCompilerPass(new TableExtensionsPass());
+        $container->addCompilerPass(new TwigExtensionPass());
     }
 }

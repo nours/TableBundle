@@ -43,6 +43,10 @@ services:
     class: Nours\TableBundle\Twig\Extension\TableExtension
     tags: [ { name: twig.extension } ]
 
+  nours_table.twig.runtime_loader:
+    class: Nours\TableBundle\Twig\Loader\TableRuntimeLoader
+    arguments: [ '@service_container' ]
+
 ###################################################################
 ## Renderer
 ###################################################################
