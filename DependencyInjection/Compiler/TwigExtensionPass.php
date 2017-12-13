@@ -27,10 +27,10 @@ class TwigExtensionPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('twig.runtime_loader')) {
-//            $container
-//                ->getDefinition('twig')
-//                ->addMethodCall('addRuntimeLoader', array(new Reference('nours_table.twig.runtime_loader')))
-//            ;
+            $container
+                ->getDefinition('twig')
+                ->addMethodCall('addRuntimeLoader', array(new Reference('nours_table.twig.runtime_loader')))
+            ;
         }
     }
 }
