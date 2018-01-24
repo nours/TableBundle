@@ -12,8 +12,7 @@ namespace Nours\TableBundle\Factory;
 
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
+use Psr\Container\ContainerInterface;
 
 /**
  * Class DependencyInjectionRegistry
