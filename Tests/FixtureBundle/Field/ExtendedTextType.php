@@ -11,6 +11,7 @@
 namespace Nours\TableBundle\Tests\FixtureBundle\Field;
 
 use Nours\TableBundle\Field\AbstractFieldType;
+use Nours\TableBundle\Field\Type\TextType;
 
 /**
  * Class ExtendedTextType
@@ -24,13 +25,13 @@ class ExtendedTextType extends AbstractFieldType
      */
     public function getParent()
     {
-        return 'text';
+        return TextType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'extended_text';
     }

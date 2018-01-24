@@ -3,6 +3,9 @@
 namespace Nours\TableBundle\Tests\Factory;
 
 use Nours\TableBundle\Factory\DependencyInjectionRegistry;
+use Nours\TableBundle\Field\Type\BooleanType;
+use Nours\TableBundle\Field\Type\TextType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 
 class DependencyInjectionRegistryTest extends TestCase
@@ -19,13 +22,11 @@ class DependencyInjectionRegistryTest extends TestCase
         $this->registry = new DependencyInjectionRegistry(
             $this->get('service_container'),
             array(
-                'post'       => 'tests.table.post',
-                'foo_bar'    => 'tests.table.post'
+                PostType::class       => 'tests.table.post'
             ),
             array(
-                'text'    => 'nours_table.table_field.text',
-                'boolean' => 'nours_table.table_field.boolean',
-                'foo_bar' => 'nours_table.table_field.boolean',
+                TextType::class    => 'nours_table.table_field.text',
+                BooleanType::class => 'nours_table.table_field.boolean',
             )
         );
     }
@@ -35,55 +36,15 @@ class DependencyInjectionRegistryTest extends TestCase
      */
     public function testGetTableType()
     {
-        $this->assertSame($this->getContainer()->get('tests.table.post'), $this->registry->getTableType('post'));
+        $this->assertSame($this->getContainer()->get('tests.table.post'), $this->registry->getTableType(PostType::class));
     }
-
-//    /**
-//     * Test FixtureBundle table types
-//     */
-//    public function testGetTableTypeThrowsIfTableNameDoNotExist()
-//    {
-//        $this->setExpectedException('InvalidArgumentException');
-//
-//        $this->registry->getTableType('baz');
-//    }
-
-//    /**
-//     * Test FixtureBundle table types
-//     */
-//    public function testGetTableTypeThrowsIfTableNameDoNotMatchAlias()
-//    {
-//        $this->setExpectedException('InvalidArgumentException');
-//
-//        $this->registry->getTableType('foo_bar');
-//    }
 
     /**
      * Test FixtureBundle field types
      */
     public function testGetFieldType()
     {
-        $this->assertSame($this->getContainer()->get('nours_table.table_field.text'), $this->registry->getFieldType('text'));
-        $this->assertSame($this->getContainer()->get('nours_table.table_field.boolean'), $this->registry->getFieldType('boolean'));
+        $this->assertSame($this->getContainer()->get('nours_table.table_field.text'), $this->registry->getFieldType(TextType::class));
+        $this->assertSame($this->getContainer()->get('nours_table.table_field.boolean'), $this->registry->getFieldType(BooleanType::class));
     }
-
-//    /**
-//     * Test FixtureBundle field types
-//     */
-//    public function testGetFieldTypeThrowsIfTableNameDoNotExist()
-//    {
-//        $this->setExpectedException('InvalidArgumentException');
-//
-//        $this->registry->getFieldType('foo');
-//    }
-
-//    /**
-//     * Test FixtureBundle field types
-//     */
-//    public function testGetFieldTypeThrowsIfTableNameDoNotMatchAlias()
-//    {
-//        $this->setExpectedException('InvalidArgumentException');
-//
-//        $this->registry->getFieldType('foo_bar');
-//    }
 }

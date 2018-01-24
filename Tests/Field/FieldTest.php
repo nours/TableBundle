@@ -11,6 +11,9 @@
 namespace Nours\TableBundle\Tests\Field;
 
 use Nours\TableBundle\Field\FieldInterface;
+use Nours\TableBundle\Field\Type\TextType;
+use Nours\TableBundle\Tests\FixtureBundle\Field\ExtendedTextType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 
 /**
@@ -28,17 +31,17 @@ class FieldTest extends TestCase
     public function testFieldTypeWithParent()
     {
         /** @var FieldInterface $field */
-        $field = $this->get('nours_table.factory')->createField('test', 'extended_text', array(
+        $field = $this->get('nours_table.factory')->createField('test', ExtendedTextType::class, array(
             'strip_tags' => true
         ));
 
         $this->assertNotNull($field->getParent());
-        $this->assertEquals('text', $field->getParent()->getName());
+        $this->assertEquals(TextType::class, get_class($field->getParent()));
     }
 
     public function testFieldTypeWithParentView()
     {
-        $view = $this->get('nours_table.factory')->createTable('post', array(
+        $view = $this->get('nours_table.factory')->createTable(PostType::class, array(
         ))->createView();
 
         $fieldView = $view->fields['content'];

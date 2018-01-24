@@ -11,10 +11,11 @@
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
 use Nours\TableBundle\Builder\TableBuilder;
+use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\AbstractType;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextType as FormTextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -30,10 +31,10 @@ class PostStatusType extends AbstractType
     public function buildTable(TableBuilder $builder, array $options)
     {
         $builder
-            ->add('id', 'text', array(
+            ->add('id', TextType::class, array(
                 'sortable' => true
             ))
-            ->add('status', 'text', array(
+            ->add('status', TextType::class, array(
                 'sortable' => true,
                 'searchable' => true,
                 'filter_type' => ChoiceType::class,
@@ -43,14 +44,13 @@ class PostStatusType extends AbstractType
                         'editing' => Post::STATUS_EDITING,
                         'published' => Post::STATUS_PUBLISHED,
                     ),
-                    'choices_as_values' => true,
                     'multiple' => true,
                     'expanded' => true
                 )
             ))
-            ->add('content', 'text', array(
+            ->add('content', TextType::class, array(
                 'sortable' => true,
-                'filter_type' => TextType::class,
+                'filter_type' => FormTextType::class,
                 'filter_operator' => 'LIKE'
             ))
         ;
@@ -66,7 +66,7 @@ class PostStatusType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'post_status';
     }

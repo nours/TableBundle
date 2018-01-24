@@ -20,7 +20,6 @@ framework:
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_hosts:   ~
-    trusted_proxies: ~
     session:
         # handler_id set to null will use default session handler from php.ini
         handler_id:  ~
@@ -45,12 +44,15 @@ monolog:
 doctrine:
     dbal:
         driver:  pdo_sqlite
-        path:    '%kernel.root_dir%/sqlite.db.%kernel.environment%.cache'
+        path:    '%kernel.root_dir%/sqlite.db.cache'
         charset: UTF8
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+
+twig:
+    default_path: '%kernel.root_dir%/templates'
 
 nours_table:
     form_theme: form.html.twig

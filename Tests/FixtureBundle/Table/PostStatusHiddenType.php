@@ -14,6 +14,8 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Field\FieldInterface;
+use Nours\TableBundle\Field\Type\HiddenType;
+use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,10 +33,10 @@ class PostStatusHiddenType extends AbstractType
     public function buildTable(TableBuilder $builder, array $options)
     {
         $builder
-            ->add('id', 'text', array(
+            ->add('id', TextType::class, array(
                 'sortable' => true
             ))
-            ->add('status', 'hidden', array(
+            ->add('status', HiddenType::class, array(
                 'filter_type' => CheckboxType::class,
                 'filter_options' => array(
                 ),
@@ -59,7 +61,7 @@ class PostStatusHiddenType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'post_status_hidden';
     }

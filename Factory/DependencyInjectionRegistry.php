@@ -75,13 +75,6 @@ class DependencyInjectionRegistry implements TypesRegistryInterface
 
             $type = $this->container->get($this->tableServices[$name]);
 
-//            if ($type->getName() != $name) {
-//                throw new \InvalidArgumentException(sprintf(
-//                    "Table type service alias (%s) for service '%s' do not match type name (%s)",
-//                    $name, $this->tableServices[$name], $type->getName()
-//                ));
-//            }
-
             $this->tableTypes[$name] = $type;
         }
 
@@ -102,32 +95,9 @@ class DependencyInjectionRegistry implements TypesRegistryInterface
 
             $type = $this->container->get($this->fieldServices[$name]);
 
-//            if ($type->getName() != $name) {
-//                throw new \InvalidArgumentException(sprintf(
-//                    "Field type service alias (%s) for service '%s' do not match type name (%s)",
-//                    $name, $this->tableServices[$name], $type->getName()
-//                ));
-//            }
-
             $this->fieldTypes[$name] = $type;
         }
 
         return $this->fieldTypes[$name];
-    }
-
-    /**
-     * @param TableTypeInterface $type
-     */
-    public function setTableType(TableTypeInterface $type)
-    {
-        $this->tableTypes[$type->getName()] = $type;
-    }
-
-    /**
-     * @param FieldTypeInterface $type
-     */
-    public function setFieldType(FieldTypeInterface $type)
-    {
-        $this->fieldTypes[$type->getName()] = $type;
     }
 }

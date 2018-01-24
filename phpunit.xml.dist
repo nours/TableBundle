@@ -8,6 +8,7 @@
     </testsuites>
     <php>
         <server name="KERNEL_DIR" value="./Tests/app/" />
+        <server name="KERNEL_CLASS" value="Nours\TableBundle\Tests\TestKernel" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
     </php>
 </phpunit>

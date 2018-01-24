@@ -29,7 +29,7 @@ class TypesRegistryTest extends TestCase
         $type = new PostType();
         $this->registry->setTableType($type);
 
-        $this->assertSame($type, $this->registry->getTableType('post'));
+        $this->assertSame($type, $this->registry->getTableType(PostType::class));
     }
 
     /**
@@ -40,6 +40,6 @@ class TypesRegistryTest extends TestCase
         $type = new TextType();
         $this->registry->setFieldType($type);
 
-        $this->assertSame($type,  $this->registry->getFieldType('text'));
+        $this->assertSame($type,  $this->registry->getFieldType(TextType::class));
     }
 }

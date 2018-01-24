@@ -12,6 +12,8 @@ namespace Nours\TableBundle\Tests\Table;
 
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Tests\FixtureBundle\Table\FQCNTableType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PagerType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostEmbedType;
 use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 
@@ -29,7 +31,7 @@ class TableTest extends TestCase
 
     public function testGetOptions()
     {
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
             'page'  => '2',
             'limit' => '15'
         ));
@@ -41,7 +43,7 @@ class TableTest extends TestCase
 
     public function testSetPage()
     {
-        $table = $this->createTable('post');
+        $table = $this->createTable(PostType::class);
 
         $table->setPage('123');
         $this->assertSame(123, $table->getPage());
@@ -52,7 +54,7 @@ class TableTest extends TestCase
 
     public function testSetLimit()
     {
-        $table = $this->createTable('post');
+        $table = $this->createTable(PostType::class);
 
         $table->setLimit('123');
         $this->assertSame(123, $table->getLimit());
@@ -63,7 +65,7 @@ class TableTest extends TestCase
 
     public function testCreateView()
     {
-        $table = $this->getTableFactory()->createTable('post', array(
+        $table = $this->getTableFactory()->createTable(PostType::class, array(
             'limit' => 15
         ));
 
@@ -119,7 +121,7 @@ class TableTest extends TestCase
             array('id' => 2)
         );
 
-        $table = $this->getTableFactory()->createTable('pager', array(
+        $table = $this->getTableFactory()->createTable(PagerType::class, array(
             'data' => $data,
             'limit' => 20,
             'pages' => 1,
@@ -142,7 +144,7 @@ class TableTest extends TestCase
     {
         $serializer = $this->get('jms_serializer');
 
-        $table = $this->getTableFactory()->createTable('pager', array(
+        $table = $this->getTableFactory()->createTable(PagerType::class, array(
             'data' => array(),
             'json_vars' => array(
                 'expected' => 'foo'
@@ -165,7 +167,7 @@ class TableTest extends TestCase
             array('id' => 2)
         );
 
-        $table = $this->getTableFactory()->createTable('pager', array(
+        $table = $this->getTableFactory()->createTable(PagerType::class, array(
             'data' => $data,
             'json_vars' => function(TableInterface $table) {
                 return array(
@@ -186,7 +188,7 @@ class TableTest extends TestCase
 
     public function testCreateAnotherView()
     {
-        $table = $this->getTableFactory()->createTable('post_embed');
+        $table = $this->getTableFactory()->createTable(PostEmbedType::class);
 
         $view = $table->createView();
 

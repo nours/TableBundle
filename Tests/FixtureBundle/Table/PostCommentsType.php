@@ -10,6 +10,8 @@
 
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
+use Nours\TableBundle\Field\Type\CollectionType;
+use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\AbstractType;
 use Nours\TableBundle\Builder\TableBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -28,10 +30,10 @@ class PostCommentsType extends AbstractType
     public function buildTable(TableBuilder $builder, array $options)
     {
         $builder
-            ->add('id', 'text', array(
+            ->add('id', TextType::class, array(
                 'sortable' => true
             ))
-            ->add('comments', 'collection', array(
+            ->add('comments', CollectionType::class, array(
                 'display' => false,
                 'association' => true,
                 'property_path' => 'comment',
@@ -55,7 +57,7 @@ class PostCommentsType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'post_comments';
     }

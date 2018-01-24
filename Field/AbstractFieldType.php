@@ -66,6 +66,11 @@ abstract class AbstractFieldType implements FieldTypeInterface
     {
         // Backward compatibility
         if ($name = $this->getName()) {
+            trigger_error(sprintf(
+                'Implementing getName function on field type %s is deprecated. Rename it to getBlockPrefix.',
+                get_class($this)
+            ), E_USER_DEPRECATED);
+
             return $name;
         }
 

@@ -4,6 +4,13 @@ namespace Nours\TableBundle\Tests\Factory;
 
 use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Field\FieldInterface;
+use Nours\TableBundle\Field\Type\BooleanType;
+use Nours\TableBundle\Field\Type\CheckboxType;
+use Nours\TableBundle\Field\Type\CollectionType;
+use Nours\TableBundle\Field\Type\DateType;
+use Nours\TableBundle\Field\Type\HiddenType;
+use Nours\TableBundle\Field\Type\LabelType;
+use Nours\TableBundle\Field\Type\PrototypeType;
 use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Tests\FixtureBundle\Field\FQCNFieldType;
@@ -56,14 +63,14 @@ class TableFactoryTest extends TestCase
      */
     public function testGetFieldType()
     {
-        $this->factory->getFieldType('boolean');
-        $this->factory->getFieldType('checkbox');
-        $this->factory->getFieldType('collection');
-        $this->factory->getFieldType('date');
-        $this->factory->getFieldType('hidden');
-        $this->factory->getFieldType('label');
-        $this->factory->getFieldType('prototype');
-        $this->factory->getFieldType('text');
+        $this->factory->getFieldType(BooleanType::class);
+        $this->factory->getFieldType(CheckboxType::class);
+        $this->factory->getFieldType(CollectionType::class);
+        $this->factory->getFieldType(DateType::class);
+        $this->factory->getFieldType(HiddenType::class);
+        $this->factory->getFieldType(LabelType::class);
+        $this->factory->getFieldType(PrototypeType::class);
+        $this->factory->getFieldType(TextType::class);
     }
 
     /**
@@ -72,14 +79,14 @@ class TableFactoryTest extends TestCase
     public function testCreateTextTypeField()
     {
         /** @var FieldInterface $field */
-        $field = $this->factory->createField('test', 'text', array(
+        $field = $this->factory->createField('test', TextType::class, array(
             'label' => 'The Text Field',
             'sortable' => true,
             'searchable' => true
         ));
         $this->assertNotNull($field);
         $this->assertEquals('test', $field->getName());
-        $this->assertEquals('text', $field->getTypeName());
+        $this->assertEquals(TextType::class, get_class($field->getType()));
         $this->assertEquals('The Text Field', $field->getLabel());
 
         $this->assertTrue($field->getOption('sortable'));
@@ -92,12 +99,12 @@ class TableFactoryTest extends TestCase
     public function testCreateBooleanTypeField()
     {
         /** @var FieldInterface $field */
-        $field = $this->factory->createField('testBool', 'boolean', array(
+        $field = $this->factory->createField('testBool', BooleanType::class, array(
             'label' => 'testBool label'
         ));
         $this->assertNotNull($field);
         $this->assertEquals('testBool', $field->getName());
-        $this->assertEquals('boolean', $field->getTypeName());
+        $this->assertEquals(BooleanType::class, get_class($field->getType()));
         $this->assertEquals('testBool label', $field->getLabel());
 
         $this->assertFalse($field->getOption('sortable'));
@@ -110,10 +117,10 @@ class TableFactoryTest extends TestCase
     public function testCreateDateTypeField()
     {
         /** @var FieldInterface $field */
-        $field = $this->factory->createField('testDate', 'date');
+        $field = $this->factory->createField('testDate', DateType::class);
         $this->assertNotNull($field);
         $this->assertEquals('testDate', $field->getName());
-        $this->assertEquals('date', $field->getTypeName());
+        $this->assertEquals(DateType::class, get_class($field->getType()));
 
         $this->assertFalse($field->getOption('sortable'));
         $this->assertFalse($field->getOption('searchable'));
@@ -125,10 +132,10 @@ class TableFactoryTest extends TestCase
     public function testCreateLabelTypeField()
     {
         /** @var FieldInterface $field */
-        $field = $this->factory->createField('state', 'label');
+        $field = $this->factory->createField('state', LabelType::class);
         $this->assertNotNull($field);
         $this->assertEquals('state', $field->getName());
-        $this->assertEquals('label', $field->getTypeName());
+        $this->assertEquals(LabelType::class, get_class($field->getType()));
 
         $this->assertFalse($field->getOption('sortable'));
         $this->assertFalse($field->getOption('searchable'));
@@ -147,7 +154,7 @@ class TableFactoryTest extends TestCase
         ));
         $this->assertNotNull($field);
         $this->assertEquals('test', $field->getName());
-        $this->assertEquals('text', $field->getTypeName());
+        $this->assertEquals(TextType::class, get_class($field->getType()));
     }
 
     /**
@@ -166,12 +173,11 @@ class TableFactoryTest extends TestCase
     public function testCreateTable()
     {
         /** @var TableInterface $table */
-        $table = $this->factory->createTable('post');
+        $table = $this->factory->createTable(PostType::class);
 
         $this->assertNotNull($table);
         $this->assertNull($table->getData());
         $this->assertEquals('post', $table->getName());
-        $this->assertEquals('post', $table->getOption('name'));
 
         // The type have 5 fields
         $this->assertCount(5, $table->getFields());

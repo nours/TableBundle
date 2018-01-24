@@ -10,6 +10,7 @@
 
 namespace Nours\TableBundle\Tests\Twig;
 
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 
 /**
@@ -39,7 +40,7 @@ class TableThemeTest extends TestCase
     public function testTableTheme()
     {
         $html = $this->twig->render('table_theme.html.twig', array(
-            'table' => $this->createTable('post', array(
+            'table' => $this->createTable(PostType::class, array(
                 'limit' => 10,
             ))->createView()
         ));

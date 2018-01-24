@@ -11,8 +11,13 @@
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
 use Nours\TableBundle\Builder\TableBuilder;
+use Nours\TableBundle\Field\Type\BooleanType;
+use Nours\TableBundle\Field\Type\LabelType;
+use Nours\TableBundle\Field\Type\PrototypeType;
+use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\AbstractType;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
+use Nours\TableBundle\Tests\FixtureBundle\Field\ExtendedTextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,10 +34,10 @@ class PostType extends AbstractType
     public function buildTable(TableBuilder $builder, array $options)
     {
         $builder
-            ->add('id', 'text', array(
+            ->add('id', TextType::class, array(
                 'sortable' => true
             ))
-            ->add('status', 'label', array(
+            ->add('status', LabelType::class, array(
                 'sortable' => true,
                 'searchable' => true,
                 'filter_type' => ChoiceType::class,
@@ -41,8 +46,7 @@ class PostType extends AbstractType
                         'new' => Post::STATUS_NEW,
                         'editing' => Post::STATUS_EDITING,
                         'published' => Post::STATUS_PUBLISHED,
-                    ),
-                    'choices_as_values' => true,
+                    )
                 ),
                 'labels' => array(
                     Post::STATUS_NEW => array('style' => 'danger'),
@@ -50,14 +54,14 @@ class PostType extends AbstractType
                     Post::STATUS_PUBLISHED => array('style' => 'success')
                 )
             ))
-            ->add('isActive', 'boolean', array(
+            ->add('isActive', BooleanType::class, array(
                 'sortable' => true
             ))
-            ->add('content', 'extended_text', array(
+            ->add('content', ExtendedTextType::class, array(
                 'searchable' => true,
                 'truncate' => 20
             ))
-            ->add('prototype', 'prototype', array(
+            ->add('prototype', PrototypeType::class, array(
                 'prototype' => 'Post __id__ (__status__)',
                 'mappings' => array(
                     '__id__' => 'id',
@@ -77,7 +81,7 @@ class PostType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'post';
     }

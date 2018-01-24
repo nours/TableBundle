@@ -11,6 +11,7 @@
 namespace Nours\TableBundle\Tests\Extension;
 
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -25,7 +26,7 @@ class FormFilterExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post');
+        $table = $this->createTable(PostType::class);
 
         $table->handle(new Request(array(
             'filter' => array(
@@ -43,7 +44,7 @@ class FormFilterExtensionTest extends TestCase
 
     public function testFormViewIsCreated()
     {
-        $table = $this->createTable('post');
+        $table = $this->createTable(PostType::class);
 
         $view = $table->createView();
 //        var_dump($table->getType());die;

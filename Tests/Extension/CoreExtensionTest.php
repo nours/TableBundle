@@ -11,6 +11,7 @@
 namespace Nours\TableBundle\Tests\Extension;
 
 use Nours\TableBundle\Factory\TableFactory;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,7 +46,7 @@ class CoreExtensionTest extends TestCase
             array('id' => 4)
         );
 
-        $table = $this->factory->createTable('post', array(
+        $table = $this->factory->createTable(PostType::class, array(
             'page' => 1,
             'limit' => 10,
             'pages' => 2,
@@ -75,7 +76,7 @@ class CoreExtensionTest extends TestCase
             array('id' => 4)
         );
 
-        $view = $this->factory->createTable('post', array(
+        $view = $this->factory->createTable(PostType::class, array(
             'page' => 1,
             'limit' => 10,
             'pages' => 2,
@@ -103,7 +104,7 @@ class CoreExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->factory->createTable('post', array(
+        $table = $this->factory->createTable(PostType::class, array(
             'sort' => 'status'
         ));
 

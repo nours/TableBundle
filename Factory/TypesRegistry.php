@@ -16,7 +16,7 @@ use Nours\TableBundle\Field\FieldTypeInterface;
 
 /**
  * Holds table and field types.
- * 
+ *
  * @author David Coudrier <david.coudrier@gmail.com>
  */
 class TypesRegistry implements TypesRegistryInterface
@@ -36,7 +36,11 @@ class TypesRegistry implements TypesRegistryInterface
      */
     public function setTableType(TableTypeInterface $type)
     {
-        $this->tableTypes[$type->getName()] = $type;
+        if ($name = $type->getName()) {
+            $this->tableTypes[$name] = $type;
+        }
+
+        $this->tableTypes[get_class($type)] = $type;
     }
 
     /**
@@ -44,7 +48,11 @@ class TypesRegistry implements TypesRegistryInterface
      */
     public function setFieldType(FieldTypeInterface $type)
     {
-        $this->fieldTypes[$type->getName()] = $type;
+        if ($name = $type->getName()) {
+            $this->fieldTypes[$name] = $type;
+        }
+
+        $this->fieldTypes[get_class($type)] = $type;
     }
 
     /**

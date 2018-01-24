@@ -6,6 +6,12 @@ namespace Nours\TableBundle\Tests\Extension;
 use Nours\RestAdminBundle\Tests\FixtureBundle\Fixtures\LoadAll;
 use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostCommentAuthorType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostCommentsType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostEmbedType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostStatusHiddenType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostStatusType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,7 +33,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
             'limit' => 15,
         ))->handle();
 
@@ -48,7 +54,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
             'sort' => 'content',
             'order' => 'DESC'
         ));
@@ -62,7 +68,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
             'sort' => 'status',
             'order' => 'ASC'
         ))->handle();
@@ -81,7 +87,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
             'search' => 'post',
             'sort' => 'status',
             'order' => 'ASC'
@@ -100,7 +106,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
             'sort' => 'isActive',
             'order' => 'DESC'
         ))->handle();
@@ -118,7 +124,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
             'search' => 'published'
         ))->handle();
 
@@ -133,7 +139,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
         ));
 
         $table->handle(new Request(array(
@@ -152,7 +158,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_embed', array(
+        $table = $this->createTable(PostEmbedType::class, array(
             'sort' => 'date',
             'order' => 'desc'
         ))->handle();
@@ -170,7 +176,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_embed', array(
+        $table = $this->createTable(PostEmbedType::class, array(
             'search' => 'author2@authorship.org',
             'sort' => 'author_email',
             'order' => 'desc'
@@ -187,7 +193,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_embed', array(
+        $table = $this->createTable(PostEmbedType::class, array(
             'search' => 'foobarbaz',
             'sort' => 'author',
             'order' => 'desc'
@@ -204,7 +210,7 @@ class DoctrineORMExtensionTest extends TestCase
         $this->loadFixtures();
         $author = $this->getEntityManager()->find('FixtureBundle:Author', 1);
 
-        $table = $this->createTable('post_embed', array(
+        $table = $this->createTable(PostEmbedType::class, array(
             'sort' => 'date',
             'order' => 'desc',
             'filter_data' => array(
@@ -230,7 +236,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_embed');
+        $table = $this->createTable(PostEmbedType::class);
 
         $table->handle(new Request(array(
             'filter' => array(
@@ -249,7 +255,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_comments');
+        $table = $this->createTable(PostCommentsType::class);
 
         $table->handle(new Request(array(
             'filter' => array(
@@ -264,7 +270,7 @@ class DoctrineORMExtensionTest extends TestCase
         $this->assertEquals(3, $data[0]->getId());
 
         // Another request
-        $table = $this->createTable('post_comments');
+        $table = $this->createTable(PostCommentsType::class);
         $table->handle(new Request(array(
             'filter' => array(
                 'comments' => array('1')
@@ -283,7 +289,7 @@ class DoctrineORMExtensionTest extends TestCase
         $this->loadFixtures();
         $author = $this->getEntityManager()->find('FixtureBundle:Author', 2);
 
-        $table = $this->createTable('post_embed', array(
+        $table = $this->createTable(PostEmbedType::class, array(
             'sort' => 'date',
             'order' => 'desc',
             'filter_data' => array(
@@ -309,7 +315,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_status');
+        $table = $this->createTable(PostStatusType::class);
 
         // Form must not be submitted, otherwise it will blank default options
         $table->handle(new Request(array(
@@ -333,7 +339,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_status_hidden');
+        $table = $this->createTable(PostStatusHiddenType::class);
 
         $table->handle(new Request(array(
             'filter' => array(
@@ -355,7 +361,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_status_hidden');
+        $table = $this->createTable(PostStatusHiddenType::class);
 
         $table->handle(new Request(array(
             'filter' => array(
@@ -381,7 +387,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_comment_author');
+        $table = $this->createTable(PostCommentAuthorType::class);
 
         // Form must not be submitted, otherwise it will blank default options
         $table->handle(new Request(array(
@@ -399,7 +405,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
             'page' => 2
         ));
 
@@ -413,7 +419,7 @@ class DoctrineORMExtensionTest extends TestCase
      */
     public function testDisabledPagination()
     {
-        $view = $this->factory->createTable('post', array(
+        $view = $this->createTable(PostType::class, array(
             'pagination' => false
         ))->handle()->createView();
 
@@ -433,7 +439,7 @@ class DoctrineORMExtensionTest extends TestCase
      */
     public function testFilterUsingLikeOperator()
     {
-        $table = $this->factory->createTable('post_status');
+        $table = $this->factory->createTable(PostStatusType::class);
 
         $table->handle(new Request(array(
             'filter' => array(
@@ -456,7 +462,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_comment_author');
+        $table = $this->createTable(PostCommentAuthorType::class);
 
         $table->handle(new Request(array(
             'search' => 'Foo'
@@ -474,7 +480,7 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createTable('post_comment_author');
+        $table = $this->createTable(PostCommentAuthorType::class);
 
         $table->handle(new Request(array(
             'sort'  => array(

@@ -28,6 +28,8 @@ interface FieldInterface
     /**
      * The resolved type of the field
      *
+     * @deprecated Should always return null
+     *
      * @return string
      */
     public function getTypeName();

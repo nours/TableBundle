@@ -107,7 +107,7 @@ class FormExtension extends AbstractExtension
             if ($request) {
                 $form->handleRequest($request);
 
-                if ($form->isValid()) {
+                if ($form->isSubmitted() && $form->isValid()) {
                     $table->setOption('filter_data', $form->getData());
                 }
             }

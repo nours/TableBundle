@@ -25,7 +25,7 @@ class HiddenType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'hidden';
     }

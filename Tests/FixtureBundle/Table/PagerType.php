@@ -11,6 +11,7 @@
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
 use Nours\TableBundle\Builder\TableBuilder;
+use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\AbstractType;
 
 /**
@@ -26,7 +27,7 @@ class PagerType extends AbstractType
     public function buildTable(TableBuilder $builder, array $options)
     {
         $builder
-            ->add('id', 'text')
+            ->add('id', TextType::class)
         ;
     }
 
@@ -35,7 +36,7 @@ class PagerType extends AbstractType
         return 'core';
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pager';
     }

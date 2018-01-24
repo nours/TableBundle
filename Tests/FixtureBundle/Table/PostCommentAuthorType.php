@@ -10,6 +10,7 @@
 
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
+use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\AbstractType;
 use Nours\TableBundle\Builder\TableBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,22 +28,22 @@ class PostCommentAuthorType extends AbstractType
     public function buildTable(TableBuilder $builder, array $options)
     {
         $builder
-            ->add('id', 'text', array(
+            ->add('id', TextType::class, array(
                 'sortable' => true
             ))
-            ->add('page', 'text', array(
+            ->add('page', TextType::class, array(
                 'association' => true,
                 'property' => 'content',
                 'parent_alias' => 'author'
             ))
-            ->add('author', 'text', array(
+            ->add('author', TextType::class, array(
                 'association' => true,
                 'property'    => 'name',
                 'sortable'    => true,
                 'searchable'  => true,
                 'query_path'  => array( 'lastname', 'author.name'  )
             ))
-            ->add('authorEmail', 'text', array(
+            ->add('authorEmail', TextType::class, array(
                 'association' => 'author',
                 'property' => 'email'
             ))
@@ -59,7 +60,7 @@ class PostCommentAuthorType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'post_comment_author';
     }

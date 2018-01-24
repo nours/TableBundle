@@ -5,6 +5,9 @@ namespace Nours\TableBundle\Tests\Renderer;
 use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\View;
 use Nours\TableBundle\Tests\FixtureBundle\Table\FQCNTableType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostCommentsType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostEmbedType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
 use Nours\TableBundle\Renderer\TwigRenderer;
 
@@ -35,7 +38,7 @@ class TwigRendererTest extends TestCase
     {
         parent::setUp();
 
-        $this->table = $this->createTable('post');
+        $this->table = $this->createTable(PostType::class);
         $this->view = $this->table->createView();
     }
 
@@ -62,7 +65,7 @@ class TwigRendererTest extends TestCase
     public function testRenderPostTable()
     {
         $renderer = $this->getRenderer();
-        $table = $this->createTable('post', array(
+        $table = $this->createTable(PostType::class, array(
             'limit' => 10,
         ));
 
@@ -97,7 +100,7 @@ EOS;
     public function testRenderPostEmbedTable()
     {
         $renderer = $this->getRenderer();
-        $table = $this->createTable('post_embed');
+        $table = $this->createTable(PostEmbedType::class);
 
         $html = $renderer->renderTable($table->createView());
 
@@ -130,7 +133,7 @@ EOS;
     public function testRenderTableWithDisabledFields()
     {
         $renderer = $this->getRenderer();
-        $table = $this->createTable('post_comments', array(
+        $table = $this->createTable(PostCommentsType::class, array(
             'limit' => 12,
         ));
 

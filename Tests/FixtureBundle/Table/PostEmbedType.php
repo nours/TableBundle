@@ -11,6 +11,9 @@
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
 use Nours\TableBundle\Builder\TableBuilder;
+use Nours\TableBundle\Field\Type\BooleanType;
+use Nours\TableBundle\Field\Type\DateType;
+use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -28,15 +31,15 @@ class PostEmbedType extends AbstractType
     public function buildTable(TableBuilder $builder, array $options)
     {
         $builder
-            ->add('id', 'text', array(
+            ->add('id', TextType::class, array(
                 'sortable' => true
             ))
-            ->add('date', 'date', array(
+            ->add('date', DateType::class, array(
                 'sortable' => true,
                 'searchable' => true,
                 'property_path' => 'embed.date'
             ))
-            ->add('author', 'text', array(
+            ->add('author', TextType::class, array(
                 'sortable' => true,
                 'searchable' => true,
                 'filterable' => true,
@@ -48,16 +51,16 @@ class PostEmbedType extends AbstractType
                     'choice_label' => 'name'
                 )
             ))
-            ->add('author_email', 'text', array(
+            ->add('author_email', TextType::class, array(
                 'sortable' => true,
                 'searchable' => true,
                 'association' => 'author',
                 'property' => 'email'
             ))
-            ->add('isActive', 'boolean', array(
+            ->add('isActive', BooleanType::class, array(
                 'sortable' => true
             ))
-            ->add('content', 'text', array(
+            ->add('content', TextType::class, array(
                 'searchable' => true
             ))
         ;
@@ -73,7 +76,7 @@ class PostEmbedType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'post_embed';
     }
