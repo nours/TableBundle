@@ -14,11 +14,11 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
- * Class TestKernel
+ * Class AppKernel
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class TestKernel extends Kernel
+class AppKernel extends Kernel
 {
     public function registerBundles()
     {
