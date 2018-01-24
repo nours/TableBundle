@@ -2,10 +2,15 @@ services:
 #  _defaults: { public: true }
 
 ###################################################################
+## Fields
+###################################################################
+
+###################################################################
 ## Factory
 ###################################################################
   nours_table.factory:
     class: Nours\TableBundle\Factory\TableFactory
+    public: true
     arguments:
      - ~  # Table types service locator
      - ~  # Field types service locator

@@ -223,6 +223,7 @@ class TableFactory implements TableFactoryInterface
     public function getTableType($name)
     {
         if ($this->tableTypeLocator->has($name)) {
+            var_dump($name);die;
             $type = $this->tableTypeLocator->get($name);
         } elseif (class_exists($name)) {
             if (!in_array('Nours\TableBundle\Table\TableTypeInterface', class_implements($name))) {

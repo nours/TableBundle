@@ -251,9 +251,9 @@ EOS;
      */
     private function getRenderer()
     {
-        // Need to load Twig environment first
-//        $this->get('twig')->initRuntime();
-
-        return $this->get('nours_table.table_renderer.twig');
+        return new TwigRenderer(
+            $this->get('twig'),
+            [ 'table.html.twig', 'fields.html.twig' ]
+        );
     }
 }

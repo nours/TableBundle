@@ -24,7 +24,7 @@ class NoursTableExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('fields.yml');
+//        $loader->load('fields.yml');
 
         $container->setParameter('nours_table.themes', $config['themes']);
         $container->setParameter('nours_table.form_theme', $config['form_theme']);
