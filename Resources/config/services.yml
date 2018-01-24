@@ -4,16 +4,11 @@ services:
 ###################################################################
 ## Factory
 ###################################################################
-  nours_table.registry.dependency_injection:
-    class: Nours\TableBundle\Factory\DependencyInjectionRegistry
-    arguments: [ '@service_container', [], [] ]
-
-  nours_table.registry:
-    alias: nours_table.registry.dependency_injection
-
   nours_table.factory:
     class: Nours\TableBundle\Factory\TableFactory
-    arguments: [ '@nours_table.registry' ]
+    arguments:
+     - ~  # Table types service locator
+     - ~  # Field types service locator
 
 ###################################################################
 ## Extensions

@@ -15,6 +15,7 @@ use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Table\ResolvedType;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TableFactory implements TableFactoryInterface
@@ -30,9 +31,14 @@ class TableFactory implements TableFactoryInterface
     private $sortedExtensions;
 
     /**
-     * @var TypesRegistryInterface
+     * @var ContainerInterface
      */
-    private $registry;
+    private $tableTypeLocator;
+
+    /**
+     * @var ContainerInterface
+     */
+    private $fieldTypeLocator;
 
     /**
      * @var ResolvedType[]
@@ -40,11 +46,15 @@ class TableFactory implements TableFactoryInterface
     private $resolveTableTypes;
 
     /**
-     * {@inheritdoc}
+     * TableFactory constructor.
+     *
+     * @param ContainerInterface $tableTypeLocator
+     * @param ContainerInterface $fieldTypeLocator
      */
-    public function __construct(TypesRegistryInterface $registry)
+    public function __construct(ContainerInterface $tableTypeLocator, ContainerInterface $fieldTypeLocator)
     {
-        $this->registry = $registry;
+        $this->tableTypeLocator = $tableTypeLocator;
+        $this->fieldTypeLocator = $fieldTypeLocator;
     }
 
     /**
@@ -186,18 +196,15 @@ class TableFactory implements TableFactoryInterface
      */
     public function getFieldType($name)
     {
-        $type = $this->registry->getFieldType($name);
-
-        // FQCN lazy-loading
-        if (empty($type)) {
-            if (class_exists($name)) {
-                if (!in_array('Nours\TableBundle\Field\FieldTypeInterface', class_implements($name))) {
-                    throw new \InvalidArgumentException(sprintf("Field type %s must implement FieldTypeInterface", $name));
-                }
-                $type = new $name;
-            } else {
-                throw new \InvalidArgumentException(sprintf("Field type %s unknown", $name));
+        if ($this->fieldTypeLocator->has($name)) {
+            $type = $this->fieldTypeLocator->get($name);
+        } elseif (class_exists($name)) {
+            if (!in_array('Nours\TableBundle\Field\FieldTypeInterface', class_implements($name))) {
+                throw new \InvalidArgumentException(sprintf("Field type %s must implement FieldTypeInterface", $name));
             }
+            $type = new $name;
+        } else {
+            throw new \InvalidArgumentException(sprintf("Field type %s does not exist", $name));
         }
 
         // Type name deprecation error
@@ -215,25 +222,15 @@ class TableFactory implements TableFactoryInterface
      */
     public function getTableType($name)
     {
-        $type = $this->registry->getTableType($name);
-
-        // FQCN lazy-loading
-        if (empty($type)) {
-            if (class_exists($name)) {
-                if (!in_array('Nours\TableBundle\Table\TableTypeInterface', class_implements($name))) {
-                    throw new \InvalidArgumentException(sprintf("Table type %s must implement FieldTypeInterface", $name));
-                }
-                $type = new $name;
-            } else {
-                throw new \InvalidArgumentException(sprintf("Table type %s unknown", $name));
+        if ($this->tableTypeLocator->has($name)) {
+            $type = $this->tableTypeLocator->get($name);
+        } elseif (class_exists($name)) {
+            if (!in_array('Nours\TableBundle\Table\TableTypeInterface', class_implements($name))) {
+                throw new \InvalidArgumentException(sprintf("Table type %s must implement FieldTypeInterface", $name));
             }
-        }
-
-        // Type name deprecation error
-        if ($name !== get_class($type)) {
-            trigger_error(sprintf(
-                "Using alias %s for table type %s is deprecated, please remove them and use FQCNs", $name, get_class($type)
-            ), E_USER_DEPRECATED);
+            $type = new $name;
+        } else {
+            throw new \InvalidArgumentException(sprintf("Table type %s does not exist", $name));
         }
 
         return $type;
@@ -324,40 +321,11 @@ class TableFactory implements TableFactoryInterface
      */
     private function sortExtensions()
     {
-//        $index = array();
-//        foreach ($this->extensions as $extension) {
-//            $dependency = (array)$extension->getDependency();
-//            if ($dependency) {
-//                foreach ($dependency as $dep) {
-//                    $index[$dep][] = $extension->getName();
-//                }
-//            } else {
-//                $index[''][] = $extension->getName();
-//            }
-//        }
-
         // Ensure extensions are loaded in order
         $this->sortedExtensions = array();
         foreach ($this->extensions as $extension) {
             $this->addExtensionToSorted($extension);
         }
-
-
-//        $this->addSortedExtension($index['']);
-//        $added = array();
-//        $stack = array('');
-//        while (!empty($stack)) {
-//            $current = array_pop($stack);
-//            if (isset($index[$current])) {
-//                foreach ($index[$current] as $name) {
-//                    if ($name && !isset($added[$name])) {
-//                        $this->sortedExtensions[] = $this->extensions[$name];
-//                        $added[$name] = true;
-//                        $stack[] = $name;
-//                    }
-//                }
-//            }
-//        }
     }
 
 

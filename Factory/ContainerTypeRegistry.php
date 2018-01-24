@@ -10,27 +10,30 @@
 
 namespace Nours\TableBundle\Factory;
 
-use Nours\TableBundle\Field\FieldTypeInterface;
 use Nours\TableBundle\Table\TableTypeInterface;
+use Psr\Container\ContainerInterface;
 
 /**
- * Holds table and field types.
+ * Class ContainerTypeRegistry
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-interface TypesRegistryInterface
+class ContainerTypeRegistry
 {
+    private $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * @param string $name
      *
      * @return TableTypeInterface|null
      */
-    public function getTableType($name);
-
-    /**
-     * @param string $name
-     *
-     * @return FieldTypeInterface|null
-     */
-    public function getFieldType($name);
+    public function getType($name)
+    {
+        return $this->container->has($name) ? $this->container->get($name) : null;
+    }
 }
