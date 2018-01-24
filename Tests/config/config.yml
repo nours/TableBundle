@@ -52,7 +52,8 @@ doctrine:
         auto_mapping: true
 
 twig:
-    default_path: '%kernel.root_dir%/templates'
+    paths:
+        '%kernel.root_dir%/templates': ~
 
 nours_table:
     form_theme: form.html.twig
