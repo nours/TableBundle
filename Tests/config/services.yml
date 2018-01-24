@@ -1,5 +1,5 @@
 services:
-  _defaults: { public: true }
+#  _defaults: { public: true }
 
   tests.table.post:
     class: Nours\TableBundle\Tests\FixtureBundle\Table\PostType

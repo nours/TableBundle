@@ -1,5 +1,5 @@
 services:
-  _defaults: { public: true }
+#  _defaults: { public: true }
 
   nours_table.table_field.text:
     class: Nours\TableBundle\Field\Type\TextType

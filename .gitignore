@@ -1,7 +1,7 @@
 composer.lock
 vendor
-Tests/app/cache
-Tests/app/logs
+Tests/cache
+Tests/logs
 Tests/app/*.cache
 Tests/web/*
 !Tests/web/app.php
