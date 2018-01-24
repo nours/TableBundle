@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-namespace Nours\TableBundle\Tests;
-
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
