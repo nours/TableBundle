@@ -1,4 +1,5 @@
 imports:
+    - { resource: services.yml }
 
 parameters:
   locale: 'fr'

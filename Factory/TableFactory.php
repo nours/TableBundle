@@ -16,6 +16,7 @@ use Nours\TableBundle\Table\ResolvedType;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TableFactory implements TableFactoryInterface
@@ -223,7 +224,6 @@ class TableFactory implements TableFactoryInterface
     public function getTableType($name)
     {
         if ($this->tableTypeLocator->has($name)) {
-            var_dump($name);die;
             $type = $this->tableTypeLocator->get($name);
         } elseif (class_exists($name)) {
             if (!in_array('Nours\TableBundle\Table\TableTypeInterface', class_implements($name))) {

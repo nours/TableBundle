@@ -29,6 +29,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PostType extends AbstractType
 {
     /**
+     * DI check
+     *
+     * @param array $arg
+     */
+    public function __construct(array $arg)
+    {
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildTable(TableBuilder $builder, array $options)

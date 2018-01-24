@@ -1,0 +1,11 @@
+
+services:
+  tests.table.post:
+    class: Nours\TableBundle\Tests\FixtureBundle\Table\PostType
+    arguments: [ [] ]
+    tags: [ { name: nours_table.table_type } ]
+
+  tests.field:
+    class: Nours\TableBundle\Tests\FixtureBundle\Field\ExtendedTextType
+    arguments: [ [] ]
+    tags: [ { name: nours_table.field_type } ]

@@ -21,6 +21,15 @@ use Nours\TableBundle\Field\Type\TextType;
 class ExtendedTextType extends AbstractFieldType
 {
     /**
+     * DI check
+     *
+     * @param array $arg
+     */
+    public function __construct(array $arg)
+    {
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getParent()
