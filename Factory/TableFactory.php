@@ -227,7 +227,7 @@ class TableFactory implements TableFactoryInterface
             $type = $this->tableTypeLocator->get($name);
         } elseif (class_exists($name)) {
             if (!in_array('Nours\TableBundle\Table\TableTypeInterface', class_implements($name))) {
-                throw new \InvalidArgumentException(sprintf("Table type %s must implement FieldTypeInterface", $name));
+                throw new \InvalidArgumentException(sprintf("Table type %s must implement TableTypeInterface", $name));
             }
             $type = new $name;
         } else {
