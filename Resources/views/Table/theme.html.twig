@@ -39,7 +39,7 @@
                 this.table.on('post-body.bs.table', $.proxy(this.onPostBody, this));
                 this.table.bootstrapTable(options);
                 this.form.on('change', 'input[type=checkbox], input[type=radio], select', $.proxy(this.refresh, this));
-                this.form.on('keyup', 'input[type=text]', $.proxy(this.onKeyUp, this));
+                this.form.on('change keyup', 'input[type=text]', $.proxy(this.onKeyUp, this));
             };
 
             Table.prototype.onKeyUp = function() {
