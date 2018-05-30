@@ -45,8 +45,6 @@ class TableViewHandler implements SubscribingHandlerInterface
      */
     public function serializeTableViewToJson(JsonSerializationVisitor $visitor, View $view, array $type, Context $context)
     {
-        $table = $view->table;
-
-        return $visitor->visitArray($table->toJson(), $type, $context);
+        return $visitor->visitArray($view->toJson(), $type, $context);
     }
 }

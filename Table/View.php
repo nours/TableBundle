@@ -59,6 +59,22 @@ class View implements \IteratorAggregate
     }
 
     /**
+     * @return mixed
+     */
+    public function toJson()
+    {
+        $json = $this->table->toJson();
+
+        foreach ($this->table->getOption('serialized_vars') as $var) {
+            if (isset($this->vars[$var])) {
+                $json[$var] = $this->vars[$var];
+            }
+        }
+
+        return $json;
+    }
+
+    /**
      * @return \ArrayIterator
      */
     public function getIterator()

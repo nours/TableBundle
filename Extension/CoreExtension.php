@@ -52,7 +52,8 @@ class CoreExtension extends AbstractExtension
             'sort'       => null,   // The sort field
             'order'      => 'ASC',  // The sort order
             'url'        => null,   // Set to use ajax data loading
-            'json_vars'  => array()
+            'json_vars'  => array(),
+            'serialized_vars' => array()
         ));
         $resolver->setRequired('name');
 
