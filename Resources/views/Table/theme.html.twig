@@ -69,6 +69,8 @@
             };
 
             Table.prototype.responseHandler = function(res) {
+                this.table.trigger('response.table', [res]);
+
                 return {
                     total: res.total,
                     rows: res.data
