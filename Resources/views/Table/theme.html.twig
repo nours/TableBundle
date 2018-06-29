@@ -65,6 +65,9 @@
                     queryParams.sort = params.sortName;
                     queryParams.order = params.sortName ? params.sortOrder : null
                 }
+
+                this.table.trigger('query.table', [queryParams]);
+
                 return queryParams
             };
 
