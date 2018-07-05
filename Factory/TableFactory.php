@@ -109,7 +109,7 @@ class TableFactory implements TableFactoryInterface
 
         // Type configuration should prevail over extensions
         $type->configureOptions($resolver);
-        $resolver->setDefault('name', $type->getName());
+        $resolver->setDefault('name', $type->getBlockPrefix());
 
         return $resolver->resolve($options);
     }

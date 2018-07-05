@@ -73,7 +73,7 @@ class Table implements TableInterface
      */
     public function getName()
     {
-        return $this->type->getBlockPrefix();
+        return $this->getOption('name');
     }
     
     /**
