@@ -44,6 +44,7 @@ class SearchableType extends AbstractType
                     'operator' => 'LIKE',
                     'format' => '%__SEARCH__%'
                 )
+//                'search_operation' => 'word'
             ])
         ;
     }
@@ -54,7 +55,8 @@ class SearchableType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Searchable'
+            'class' => 'Nours\TableBundle\Tests\FixtureBundle\Entity\Searchable',
+            'query'
         ));
     }
 

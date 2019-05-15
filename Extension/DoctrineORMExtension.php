@@ -191,8 +191,8 @@ class DoctrineORMExtension extends AbstractExtension
                         $format = '%__SEARCH__';
                         $operator = 'LIKE';
                         break;
-                    case 'word' :   // UNTESTED (sqlite seems not support this)
-                        $format = '[[:<:]]__SEARCH';
+                    case 'word' :   // UNTESTED (issues with sqlite)
+                        $format = '[[:<:]]__SEARCH__';
                         $operator = 'REGEXP';
                         break;
                     case 'contains' :
@@ -417,17 +417,19 @@ class DoctrineORMExtension extends AbstractExtension
                 $queryPaths = (array)$field->getOption('query_path');
                 $operation = $field->getOption('search_operation');
 
-                if (is_array($operation)) {
-                    $operator = $operation['operator'];
-                    $param = 'search_field_' . $field->getName();
+                $operator = $operation['operator'];
+                $param = 'search_field_' . $field->getName();
 
-                    $paramValue = str_replace('__SEARCH__', $search, $operation['format']);
+                $paramValue = str_replace('__SEARCH__', $search, $operation['format']);
 
-                    $params[$param] = $paramValue;
-                }
+                $params[$param] = $paramValue;
 
                 foreach ($queryPaths as $queryPath) {
-                    $expr->add($this->fixQueryPath($queryPath, $field) . ' ' . $operator . ' :'.$param);
+                    if ($operator === 'LIKE') {
+                        $expr->add($this->fixQueryPath($queryPath, $field) . ' ' . $operator . ' :'.$param);
+                    } else {
+                        $expr->add($operator . '(' . $this->fixQueryPath($queryPath, $field) . ', :' . $param . ') = 1');
+                    }
                 }
             }
         }

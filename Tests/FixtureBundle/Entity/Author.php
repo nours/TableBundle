@@ -26,7 +26,6 @@ class Author
      *
      * @ORM\Column(type="integer")
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      */
     private $id;
 
@@ -57,6 +56,13 @@ class Author
      * @ORM\ManyToOne(targetEntity="Post")
      */
     private $page;
+
+    /**
+     */
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return int

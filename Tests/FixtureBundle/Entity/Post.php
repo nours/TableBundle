@@ -32,7 +32,6 @@ class Post
      *
      * @ORM\Column(type="integer")
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      */
     private $id;
 
@@ -80,10 +79,12 @@ class Post
 
 
     /**
+     * @param $id
      * @param Author $author
      */
-    public function __construct(Author $author)
+    public function __construct($id, Author $author)
     {
+        $this->id = $id;
         $this->author = $author;
         $this->comments = new ArrayCollection();
     }

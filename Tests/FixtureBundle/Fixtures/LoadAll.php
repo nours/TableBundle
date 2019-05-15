@@ -26,14 +26,14 @@ class LoadAll extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
-        $author = new Author();
+        $author = new Author(1);
         $author->setName('author 1');
         $author->setLastname('Foo');
         $author->setEmail('author@authorship.org');
 
         $manager->persist($author);
 
-        $author2 = new Author();
+        $author2 = new Author(2);
         $author2->setName('author 2');
         $author2->setLastname('Bar');
         $author2->setEmail('author2@authorship.org');
@@ -43,7 +43,7 @@ class LoadAll extends AbstractFixture
         $date = new \DateTime();
 
         // First post
-        $post = new Post($author);
+        $post = new Post(1, $author);
         $post->setContent('content');
         $post->getEmbed()->setDate(clone $date);
 
@@ -51,12 +51,12 @@ class LoadAll extends AbstractFixture
         $date->add(new \DateInterval('P1D'));
 
         // Second post
-        $post = new Post($author);
+        $post = new Post(2, $author);
         $post->setContent('second post');
         $post->setStatus(Post::STATUS_EDITING);
         $post->getEmbed()->setDate(clone $date);
 
-        $comment = new Comment($post);
+        $comment = new Comment(1, $post);
         $comment->setComment('comment1');
         $manager->persist($comment);
 
@@ -64,16 +64,16 @@ class LoadAll extends AbstractFixture
         $date->add(new \DateInterval('P1D'));
 
         // Third post
-        $post = new Post($author2);
+        $post = new Post(3, $author2);
         $post->setContent('third post');
         $post->setStatus(Post::STATUS_PUBLISHED);
         $post->setActive(true);
         $post->getEmbed()->setDate(clone $date);
 
-        $comment = new Comment($post);
+        $comment = new Comment(2, $post);
         $comment->setComment('comment2');
         $manager->persist($comment);
-        $comment = new Comment($post);
+        $comment = new Comment(3, $post);
         $comment->setComment('comment3');
         $manager->persist($comment);
 

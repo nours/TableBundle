@@ -573,10 +573,13 @@ class DoctrineORMExtensionTest extends TestCase
     {
         $this->loadFixtures();
 
-        $table = $this->createSearchTable('sit');
+        $table = $this->createSearchTable('lorem');
         $this->assertCount(1, $table->getData());
 
-        $table = $this->createSearchTable('lorem');
+        $table = $this->createSearchTable('ipsum');
+        $this->assertCount(1, $table->getData());
+
+        $table = $this->createSearchTable('sit');
         $this->assertCount(1, $table->getData());
 
         $table = $this->createSearchTable('amet');

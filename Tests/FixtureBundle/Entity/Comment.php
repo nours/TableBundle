@@ -30,7 +30,6 @@ class Comment
      *
      * @ORM\Column(type="integer")
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      */
     private $id;
 
@@ -52,8 +51,9 @@ class Comment
     /**
      * @param Post $post
      */
-    public function __construct(Post $post)
+    public function __construct($id, Post $post)
     {
+        $this->id = $id;
         $post->getComments()->add($this);
         $this->post = $post;
     }

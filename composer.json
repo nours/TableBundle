@@ -24,7 +24,8 @@
         "doctrine/annotations": "~1.2",
         "doctrine/orm" : "~2.5",
         "jms/serializer-bundle" : "~2.3",
-        "doctrine/data-fixtures": "~1.1"
+        "doctrine/data-fixtures": "~1.1",
+        "beberlei/DoctrineExtensions": "^1.2"
     },
     "suggest" : {
         "doctrine/orm": "Integrated using orm extension"

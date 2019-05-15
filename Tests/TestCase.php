@@ -75,7 +75,15 @@ class TestCase extends KernelTestCase
         $loader = new Loader();
         $loader->loadFromDirectory(__DIR__ . '/FixtureBundle/Fixtures');
 
+        // Fix sqlite auto increment not resetted
+        $cnx = $this->getEntityManager()->getConnection();
+        foreach (array('post', 'author', 'comment', 'searchable') as $table) {
+            $cnx->executeUpdate("DELETE FROM $table");
+            $cnx->executeUpdate("DELETE FROM sqlite_sequence WHERE name='$table'");
+        }
+
         $purger = new ORMPurger();
+        $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
         $executor = new ORMExecutor($this->getEntityManager(), $purger);
         $executor->execute($loader->getFixtures());
     }
