@@ -93,7 +93,7 @@ class LoadAll extends AbstractFixture
         $searchable4->setSearchWord("Lorem ipsum dolor sit amet");
 
         $searchable5 = new Searchable();
-        $searchable5->setSearchWord("custom search");
+        $searchable5->setSearchCustom("custom search");
 
         $manager->persist($searchable);
         $manager->persist($searchable2);

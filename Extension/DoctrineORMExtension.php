@@ -436,7 +436,7 @@ class DoctrineORMExtension extends AbstractExtension
                     }
                 } elseif (is_callable($operation)) {
                     foreach ($queryPaths as $queryPath) {
-                        $operation($queryBuilder, $queryPath, $search);
+                        $expr->add($operation($queryBuilder, $queryPath, $search));
                     }
                 }
             }

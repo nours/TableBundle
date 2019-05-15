@@ -152,4 +152,15 @@ class Searchable
     {
         $this->searchCustom = $searchCustom;
     }
+
+    public function toArray()
+    {
+        return array(
+            'searchBegin' => $this->searchBegin,
+            'searchInside' => $this->searchInside,
+            'searchEnd' => $this->searchEnd,
+            'searchWord' => $this->searchWord,
+            'searchCustom' => $this->searchCustom,
+        );
+    }
 }

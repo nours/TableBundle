@@ -50,7 +50,8 @@ class SearchableType extends AbstractType
             ->add('searchCustom', TextType::class, [
                 'searchable' => true,
                 'search_operation' => function(QueryBuilder $queryBuilder, $path, $search) {
-                    return $queryBuilder->expr()->like($path, '%' . $search);
+                    $queryBuilder->setParameter('search_custom', $search);
+                    return $queryBuilder->expr()->like($path, ':search_custom');
                 }
             ])
         ;
