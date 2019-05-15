@@ -12,6 +12,7 @@ use Nours\TableBundle\Tests\FixtureBundle\Table\PostEmbedType;
 use Nours\TableBundle\Tests\FixtureBundle\Table\PostStatusHiddenType;
 use Nours\TableBundle\Tests\FixtureBundle\Table\PostStatusType;
 use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
+use Nours\TableBundle\Tests\FixtureBundle\Table\SearchableType;
 use Nours\TableBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -506,5 +507,79 @@ class DoctrineORMExtensionTest extends TestCase
         $this->assertEquals('Bar', $post1->getAuthor()->getLastname());
         $this->assertEquals('Foo', $post2->getAuthor()->getLastname());
         $this->assertEquals('Foo', $post3->getAuthor()->getLastname());
+    }
+
+    /**
+     * @param $search
+     *
+     * @return \Nours\TableBundle\Table\Table|\Nours\TableBundle\Table\TableInterface
+     */
+    private function createSearchTable($search)
+    {
+        $table = $this->createTable(SearchableType::class);
+        $table->handle(new Request(array(
+            'search' => $search
+        )));
+
+        return $table;
+    }
+
+    public function testSearchOperationBegin()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createSearchTable('foo');
+        $this->assertCount(0, $table->getData());
+
+        $table = $this->createSearchTable('foo_');
+        $this->assertCount(0, $table->getData());
+
+        $table = $this->createSearchTable('_foo');
+        $data = $table->getData();
+        $this->assertCount(1, $data);
+        $this->assertEquals('_foo_', $data[0]->getSearchBegin());
+    }
+
+
+    public function testSearchOperationContains()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createSearchTable('bar');
+        $data = $table->getData();
+        $this->assertCount(1, $data);
+        $this->assertEquals('_bar_', $data[0]->getSearchInside());
+    }
+
+
+    public function testSearchOperationEnd()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createSearchTable('baz');
+        $this->assertCount(0, $table->getData());
+
+        $table = $this->createSearchTable('_baz');
+        $this->assertCount(0, $table->getData());
+
+        $table = $this->createSearchTable('baz_');
+        $data = $table->getData();
+        $this->assertCount(1, $data);
+        $this->assertEquals('_baz_', $data[0]->getSearchEnd());
+    }
+
+
+    public function testSearchOperationWord()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createSearchTable('sit');
+        $this->assertCount(1, $table->getData());
+
+        $table = $this->createSearchTable('lorem');
+        $this->assertCount(1, $table->getData());
+
+        $table = $this->createSearchTable('amet');
+        $this->assertCount(1, $table->getData());
     }
 } 

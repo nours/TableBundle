@@ -15,6 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Author;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Comment;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;
+use Nours\TableBundle\Tests\FixtureBundle\Entity\Searchable;
 
 /**
  * Class LoadAll
@@ -77,6 +78,24 @@ class LoadAll extends AbstractFixture
         $manager->persist($comment);
 
         $manager->persist($post);
+
+        // Searchables
+        $searchable = new Searchable();
+        $searchable->setSearchBegin("_foo_");
+
+        $searchable2 = new Searchable();
+        $searchable2->setSearchInside("_bar_");
+
+        $searchable3 = new Searchable();
+        $searchable3->setSearchEnd("_baz_");
+
+        $searchable4 = new Searchable();
+        $searchable4->setSearchWord("Lorem ipsum dolor sit amet");
+
+        $manager->persist($searchable);
+        $manager->persist($searchable2);
+        $manager->persist($searchable3);
+        $manager->persist($searchable4);
 
         $manager->flush();
     }

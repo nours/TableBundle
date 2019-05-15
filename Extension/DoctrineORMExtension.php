@@ -151,7 +151,14 @@ class DoctrineORMExtension extends AbstractExtension
              *
              * @see fieldFilter
              */
-            'filter_operator' => Query\Expr\Comparison::EQ
+            'filter_operator' => Query\Expr\Comparison::EQ,
+
+            /**
+             * Search operation for this field
+             *
+             * @see makeSearchExpr
+             */
+            'search_operation' => 'contains'
         ));
 
         $resolver->setAllowedTypes('sortable', 'bool');
@@ -162,6 +169,45 @@ class DoctrineORMExtension extends AbstractExtension
             if (true === $value) {
                 return $options['name'];
             }
+            return $value;
+        });
+
+        // Normalize search operation
+        $resolver->setAllowedValues('search_operation', function($value) {
+            if (is_array($value) && isset($value['operator']) && isset($value['format'])) {
+                return true;
+            }
+
+            return in_array($value, ['begin', 'contains', 'end', 'word']);
+        });
+        $resolver->setNormalizer('search_operation', function(Options $options, $value) {
+            if (is_string($value)) {
+                switch ($value) {
+                    case 'begin' :
+                        $format = '__SEARCH__%';
+                        $operator = 'LIKE';
+                        break;
+                    case 'end' :
+                        $format = '%__SEARCH__';
+                        $operator = 'LIKE';
+                        break;
+                    case 'word' :   // UNTESTED (sqlite seems not support this)
+                        $format = '[[:<:]]__SEARCH';
+                        $operator = 'REGEXP';
+                        break;
+                    case 'contains' :
+                    default:
+                        $format = '%__SEARCH__%';
+                        $operator = 'LIKE';
+                        break;
+                }
+
+                return array(
+                    'operator' => $operator,
+                    'format' => $format
+                );
+            }
+
             return $value;
         });
     }
@@ -276,8 +322,7 @@ class DoctrineORMExtension extends AbstractExtension
 
         // Search
         if ($table->getOption('searchable') && ($search = $table->getOption('search'))) {
-            $queryBuilder->andWhere($this->makeSearchExpr($queryBuilder, $table->getFields()));
-            $queryBuilder->setParameter('search', "%".$search."%");
+            $queryBuilder->andWhere($this->makeSearchExpr($queryBuilder, $search, $table->getFields()));
         }
 
         // Sort
@@ -355,21 +400,40 @@ class DoctrineORMExtension extends AbstractExtension
 
     /**
      * @param QueryBuilder $queryBuilder
+     * @param string $search
      * @param array $fields
      * @return Query\Expr\Orx
      */
-    private function makeSearchExpr(QueryBuilder $queryBuilder, array $fields)
+    private function makeSearchExpr(QueryBuilder $queryBuilder, $search, array $fields)
     {
         $expr = $queryBuilder->expr()->orX();
+
+        $params = [];
 
         // Filtering
         /** @var Field $field */
         foreach ($fields as $field) {
             if ($field->getOption('searchable')) {
-                foreach ((array)$field->getOption('query_path') as $queryPath) {
-                    $expr->add($this->fixQueryPath($queryPath, $field) . ' LIKE :search');
+                $queryPaths = (array)$field->getOption('query_path');
+                $operation = $field->getOption('search_operation');
+
+                if (is_array($operation)) {
+                    $operator = $operation['operator'];
+                    $param = 'search_field_' . $field->getName();
+
+                    $paramValue = str_replace('__SEARCH__', $search, $operation['format']);
+
+                    $params[$param] = $paramValue;
+                }
+
+                foreach ($queryPaths as $queryPath) {
+                    $expr->add($this->fixQueryPath($queryPath, $field) . ' ' . $operator . ' :'.$param);
                 }
             }
+        }
+
+        foreach ($params as $name => $value) {
+            $queryBuilder->setParameter($name, $value);
         }
 
         return $expr;
