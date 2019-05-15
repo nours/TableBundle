@@ -585,4 +585,16 @@ class DoctrineORMExtensionTest extends TestCase
         $table = $this->createSearchTable('amet');
         $this->assertCount(1, $table->getData());
     }
+
+
+    public function testSearchOperationCustom()
+    {
+        $this->loadFixtures();
+
+        $table = $this->createSearchTable('custom');
+        $this->assertCount(1, $table->getData());
+
+        $table = $this->createSearchTable('search');
+        $this->assertCount(1, $table->getData());
+    }
 } 

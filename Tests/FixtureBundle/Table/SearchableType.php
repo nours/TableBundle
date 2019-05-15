@@ -10,6 +10,7 @@
 
 namespace Nours\TableBundle\Tests\FixtureBundle\Table;
 
+use Doctrine\ORM\QueryBuilder;
 use Nours\TableBundle\Builder\TableBuilder;
 use Nours\TableBundle\Field\Type\TextType;
 use Nours\TableBundle\Table\AbstractType;
@@ -45,6 +46,12 @@ class SearchableType extends AbstractType
                     'format' => '%__SEARCH__%'
                 )
 //                'search_operation' => 'word'
+            ])
+            ->add('searchCustom', TextType::class, [
+                'searchable' => true,
+                'search_operation' => function(QueryBuilder $queryBuilder, $path, $search) {
+                    return $queryBuilder->expr()->like($path, '%' . $search);
+                }
             ])
         ;
     }

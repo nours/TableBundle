@@ -176,6 +176,8 @@ class DoctrineORMExtension extends AbstractExtension
         $resolver->setAllowedValues('search_operation', function($value) {
             if (is_array($value) && isset($value['operator']) && isset($value['format'])) {
                 return true;
+            } elseif (is_callable($value)) {
+                return true;
             }
 
             return in_array($value, ['begin', 'contains', 'end', 'word']);
@@ -417,18 +419,24 @@ class DoctrineORMExtension extends AbstractExtension
                 $queryPaths = (array)$field->getOption('query_path');
                 $operation = $field->getOption('search_operation');
 
-                $operator = $operation['operator'];
-                $param = 'search_field_' . $field->getName();
+                if (is_array($operation)) {
+                    $operator = $operation['operator'];
+                    $param = 'search_field_' . $field->getName();
 
-                $paramValue = str_replace('__SEARCH__', $search, $operation['format']);
+                    $paramValue = str_replace('__SEARCH__', $search, $operation['format']);
 
-                $params[$param] = $paramValue;
+                    $params[$param] = $paramValue;
 
-                foreach ($queryPaths as $queryPath) {
-                    if ($operator === 'LIKE') {
-                        $expr->add($this->fixQueryPath($queryPath, $field) . ' ' . $operator . ' :'.$param);
-                    } else {
-                        $expr->add($operator . '(' . $this->fixQueryPath($queryPath, $field) . ', :' . $param . ') = 1');
+                    foreach ($queryPaths as $queryPath) {
+                        if ($operator === 'LIKE') {
+                            $expr->add($this->fixQueryPath($queryPath, $field) . ' ' . $operator . ' :'.$param);
+                        } else {
+                            $expr->add($operator . '(' . $this->fixQueryPath($queryPath, $field) . ', :' . $param . ') = 1');
+                        }
+                    }
+                } elseif (is_callable($operation)) {
+                    foreach ($queryPaths as $queryPath) {
+                        $operation($queryBuilder, $queryPath, $search);
                     }
                 }
             }

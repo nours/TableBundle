@@ -59,6 +59,13 @@ class Searchable
     private $searchWord;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $searchCustom;
+
+    /**
      * @return int
      */
     public function getId()
@@ -128,5 +135,21 @@ class Searchable
     public function setSearchWord($searchWord)
     {
         $this->searchWord = $searchWord;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSearchCustom()
+    {
+        return $this->searchCustom;
+    }
+
+    /**
+     * @param string $searchCustom
+     */
+    public function setSearchCustom($searchCustom)
+    {
+        $this->searchCustom = $searchCustom;
     }
 }
