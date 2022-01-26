@@ -1,5 +1,6 @@
 composer.lock
 vendor
+var
 Tests/cache
 Tests/logs
 Tests/app/*.cache
@@ -7,3 +8,4 @@ Tests/web/*
 !Tests/web/app.php
 
 .idea
+.phpunit.result.cache

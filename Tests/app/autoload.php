@@ -1,6 +1,8 @@
 <?php
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Symfony\Component\VarDumper\VarDumper;
+
 
 // Composer autoload
 if (!is_file($loaderFile = __DIR__.'/../../vendor/autoload.php')) {

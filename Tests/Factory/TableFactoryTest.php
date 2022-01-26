@@ -4,6 +4,7 @@ namespace Nours\TableBundle\Tests\Factory;
 
 use Nours\TableBundle\Factory\TableFactory;
 use Nours\TableBundle\Field\FieldInterface;
+use Nours\TableBundle\Field\FieldTypeInterface;
 use Nours\TableBundle\Field\Type\BooleanType;
 use Nours\TableBundle\Field\Type\CheckboxType;
 use Nours\TableBundle\Field\Type\CollectionType;
@@ -26,7 +27,7 @@ class TableFactoryTest extends TestCase
      */
     private $factory;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -63,14 +64,14 @@ class TableFactoryTest extends TestCase
      */
     public function testGetFieldType()
     {
-        $this->factory->getFieldType(BooleanType::class);
-        $this->factory->getFieldType(CheckboxType::class);
-        $this->factory->getFieldType(CollectionType::class);
-        $this->factory->getFieldType(DateType::class);
-        $this->factory->getFieldType(HiddenType::class);
-        $this->factory->getFieldType(LabelType::class);
-        $this->factory->getFieldType(PrototypeType::class);
-        $this->factory->getFieldType(TextType::class);
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->factory->getFieldType(BooleanType::class));
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->factory->getFieldType(CheckboxType::class));
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->factory->getFieldType(CollectionType::class));
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->factory->getFieldType(DateType::class));
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->factory->getFieldType(HiddenType::class));
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->factory->getFieldType(LabelType::class));
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->factory->getFieldType(PrototypeType::class));
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->factory->getFieldType(TextType::class));
     }
 
     /**

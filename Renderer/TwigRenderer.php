@@ -11,6 +11,8 @@
 namespace Nours\TableBundle\Renderer;
 
 use Nours\TableBundle\Table\View;
+use Twig\Environment;
+use Twig\TemplateWrapper;
 
 /**
  * @author David Coudrier <david.coudrier@gmail.com>
@@ -18,7 +20,7 @@ use Nours\TableBundle\Table\View;
 class TwigRenderer implements TableRendererInterface
 {
     /**
-     * @var \Twig_TemplateWrapper[]
+     * @var TemplateWrapper[]
      */
     private $templates;
 
@@ -28,7 +30,7 @@ class TwigRenderer implements TableRendererInterface
     private $defaultThemes;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -41,10 +43,10 @@ class TwigRenderer implements TableRendererInterface
 
     /**
      *
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param array $defaultThemes
      */
-    public function __construct(\Twig_Environment $twig, array $defaultThemes)
+    public function __construct(Environment $twig, array $defaultThemes)
     {
         $this->twig          = $twig;
         $this->defaultThemes = $defaultThemes;

@@ -11,7 +11,7 @@
 namespace Nours\RestAdminBundle\Tests\FixtureBundle\Fixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Author;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Comment;
 use Nours\TableBundle\Tests\FixtureBundle\Entity\Post;

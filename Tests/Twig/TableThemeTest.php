@@ -12,6 +12,7 @@ namespace Nours\TableBundle\Tests\Twig;
 
 use Nours\TableBundle\Tests\FixtureBundle\Table\PostType;
 use Nours\TableBundle\Tests\TestCase;
+use Twig\Environment;
 
 /**
  * Class TableThemeTest
@@ -21,11 +22,11 @@ use Nours\TableBundle\Tests\TestCase;
 class TableThemeTest extends TestCase
 {
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->twig = $this->get('twig');
     }
@@ -33,9 +34,10 @@ class TableThemeTest extends TestCase
     /**
      * Checks table theme tag
      *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @return void
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function testTableTheme()
     {

@@ -3,16 +3,20 @@ language: php
 
 matrix:
   include:
-    - php: 5.6
-      env: SYMFONY_VERSION='3.3.*'
-    - php: 5.6
-      env: SYMFONY_VERSION='3.4.*'
-    - php: 7.1
-      env: SYMFONY_VERSION='3.3.*'
-    - php: 7.1
-      env: SYMFONY_VERSION='3.4.*'
-    - php: 7.1
-      env: SYMFONY_VERSION='4.*'
+    - php: 7.2
+      env: SYMFONY_VERSION='^3.4'
+    - php: 7.2
+      env: SYMFONY_VERSION='^4.4'
+    - php: 7.2
+      env: SYMFONY_VERSION='^5.4'
+    - php: 7.4
+      env: SYMFONY_VERSION='^3.4'
+    - php: 7.4
+      env: SYMFONY_VERSION='^4.4'
+    - php: 7.4
+      env: SYMFONY_VERSION='^5.4'
+    - php: 8.0
+      env: SYMFONY_VERSION='^6.0'
 
 install:
   - phpenv config-add travis.php.ini

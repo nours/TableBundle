@@ -8,20 +8,21 @@ parameters:
 framework:
   secret:          "%secret%"
   router:
-    resource: "%kernel.root_dir%/config/routing.yml"
+    resource: "%kernel.project_dir%/config/routing.yml"
     strict_requirements: ~
   form: ~
   csrf_protection: true
   serializer: false
-  templating:
-    engines: ['twig']
+#  templating:
+#    engines: ['twig']
   default_locale:  "%locale%"
   trusted_hosts:   ~
   session:
     # handler_id set to null will use default session handler from php.ini
     handler_id:  ~
     storage_id: session.storage.mock_file
-    save_path: "%kernel.root_dir%/cache/sessions"
+    save_path: "%kernel.project_dir%/cache/sessions"
+  assets: ~
 
   test: ~
   profiler:
@@ -53,7 +54,7 @@ doctrine:
 
 twig:
   paths:
-    '%kernel.root_dir%/templates': ~
+    '%kernel.project_dir%/Tests/templates': ~
 
 nours_table:
   form_theme: form.html.twig

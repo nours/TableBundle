@@ -9,9 +9,9 @@
  */
 
 namespace Nours\TableBundle\Extension;
-use Doctrine\Common\Inflector\Inflector;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\View;
+use Nours\TableBundle\Util\Inflector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -142,7 +142,11 @@ class CoreExtension extends AbstractExtension
             // Override ORM parameters from request
             $table->setPage($request->query->get($this->params['page'], $table->getOption('page')));
             $table->setLimit($request->query->get($this->params['limit'], $table->getOption('limit')));
-            $table->setOption('sort',   $request->query->get($this->params['sort'], $table->getOption('sort')));
+
+            // Temporary (?) fix for InputBag::get returning array deprecation
+            $sort = $request->query->all()['sort'] ?? $table->getOption('sort');
+
+            $table->setOption('sort',   $sort);
             $table->setOption('order',  $request->query->get($this->params['order'], $table->getOption('order')));
             $table->setOption('search', $request->query->get($this->params['search'], $table->getOption('search')));
         }

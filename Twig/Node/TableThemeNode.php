@@ -10,14 +10,17 @@
 
 namespace Nours\TableBundle\Twig\Node;
 
+use Twig\Compiler;
+use Twig\Node\Node;
+
 /**
  * Class TableThemeNode
  * 
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class TableThemeNode extends \Twig_Node
+class TableThemeNode extends Node
 {
-    public function __construct(\Twig_Node $table, \Twig_Node $resources, $lineno, $tag = null)
+    public function __construct(Node $table, Node $resources, $lineno, $tag = null)
     {
         parent::__construct(array('table' => $table, 'resources' => $resources), array(), $lineno, $tag);
     }
@@ -25,9 +28,9 @@ class TableThemeNode extends \Twig_Node
     /**
      * Compiles the node to PHP.
      *
-     * @param \Twig_Compiler $compiler A Twig_Compiler instance
+     * @param Compiler $compiler A Twig_Compiler instance
      */
-    public function compile(\Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)

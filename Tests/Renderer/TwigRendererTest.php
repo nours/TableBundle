@@ -34,7 +34,7 @@ class TwigRendererTest extends TestCase
      */
     private $view;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -231,7 +231,7 @@ EOS;
      */
     public function testRenderTableThrowsIfBlockNotFound()
     {
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
 
         $this->getRenderer()->renderTable($this->view, 'foo');
     }
@@ -241,7 +241,7 @@ EOS;
      */
     public function testRenderFieldThrowsIfBlockNotFound()
     {
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
 
         $this->getRenderer()->renderField($this->view->fields['id'], 'bar');
     }

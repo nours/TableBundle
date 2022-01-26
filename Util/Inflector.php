@@ -10,13 +10,36 @@
 
 namespace Nours\TableBundle\Util;
 
+use Doctrine\Inflector\InflectorFactory;
+
 /**
  * Class Inflector
  *
  * @author David Coudrier <david.coudrier@gmail.com>
  */
-class Inflector
+final class Inflector
 {
+    private static function getInflector()
+    {
+        static $inflector;
+
+        if (!$inflector) {
+            $inflector = InflectorFactory::create()->build();
+        }
+
+        return $inflector;
+    }
+
+    public static function classify($word)
+    {
+        return self::getInflector()->classify($word);
+    }
+
+    public static function tableize($word)
+    {
+        return self::getInflector()->tableize($word);
+    }
+
     public static function prefixFromClass($className)
     {
         // Remove 'Type' from the end of class name
@@ -25,6 +48,6 @@ class Inflector
             $className = substr($className, 0, -4);
         }
 
-        return \Doctrine\Common\Inflector\Inflector::tableize($className);
+        return self::tableize($className);
     }
 }

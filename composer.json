@@ -11,23 +11,25 @@
         }
     ],
     "require": {
-        "php": ">=5.6",
-        "symfony/symfony": "^2.8|^3.3|^4.0",
-        "doctrine/doctrine-bundle" : "~1.8",
+        "php": ">=7.2",
+        "symfony/symfony": "^3.4|^4.0|^5.0|^6.0",
+        "doctrine/doctrine-bundle" : "^2.5",
         "psr/container": "~1.0"
     },
     "require-dev": {
         "ext-sqlite3": "*",
-        "phpunit/phpunit" : "~4.0|~5.0",
+        "phpunit/phpunit" : "^8.0",
         "symfony/phpunit-bridge": "^3.0",
         "symfony/monolog-bundle" : "^3.0",
-        "sensio/framework-extra-bundle": "~3.0",
+        "sensio/framework-extra-bundle": "^6.0",
         "doctrine/annotations": "~1.2",
-        "doctrine/orm" : "~2.5",
-        "jms/serializer-bundle" : "~2.3",
-        "doctrine/data-fixtures": "~1.1",
+        "doctrine/orm" : "^2.11",
+        "jms/serializer-bundle" : "^4.0",
+        "doctrine/data-fixtures": "^1.5",
         "beberlei/doctrineextensions": "^1.1",
-        "twig/twig": "~2.0"
+        "twig/twig": "^3.0",
+        "symfony/doctrine-messenger": "^5.4",
+        "symfony/asset": "^5.4"
     },
     "suggest" : {
         "doctrine/orm": "Integrated using orm extension"

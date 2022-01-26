@@ -24,11 +24,6 @@ use Nours\TableBundle\Tests\TestCase;
  */
 class TableTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testGetOptions()
     {
         $table = $this->createTable(PostType::class, array(

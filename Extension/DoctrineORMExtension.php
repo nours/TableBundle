@@ -83,6 +83,7 @@ class DoctrineORMExtension extends AbstractExtension
                     }
                     return $association . '.' . $property;
                 }
+
                 return $options['name'];
             },
 

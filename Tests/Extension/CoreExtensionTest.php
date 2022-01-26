@@ -27,7 +27,7 @@ class CoreExtensionTest extends TestCase
      */
     private $factory;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -105,10 +105,10 @@ class CoreExtensionTest extends TestCase
         $this->loadFixtures();
 
         $table = $this->factory->createTable(PostType::class, array(
-            'sort' => 'status'
         ));
 
         $table->handle(new Request(array(
+            'sort' => 'status',
             'page' => 1,
             'limit' => 33,
         )));

@@ -16,6 +16,7 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Nours\TableBundle\Factory\TableFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class TestCase
@@ -33,21 +34,21 @@ class TestCase extends KernelTestCase
         return $this->getContainer()->get($service);
     }
 
-    /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected function getContainer()
-    {
-        if (empty(static::$kernel)) {
-            static::bootKernel();
-        }
-
-        if (!static::$kernel->getContainer()) {
-            static::$kernel->boot();
-        }
-
-        return static::$kernel->getContainer();
-    }
+//    /**
+//     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+//     */
+//    protected static function getContainer(): ContainerInterface
+//    {
+//        if (empty(static::$kernel)) {
+//            static::bootKernel();
+//        }
+//
+////        if (!static::$kernel->getContainer()) {
+////            static::$kernel->boot();
+////        }
+//
+//        return static::getContainer();
+//    }
 
     /**
      * @return TableFactory

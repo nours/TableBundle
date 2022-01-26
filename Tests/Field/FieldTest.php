@@ -23,11 +23,6 @@ use Nours\TableBundle\Tests\TestCase;
  */
 class FieldTest extends TestCase
 {
-    public function setUp()
-    {
-
-    }
-
     public function testFieldTypeWithParent()
     {
         /** @var FieldInterface $field */

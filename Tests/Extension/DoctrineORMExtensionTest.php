@@ -23,7 +23,7 @@ class DoctrineORMExtensionTest extends TestCase
      */
     private $factory;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -60,7 +60,7 @@ class DoctrineORMExtensionTest extends TestCase
             'order' => 'DESC'
         ));
 
-        $this->setExpectedException("InvalidArgumentException");
+        $this->expectException("InvalidArgumentException");
 
         $table->handle();
     }
@@ -484,7 +484,7 @@ class DoctrineORMExtensionTest extends TestCase
         $table = $this->createTable(PostCommentAuthorType::class);
 
         $table->handle(new Request(array(
-            'sort'  => array(
+            'sort' => array(
                 'author' => 'ASC',
                 'id' => 'DESC'
             )
