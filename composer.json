@@ -21,6 +21,7 @@
         "phpunit/phpunit" : "^8.0",
         "symfony/phpunit-bridge": "^3.0",
         "symfony/monolog-bundle" : "^3.0",
+        "symfony/doctrine-messenger" : "^5.4",
         "sensio/framework-extra-bundle": "^6.0",
         "doctrine/annotations": "~1.2",
         "doctrine/orm" : "^2.11",
