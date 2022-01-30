@@ -19,17 +19,6 @@ services:
     arguments: [ '%nours_table.extension.core%' ]
     tags: [ { name: nours_table.extension } ]
 
-  nours_table.extension.orm:
-    arguments: [ '@doctrine.orm.entity_manager' ]
-    class: Nours\TableBundle\Extension\DoctrineORMExtension
-
-  nours_table.extension.form:
-    class: Nours\TableBundle\Extension\FormExtension
-    arguments: [ '@form.factory', '%nours_table.form_theme%' ]
-
-  nours_table.extension.bootstrap_table:
-    class: Nours\TableBundle\Extension\BootstrapTableExtension
-
 
 ###################################################################
 ## Twig extension

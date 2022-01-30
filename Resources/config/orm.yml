@@ -1,0 +1,5 @@
+services:
+  nours_table.extension.orm:
+    arguments: [ '@doctrine.orm.entity_manager' ]
+    class: Nours\TableBundle\Extension\DoctrineORMExtension
+    tags: [ { name: nours_table.extension } ]

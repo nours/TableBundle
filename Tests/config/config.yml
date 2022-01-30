@@ -13,8 +13,6 @@ framework:
   form: ~
   csrf_protection: true
   serializer: false
-#  templating:
-#    engines: ['twig']
   default_locale:  "%locale%"
   trusted_hosts:   ~
   session:

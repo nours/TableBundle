@@ -1,0 +1,5 @@
+services:
+  nours_table.extension.form:
+    class: Nours\TableBundle\Extension\FormExtension
+    arguments: [ '@form.factory', '%nours_table.form_theme%' ]
+    tags: [ { name: nours_table.extension } ]

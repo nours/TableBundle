@@ -1,0 +1,4 @@
+services:
+  nours_table.extension.bootstrap_table:
+    class: Nours\TableBundle\Extension\BootstrapTableExtension
+    tags: [ { name: nours_table.extension } ]
