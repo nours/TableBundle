@@ -31,10 +31,8 @@ interface ExtensionInterface
     public function finishTable(TableBuilder $builder, array $options);
 
     /**
-     *
-     *
      * @param TableInterface $table
-     * @param Request $request
+     * @param Request|null $request
      */
     public function handle(TableInterface $table, Request $request = null);
 
@@ -66,7 +64,7 @@ interface ExtensionInterface
      * @param FieldInterface[] $fields
      * @return array
      */
-    public function normalizeTableOptions(array $options, array $fields);
+    public function normalizeTableOptions(array $options, array $fields): array;
 
     /**
      * Configures options for a field.
@@ -76,9 +74,9 @@ interface ExtensionInterface
     public function configureFieldOptions(OptionsResolver $resolver);
 
     /**
-     * If this extension has dependency over another extension, it should return it's name.
+     * If this extension has dependency over another extension, it should return its name.
      *
-     * @return string
+     * @return null|string|array
      */
     public function getDependency();
 
@@ -87,5 +85,5 @@ interface ExtensionInterface
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 }

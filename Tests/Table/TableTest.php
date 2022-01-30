@@ -43,7 +43,7 @@ class TableTest extends TestCase
         $table->setPage('123');
         $this->assertSame(123, $table->getPage());
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\TypeError::class);
         $table->setPage('invalid');
     }
 
@@ -54,7 +54,7 @@ class TableTest extends TestCase
         $table->setLimit('123');
         $this->assertSame(123, $table->getLimit());
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\TypeError::class);
         $table->setLimit('invalid');
     }
 

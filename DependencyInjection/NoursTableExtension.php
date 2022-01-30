@@ -3,6 +3,8 @@
 namespace Nours\TableBundle\DependencyInjection;
 
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\Serializer;
+use LogicException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -33,7 +35,7 @@ class NoursTableExtension extends Extension
 
         if ($config['extensions']['orm']) {
             if (!interface_exists(EntityManagerInterface::class)) {
-                throw new \LogicException('Doctrine ORM must be installed to enable table ORM extension');
+                throw new LogicException('Doctrine ORM must be installed to enable table ORM extension');
             }
 
             $loader->load('orm.yml');
@@ -41,7 +43,7 @@ class NoursTableExtension extends Extension
 
         if ($config['extensions']['form']) {
             if (!class_exists(Form::class)) {
-                throw new \LogicException('symfony/form must be installed to enable table form extension');
+                throw new LogicException('symfony/form must be installed to enable table form extension');
             }
 
             $loader->load('form.yml');
@@ -49,6 +51,11 @@ class NoursTableExtension extends Extension
 
         if ($config['extensions']['bootstrap_table']) {
             $loader->load('bootstrap_table.yml');
+        }
+
+        // JMS Serializer handler
+        if (class_exists(Serializer::class)) {
+            $loader->load('jms_serializer.yml');
         }
     }
 }

@@ -10,73 +10,73 @@ interface TableInterface
     /**
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @return ResolvedType
      */
-    public function getType();
+    public function getType(): ResolvedType;
 
     /**
      * @return FieldInterface[]
      */
-    public function getFields();
+    public function getFields(): array;
 
     /**
      * @param string $name
      * @return FieldInterface
      */
-    public function getField($name);
+    public function getField(string $name): FieldInterface;
 
     /**
      * @return integer
      */
-    public function getPage();
+    public function getPage(): ?int;
 
     /**
      * @return integer
      */
-    public function getLimit();
+    public function getLimit(): ?int;
 
     /**
      * @return integer
      */
-    public function getPages();
+    public function getPages(): ?int;
 
     /**
      * @return integer
      */
-    public function getTotal();
+    public function getTotal(): ?int;
 
     /**
-     * @return array
+     * @return mixed
      */
     public function getData();
 
     /**
      * @return bool
      */
-    public function hasData();
+    public function hasData(): bool;
 
     /**
      * @param integer $page
      */
-    public function setPage($page);
+    public function setPage(int $page);
 
     /**
      * @param integer $limit
      */
-    public function setLimit($limit);
+    public function setLimit(int $limit);
 
     /**
      * @param integer $pages
      */
-    public function setPages($pages);
+    public function setPages(int $pages);
 
     /**
      * @param integer $total
      */
-    public function setTotal($total);
+    public function setTotal(int $total);
 
     /**
      * @param mixed $data
@@ -84,14 +84,16 @@ interface TableInterface
     public function setData($data);
 
     /**
-     * @param \Closure $callback
+     * Sets data lazy loader
+     *
+     * @param callable $callback
      */
-    public function setDataCallback($callback);
+    public function setDataCallback(callable $callback);
 
     /**
      * @return array
      */
-    public function getOptions();
+    public function getOptions(): array;
 
     /**
      * @param $name
@@ -101,24 +103,25 @@ interface TableInterface
     public function getOption($name, $default = null);
 
     /**
-     * @param $name
-     * @param $value
+     * @param string $name
+     * @param mixed $value
      */
-    public function setOption($name, $value);
+    public function setOption(string $name, $value);
 
     /**
      * @return View
      */
-    public function createView();
+    public function createView(): View;
 
     /**
-     * @param Request $request
+     * @param Request|null $request
+     *
      * @return TableInterface
      */
-    public function handle(Request $request = null);
+    public function handle(Request $request = null): TableInterface;
 
     /**
      * @return array
      */
-    public function toJson();
+    public function toJson(): array;
 }

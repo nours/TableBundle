@@ -2,6 +2,7 @@
 
 namespace Nours\TableBundle\Table;
 
+use InvalidArgumentException;
 use JMS\Serializer\Annotation as Serializer;
 use Nours\TableBundle\Field\FieldInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,9 +54,9 @@ class Table implements TableInterface
     }
 
     /**
-     * @return ResolvedType
+     * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): ResolvedType
     {
         return $this->type;
     }
@@ -63,7 +64,7 @@ class Table implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -71,7 +72,7 @@ class Table implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->getOption('name');
     }
@@ -79,7 +80,7 @@ class Table implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->fields;
     }
@@ -87,10 +88,10 @@ class Table implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function getField($name)
+    public function getField(string $name): FieldInterface
     {
         if (!isset($this->fields[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 "Table type %s has no field named %s (but %s)",
                 $this->getName(), $name, implode(', ', array_keys($this->fields))
             ));
@@ -102,43 +103,43 @@ class Table implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function getPage()
+    public function getPage(): ?int
     {
         return $this->getOption('page');
     }
 
     /**
-     * @return integer
+     * {@inheritDoc}
      */
-    public function getLimit()
+    public function getLimit(): ?int
     {
         return $this->getOption('limit');
     }
 
     /**
-     * @return integer
+     * {@inheritDoc}
      */
-    public function getPages()
+    public function getPages(): ?int
     {
         return $this->getOption('pages');
     }
 
     /**
-     * @return integer
+     * {@inheritDoc}
      */
-    public function getTotal()
+    public function getTotal(): ?int
     {
         return $this->getOption('total');
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getData()
     {
-        $data     = $this->getOption('data');
+        $data = $this->getOption('data');
 
-        /** @var \Closure $callback */
+        /** @var callable $callback */
         $callback = $this->getOption('data_callback');
 
         if (empty($data) && $callback) {
@@ -150,9 +151,9 @@ class Table implements TableInterface
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
-    public function toJson()
+    public function toJson(): array
     {
         $vars = $this->getOption('json_vars');
 
@@ -170,55 +171,47 @@ class Table implements TableInterface
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
-    public function hasData()
+    public function hasData(): bool
     {
         return $this->getOption('data_callback') || $this->getOption('data');
     }
 
     /**
-     * @param mixed $page
+     * {@inheritDoc}
      */
-    public function setPage($page)
+    public function setPage(int $page)
     {
-        $page = filter_var($page, FILTER_VALIDATE_INT);
-        if (false === $page) {
-            throw new \InvalidArgumentException('Page must be integer');
-        }
         $this->setOption('page', $page);
     }
 
     /**
-     * @param mixed $limit
+     * {@inheritDoc}
      */
-    public function setLimit($limit)
+    public function setLimit(int $limit)
     {
-        $limit = filter_var($limit, FILTER_VALIDATE_INT);
-        if (false === $limit) {
-            throw new \InvalidArgumentException('Limit must be integer');
-        }
         $this->setOption('limit', $limit);
     }
 
     /**
-     * @param mixed $pages
+     * {@inheritDoc}
      */
-    public function setPages($pages)
+    public function setPages(int $pages)
     {
         $this->setOption('pages', $pages);
     }
 
     /**
-     * @param mixed $total
+     * {@inheritDoc}
      */
-    public function setTotal($total)
+    public function setTotal(int $total)
     {
         $this->setOption('total', $total);
     }
 
     /**
-     * @param mixed $data
+     * {@inheritDoc}
      */
     public function setData($data)
     {
@@ -228,9 +221,9 @@ class Table implements TableInterface
     /**
      * Sets the data lazy loader
      *
-     * @param \Closure $callback
+     * @param callable $callback
      */
-    public function setDataCallback($callback)
+    public function setDataCallback(callable $callback)
     {
         $this->setOption('data_callback', $callback);
     }
@@ -239,7 +232,7 @@ class Table implements TableInterface
      * 
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): ?string
     {
         return $this->getOption('url');
     }
@@ -249,7 +242,7 @@ class Table implements TableInterface
      */
     public function getOption($name, $default = null)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : $default;
+        return $this->options[$name] ?? $default;
     }
 
     /**
@@ -263,7 +256,7 @@ class Table implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function createView()
+    public function createView(): View
     {
         // A table need to be handled before creating view
         return $this->handle()->getType()->createView($this);
@@ -272,12 +265,13 @@ class Table implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(Request $request = null)
+    public function handle(Request $request = null): TableInterface
     {
         if (false === $this->handled) {
             $this->type->handle($this, $request);
             $this->handled = true;
         }
+
         return $this;
     }
 }

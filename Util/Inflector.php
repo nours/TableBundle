@@ -30,17 +30,17 @@ final class Inflector
         return $inflector;
     }
 
-    public static function classify($word)
+    public static function classify($word): string
     {
         return self::getInflector()->classify($word);
     }
 
-    public static function tableize($word)
+    public static function tableize($word): string
     {
         return self::getInflector()->tableize($word);
     }
 
-    public static function prefixFromClass($className)
+    public static function prefixFromClass($className): string
     {
         // Remove 'Type' from the end of class name
         $pos = strrpos($className, 'Type');

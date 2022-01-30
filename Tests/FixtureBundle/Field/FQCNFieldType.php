@@ -23,7 +23,7 @@ class FQCNFieldType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }

@@ -14,29 +14,20 @@ use Nours\TableBundle\Builder\TableBuilder;
 interface TableTypeInterface
 {
     /**
-     * The name of the table type, should be unique in application.
-     *
-     * @return string
-     *
-     * @deprecated Use class names instead
-     */
-    public function getName();
-
-    /**
      * The name of the block prefix for rendering.
      *
      * Defaults to snake cased of type class name.
      *
      * @return string
      */
-    public function getBlockPrefix();
+    public function getBlockPrefix(): string;
 
     /**
      * The name of the extension to load.
      *
      * @return string|null
      */
-    public function getExtension();
+    public function getExtension(): ?string;
 
     /**
      * Configures default options for this table.
@@ -75,7 +66,7 @@ interface TableTypeInterface
      * Handle a request for a table
      *
      * @param TableInterface $table
-     * @param Request $request
+     * @param Request|null $request
      */
     public function handle(TableInterface $table, Request $request = null);
 }

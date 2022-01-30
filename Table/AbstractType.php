@@ -4,6 +4,7 @@ namespace Nours\TableBundle\Table;
 
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Util\Inflector;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Nours\TableBundle\Builder\TableBuilder;
@@ -20,27 +21,9 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix(): string
     {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        // Backward compatibility
-        if ($name = $this->getName()) {
-            trigger_error(sprintf(
-                'Implementing getName function on table type %s is deprecated. Rename it to getBlockPrefix.',
-                get_class($this)
-            ), E_USER_DEPRECATED);
-
-            return $name;
-        }
-
-        $reflection = new \ReflectionClass($this);
+        $reflection = new ReflectionClass($this);
 
         return Inflector::prefixFromClass($reflection->getShortName());
     }
@@ -48,7 +31,7 @@ abstract class AbstractType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtension()
+    public function getExtension(): ?string
     {
         return null;
     }

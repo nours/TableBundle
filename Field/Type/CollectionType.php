@@ -25,14 +25,6 @@ class CollectionType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
-    {
-        return 'collection';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(View $view, FieldInterface $field, array $options)
     {
         $view->vars['separator']  = $options['separator'];
@@ -53,5 +45,13 @@ class CollectionType extends AbstractFieldType
             'empty_text' => null,
             'truncate'   => null
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'collection';
     }
 }

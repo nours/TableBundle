@@ -23,28 +23,21 @@ interface FieldTypeInterface
      * @param array $ancestors
      * @return FieldInterface
      */
-    public function createField($name, array $options, array $ancestors);
+    public function createField(string $name, array $options, array $ancestors): FieldInterface;
     
-    /**
-     * The name of this field type.
-     * 
-     * @return string
-     */
-    public function getName();
-
     /**
      * The name of the block prefix for rendering.
      *
      * @return string
      */
-    public function getBlockPrefix();
+    public function getBlockPrefix(): string;
 
     /**
-     * This type can inherit another's properties returning it's name by this function.
+     * This type can inherit another's properties returning its name by this function.
      *
      * @return string|null
      */
-    public function getParent();
+    public function getParent(): ?string;
     
     /**
      * Configures default options for this field.

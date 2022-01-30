@@ -10,6 +10,7 @@
 
 namespace Nours\TableBundle\Serializer\Handler;
 
+use ArrayObject;
 use JMS\Serializer\Context;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
@@ -41,10 +42,11 @@ class TableViewHandler implements SubscribingHandlerInterface
      * @param View $view
      * @param array $type
      * @param Context $context
-     * @return array|\ArrayObject|mixed
+     *
+     * @return array|ArrayObject
      */
     public function serializeTableViewToJson(JsonSerializationVisitor $visitor, View $view, array $type, Context $context)
     {
-        return $visitor->visitArray($view->toJson(), $type, $context);
+        return $visitor->visitArray($view->toJson(), $type);
     }
 }

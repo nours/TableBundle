@@ -19,5 +19,11 @@ use Nours\TableBundle\Field\AbstractFieldType;
  */
 class NumberType extends AbstractFieldType
 {
-
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'number';
+    }
 }

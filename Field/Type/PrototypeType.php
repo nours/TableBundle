@@ -45,7 +45,7 @@ class PrototypeType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'prototype';
     }

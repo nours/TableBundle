@@ -25,14 +25,6 @@ class LabelType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
-    {
-        return 'label';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(View $view, FieldInterface $field, array $options)
     {
         $view->vars['labels'] = $options['labels'];
@@ -51,5 +43,13 @@ class LabelType extends AbstractFieldType
 //                )
             )
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'label';
     }
 } 

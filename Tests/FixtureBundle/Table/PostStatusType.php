@@ -66,7 +66,7 @@ class PostStatusType extends AbstractType
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'post_status';
     }

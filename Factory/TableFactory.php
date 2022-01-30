@@ -10,13 +10,17 @@
 
 namespace Nours\TableBundle\Factory;
 
+use InvalidArgumentException;
 use Nours\TableBundle\Extension\ExtensionInterface;
 use Nours\TableBundle\Builder\TableBuilder;
+use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\ResolvedType;
+use Nours\TableBundle\Table\TableInterface;
 use Nours\TableBundle\Table\TableTypeInterface;
 use Nours\TableBundle\Field\FieldTypeInterface;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TableFactory implements TableFactoryInterface
@@ -72,7 +76,7 @@ class TableFactory implements TableFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createTable($type, array $options = array())
+    public function createTable($type, array $options = array()): TableInterface
     {
         if (!$type instanceof TableTypeInterface) {
             $type = $this->getTableType($type);
@@ -91,13 +95,11 @@ class TableFactory implements TableFactoryInterface
         $options = $this->getOptions($type, $options);
 
         // Create the table from builder
-        $table = $this->createBuilder($type, $options)->getTable();
-
-        return $table;
+        return $this->createBuilder($type, $options)->getTable();
     }
 
 
-    protected function getOptions(ResolvedType $type, array $options)
+    protected function getOptions(ResolvedType $type, array $options): array
     {
         // Configure options resolver
         $resolver = new OptionsResolver();
@@ -121,7 +123,7 @@ class TableFactory implements TableFactoryInterface
      * @param array $options
      * @return TableBuilder
      */
-    protected function createBuilder(ResolvedType $type, array $options)
+    protected function createBuilder(ResolvedType $type, array $options): TableBuilder
     {
         $builder = new TableBuilder($type, $this, $options);
         $extensions = $this->getExtensionsForType($type);
@@ -145,7 +147,7 @@ class TableFactory implements TableFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createField($name, $type, array $options = array(), array $extensions = array())
+    public function createField($name, $type, array $options = array(), array $extensions = array()): FieldInterface
     {
         if (!$type instanceof FieldTypeInterface) {
             $type = $this->getFieldType($type);
@@ -177,7 +179,7 @@ class TableFactory implements TableFactoryInterface
      * @param FieldTypeInterface $type
      * @return FieldTypeInterface[]
      */
-    private function getFieldTypeAncestors(FieldTypeInterface $type)
+    private function getFieldTypeAncestors(FieldTypeInterface $type): array
     {
         $ancestors = array();
 
@@ -195,43 +197,40 @@ class TableFactory implements TableFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldType($name)
+    public function getFieldType($name): FieldTypeInterface
     {
         if ($this->fieldTypeLocator->has($name)) {
             $type = $this->fieldTypeLocator->get($name);
         } elseif (class_exists($name)) {
-            if (!in_array('Nours\TableBundle\Field\FieldTypeInterface', class_implements($name))) {
-                throw new \InvalidArgumentException(sprintf("Field type %s must implement FieldTypeInterface", $name));
+            if (!in_array(FieldTypeInterface::class, class_implements($name))) {
+                throw new InvalidArgumentException(sprintf("Field type %s must implement FieldTypeInterface", $name));
             }
             $type = new $name;
         } else {
-            throw new \InvalidArgumentException(sprintf("Field type %s does not exist", $name));
-        }
-
-        // Type name deprecation error
-        if ($name !== get_class($type)) {
-            trigger_error(sprintf(
-                "Using alias %s for field type %s is deprecated, please remove them and use FQCNs", $name, get_class($type)
-            ), E_USER_DEPRECATED);
+            throw new InvalidArgumentException(sprintf("Field type %s does not exist", $name));
         }
 
         return $type;
     }
 
     /**
-     * {@inheritdoc}
+     * @param $name
+     *
+     * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function getTableType($name)
+    public function getTableType($name): TableTypeInterface
     {
         if ($this->tableTypeLocator->has($name)) {
             $type = $this->tableTypeLocator->get($name);
         } elseif (class_exists($name)) {
             if (!in_array('Nours\TableBundle\Table\TableTypeInterface', class_implements($name))) {
-                throw new \InvalidArgumentException(sprintf("Table type %s must implement TableTypeInterface", $name));
+                throw new InvalidArgumentException(sprintf("Table type %s must implement TableTypeInterface", $name));
             }
             $type = new $name;
         } else {
-            throw new \InvalidArgumentException(sprintf("Table type %s does not exist", $name));
+            throw new InvalidArgumentException(sprintf("Table type %s does not exist", $name));
         }
 
         return $type;
@@ -240,7 +239,7 @@ class TableFactory implements TableFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         if (empty($this->sortedExtensions)) {
             $this->sortExtensions();
@@ -252,7 +251,7 @@ class TableFactory implements TableFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtensionsForType(TableTypeInterface $type)
+    public function getExtensionsForType(TableTypeInterface $type): array
     {
         // Type extensions are already resolved
         if ($type instanceof ResolvedType) {
@@ -273,7 +272,7 @@ class TableFactory implements TableFactoryInterface
     }
 
     /**
-     * Find extnesions recursively
+     * Find extensions recursively
      *
      * @param $extensions
      * @param $name
@@ -295,7 +294,7 @@ class TableFactory implements TableFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function normalizeTableOptions(array $options, array $fields)
+    public function normalizeTableOptions(array $options, array $fields): array
     {
         foreach ($this->getExtensions() as $extension) {
             $options = $extension->normalizeTableOptions($options, $fields);
@@ -308,10 +307,10 @@ class TableFactory implements TableFactoryInterface
      * @param $name
      * @return ExtensionInterface
      */
-    private function getExtension($name)
+    private function getExtension($name): ExtensionInterface
     {
         if (!isset($this->extensions[$name])) {
-            throw new \InvalidArgumentException("There is no extension called $name in (" . implode(', ', array_keys($this->extensions)) . ")");
+            throw new InvalidArgumentException("There is no extension called $name in (" . implode(', ', array_keys($this->extensions)) . ")");
         }
 
         return $this->extensions[$name];
@@ -329,7 +328,9 @@ class TableFactory implements TableFactoryInterface
         }
     }
 
-
+    /**
+     * @param ExtensionInterface $extension
+     */
     private function addExtensionToSorted(ExtensionInterface $extension)
     {
         // Add deps first

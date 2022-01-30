@@ -28,36 +28,42 @@ interface TableFactoryInterface
     /**
      * Creates a new table.
      * 
-     * @param string $type
+     * @param string|TableTypeInterface $type
      * @param array $options
+     *
      * @return TableInterface
      */
-    public function createTable($type, array $options = array());
-    
-    /**
-     * Creates a new field.
-     * 
-     * @param string $type
-     * @param array $options
-     * @param array $extensions
-     */
-    public function createField($name, $type, array $options = array(), array $extensions = array());
+    public function createTable($type, array $options = array()): TableInterface;
 
     /**
+     * Creates a new field.
+     *
+     * @param string $name
+     * @param string|FieldTypeInterface $type
+     * @param array $options
+     * @param array $extensions
+     *
+     * @return FieldInterface
+     */
+    public function createField(string $name, $type, array $options = array(), array $extensions = array()): FieldInterface;
+
+    /**
+     * @param $name
+     *
      * @return FieldTypeInterface
      */
-    public function getFieldType($name);
+    public function getFieldType($name): FieldTypeInterface;
 
     /**
      * @return ExtensionInterface[]
      */
-    public function getExtensions();
+    public function getExtensions(): array;
 
     /**
      * @param TableTypeInterface $type
      * @return ExtensionInterface[]
      */
-    public function getExtensionsForType(TableTypeInterface $type);
+    public function getExtensionsForType(TableTypeInterface $type): array;
 
     /**
      * Normalize table options after collecting fields.
@@ -66,5 +72,5 @@ interface TableFactoryInterface
      * @param FieldInterface[] $fields
      * @return array
      */
-    public function normalizeTableOptions(array $options, array $fields);
+    public function normalizeTableOptions(array $options, array $fields): array;
 }

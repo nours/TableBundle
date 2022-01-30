@@ -38,10 +38,3 @@ services:
     class: Nours\TableBundle\Renderer\TwigRenderer
     arguments: [ '@twig', '%nours_table.themes%' ]
     tags: [ { name: twig.runtime } ]
-
-###################################################################
-## Serializer handler
-###################################################################
-  nours_table.serializer.handler.table_view:
-    class: Nours\TableBundle\Serializer\Handler\TableViewHandler
-    tags: [ { name: jms_serializer.subscribing_handler } ]

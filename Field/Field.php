@@ -52,7 +52,7 @@ class Field implements FieldInterface
      * @param array $options
      * @param FieldTypeInterface[] $ancestors
      */
-    public function __construct($name, FieldTypeInterface $type, array $options, array $ancestors = array())
+    public function __construct(string $name, FieldTypeInterface $type, array $options, array $ancestors = array())
     {
         $this->name      = $name;
         $this->ancestors = $ancestors;
@@ -71,7 +71,7 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getTable()
+    public function getTable(): TableInterface
     {
         return $this->table;
     }
@@ -79,7 +79,7 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): FieldTypeInterface
     {
         return $this->type;
     }
@@ -87,7 +87,7 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -95,7 +95,7 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?FieldTypeInterface
     {
         return $this->ancestors ? reset($this->ancestors) : null;
     }
@@ -103,7 +103,7 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getAncestors()
+    public function getAncestors(): array
     {
         return $this->ancestors;
     }
@@ -111,15 +111,7 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getTypeName()
-    {
-        return $this->type->getName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPropertyPath()
+    public function getPropertyPath(): string
     {
         return $this->getOption('property_path', Inflector::tableize($this->name));
     }
@@ -127,7 +119,7 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->getOption('label');
     }
@@ -137,13 +129,13 @@ class Field implements FieldInterface
      */
     public function getOption($name, $default = null)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : $default;
+        return $this->options[$name] ?? $default;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -159,7 +151,7 @@ class Field implements FieldInterface
     /**
      * {@inheritdoc}
      */
-    public function isDisplayed()
+    public function isDisplayed(): bool
     {
         return $this->options['display'];
     }

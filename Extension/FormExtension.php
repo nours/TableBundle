@@ -41,8 +41,9 @@ class FormExtension extends AbstractExtension
 
     /**
      * @param FormFactoryInterface $formFactory
+     * @param string $formTheme
      */
-    public function __construct(FormFactoryInterface $formFactory, $formTheme)
+    public function __construct(FormFactoryInterface $formFactory, string $formTheme)
     {
         $this->formFactory = $formFactory;
         $this->formTheme   = $formTheme;
@@ -119,7 +120,7 @@ class FormExtension extends AbstractExtension
      * @param FormBuilderInterface $builder
      * @param FieldInterface[] $fields
      */
-    private function buildFilterForm(FormBuilderInterface $builder, $fields)
+    private function buildFilterForm(FormBuilderInterface $builder, array $fields)
     {
         foreach ($fields as $field) {
             // Filter option may provide default values for the fields
@@ -135,7 +136,7 @@ class FormExtension extends AbstractExtension
      * @param TableInterface $table
      * @return FieldInterface[]
      */
-    private function getFilterFields(TableInterface $table)
+    private function getFilterFields(TableInterface $table): array
     {
         $fields = array();
 
@@ -175,7 +176,7 @@ class FormExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'form';
     }

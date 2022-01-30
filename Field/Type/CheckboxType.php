@@ -18,19 +18,19 @@ class CheckboxType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
-    {
-        return 'checkbox';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('configs', array(
             'checkbox' => true,
             'title' => 'blabla'
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'checkbox';
     }
 }

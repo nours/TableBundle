@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use DomainException;
 use Nours\TableBundle\Field\Field;
 use Nours\TableBundle\Field\FieldInterface;
 use Nours\TableBundle\Table\TableInterface;
@@ -14,6 +15,7 @@ use Nours\TableBundle\Table\View;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Traversable;
 
 /**
  * Builds a pager upon query.
@@ -76,7 +78,7 @@ class DoctrineORMExtension extends AbstractExtension
                 if ($association) {
                     // The property path now defaults to association.property
                     if (!$property) {
-                        throw new \DomainException(sprintf(
+                        throw new DomainException(sprintf(
                             "property must be set for field %s, or provide a custom property_path",
                             $options['name']
                         ));
@@ -119,7 +121,7 @@ class DoctrineORMExtension extends AbstractExtension
 
             /**
              * Query path is the path of the field inside query : it's either an association,
-             * or a base entity field (identified by it's property path).
+             * or a base entity field (identified by its property path).
              *
              * This expression will be used in both searching and ordering.
              *
@@ -240,7 +242,7 @@ class DoctrineORMExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function normalizeTableOptions(array $options, array $fields)
+    public function normalizeTableOptions(array $options, array $fields): array
     {
         // Update searchable and sortable options
         $options['searchable'] = $this->resolveFieldOption($fields, 'searchable');
@@ -405,9 +407,10 @@ class DoctrineORMExtension extends AbstractExtension
      * @param QueryBuilder $queryBuilder
      * @param string $search
      * @param array $fields
+     *
      * @return Query\Expr\Orx
      */
-    private function makeSearchExpr(QueryBuilder $queryBuilder, $search, array $fields)
+    private function makeSearchExpr(QueryBuilder $queryBuilder, string $search, array $fields): Query\Expr\Orx
     {
         $expr = $queryBuilder->expr()->orX();
 
@@ -482,7 +485,7 @@ class DoctrineORMExtension extends AbstractExtension
      *
      * @return string
      */
-    private function fixQueryPath($path, FieldInterface $field)
+    private function fixQueryPath(string $path, FieldInterface $field): string
     {
         if (false === strpos($path, '.')) {
             $path = $field->getOption('alias') . '.' . $path;
@@ -503,7 +506,7 @@ class DoctrineORMExtension extends AbstractExtension
         foreach ($table->getFields() as $field) {
             if ($field->getOption('filterable')) {
                 $name = $field->getName();
-                $value = isset($filter[$name]) ? $filter[$name] : null;
+                $value = $filter[$name] ?? null;
 
                 $closure = $field->getOption('filter_query_builder');
                 call_user_func($closure, $queryBuilder, $field, $value);
@@ -527,7 +530,7 @@ class DoctrineORMExtension extends AbstractExtension
             /**
              * Handle array or collections of items
              */
-            if (is_array($value) || $value instanceof \Traversable) {
+            if (is_array($value) || $value instanceof Traversable) {
 
                 $expr = $queryBuilder->expr()->orX();
                 foreach ($value as $index => $v) {
@@ -574,7 +577,7 @@ class DoctrineORMExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'orm';
     }

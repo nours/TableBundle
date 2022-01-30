@@ -20,14 +20,6 @@ class DateType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
-    {
-        return 'date';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(View $view, FieldInterface $field, array $options)
     {
         $view->vars['format'] = $options['format'];
@@ -41,5 +33,13 @@ class DateType extends AbstractFieldType
         $resolver->setDefaults(array(
             'format' => 'Y-m-d'
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'date';
     }
 }

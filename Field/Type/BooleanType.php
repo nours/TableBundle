@@ -20,14 +20,6 @@ class BooleanType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
-    {
-        return 'boolean';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(View $view, FieldInterface $field, array $options)
     {
         $view->vars['true_text']  = $options['true_text'];
@@ -43,5 +35,13 @@ class BooleanType extends AbstractFieldType
             'true_text'  => 'yes',
             'false_text' => 'no'
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'boolean';
     }
 }

@@ -23,51 +23,42 @@ interface FieldInterface
      *
      * @return FieldTypeInterface
      */
-    public function getType();
-
-    /**
-     * The resolved type of the field
-     *
-     * @deprecated Should always return null
-     *
-     * @return string
-     */
-    public function getTypeName();
+    public function getType(): FieldTypeInterface;
 
     /**
      * The name of the field
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Parent field element
      *
      * @return FieldTypeInterface|null
      */
-    public function getParent();
+    public function getParent(): ?FieldTypeInterface;
 
     /**
      * Field hierarchy
      *
      * @return FieldTypeInterface[]
      */
-    public function getAncestors();
+    public function getAncestors(): array;
 
     /**
      * Property path
      *
      * @return string
      */
-    public function getPropertyPath();
+    public function getPropertyPath(): string;
 
     /**
      * The label
      *
      * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * @param $name
@@ -79,19 +70,19 @@ interface FieldInterface
     /**
      * @return array
      */
-    public function getOptions();
+    public function getOptions(): array;
 
     /**
      * @return bool
      */
-    public function isDisplayed();
+    public function isDisplayed(): bool;
 
     /**
      * This field's table
      *
      * @return TableInterface
      */
-    public function getTable();
+    public function getTable(): TableInterface;
 
     /**
      * Sets the table

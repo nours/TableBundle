@@ -40,7 +40,7 @@ class ResolvedType implements TableTypeInterface
     /**
      * @return string
      */
-    public function getCacheKey()
+    public function getCacheKey(): string
     {
         return get_class($this->type);
     }
@@ -48,7 +48,7 @@ class ResolvedType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtension()
+    public function getExtension(): ?string
     {
         return $this->type->getExtension();
     }
@@ -56,7 +56,7 @@ class ResolvedType implements TableTypeInterface
     /**
      * @return ExtensionInterface[]
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return $this->extensions;
     }
@@ -64,15 +64,7 @@ class ResolvedType implements TableTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return $this->type->getName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return $this->type->getBlockPrefix();
     }
@@ -97,7 +89,7 @@ class ResolvedType implements TableTypeInterface
      * Handle a request for a table
      *
      * @param TableInterface $table
-     * @param Request $request
+     * @param Request|null $request
      */
     public function handle(TableInterface $table, Request $request = null)
     {
@@ -165,7 +157,7 @@ class ResolvedType implements TableTypeInterface
      * @param TableInterface $table
      * @return View
      */
-    public function createView(TableInterface $table)
+    public function createView(TableInterface $table): View
     {
         $view = new View();
         $view->table = $table;

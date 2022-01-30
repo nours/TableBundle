@@ -11,6 +11,8 @@
 namespace Nours\TableBundle\Renderer;
 
 use Nours\TableBundle\Table\View;
+use RuntimeException;
+use Throwable;
 use Twig\Environment;
 use Twig\TemplateWrapper;
 
@@ -52,11 +54,9 @@ class TwigRenderer implements TableRendererInterface
         $this->defaultThemes = $defaultThemes;
     }
 
-    private function getCacheKey(View $view)
+    private function getCacheKey(View $view): string
     {
-        $cacheKey = $view->table->getType()->getCacheKey();
-
-        return $cacheKey;
+        return $view->table->getType()->getCacheKey();
     }
 
     /**
@@ -75,7 +75,7 @@ class TwigRenderer implements TableRendererInterface
     /**
      * Loads the templates used by current theme.
      */
-    private function loadTemplates(array $themes)
+    private function loadTemplates(array $themes): array
     {
         $templates = array();
         foreach ($themes as $theme) {
@@ -95,9 +95,11 @@ class TwigRenderer implements TableRendererInterface
 
     /**
      * @param string $blockName
-     * @return \Twig_TemplateWrapper
+     * @param array $themes
+     *
+     * @return TemplateWrapper|null
      */
-    private function getTemplateForBlock($blockName, array $themes)
+    private function getTemplateForBlock(string $blockName, array $themes): ?TemplateWrapper
     {
         $templates = $this->loadTemplates($themes);
 
@@ -116,9 +118,9 @@ class TwigRenderer implements TableRendererInterface
      * @param array $context
      *
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      */
-    private function renderBlock(array $blockNames, $cacheKey, array $context)
+    private function renderBlock(array $blockNames, string $cacheKey, array $context): string
     {
         $template = $blockName = null;
 
@@ -137,7 +139,7 @@ class TwigRenderer implements TableRendererInterface
 
         // Throw if no matching blocks are found
         if (empty($template)) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 "Block%s %s not found in table themes (%s)",
                 count($blockNames) > 1 ? 's' : '', implode(', ', $blockNames), implode(', ', $this->defaultThemes)
             ));
@@ -149,7 +151,7 @@ class TwigRenderer implements TableRendererInterface
     /**
      * {@inheritdoc}
      */
-    public function renderTable(View $tableView, $part = null)
+    public function renderTable(View $tableView, string $part = null): string
     {
         $context = $tableView->vars;
         $context['table'] = $tableView;
@@ -164,7 +166,7 @@ class TwigRenderer implements TableRendererInterface
     /**
      * {@inheritdoc}
      */
-    public function renderField(View $fieldView, $part = null)
+    public function renderField(View $fieldView, string $part = null): string
     {
         $context = $fieldView->vars;
         $context['table'] = $fieldView->parent;
@@ -179,10 +181,11 @@ class TwigRenderer implements TableRendererInterface
 
     /**
      * @param View $view
-     * @param string $part
+     * @param string|null $part
+     *
      * @return array
      */
-    private function getBlockPrefixes(View $view, $part = null)
+    private function getBlockPrefixes(View $view, string $part = null): array
     {
         // Default prefixes (@see CoreExtension)
         $blockNames = $view->vars['block_prefixes'];

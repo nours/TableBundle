@@ -27,17 +27,19 @@ interface TableRendererInterface
      * Render a table part.
      *
      * @param View $tableView
-     * @param string $part
+     * @param string|null $part
+     *
      * @return string
      */
-    public function renderTable(View $tableView, $part = null);
+    public function renderTable(View $tableView, string $part = null): string;
 
     /**
      * Renders a field part
      * 
      * @param View $fieldView
-     * @param string $part
+     * @param string|null $part
+     *
      * @return string
      */
-    public function renderField(View $fieldView, $part = null);
+    public function renderField(View $fieldView, string $part = null): string;
 }

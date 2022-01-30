@@ -5,6 +5,7 @@ namespace Nours\TableBundle\Builder;
 use Nours\TableBundle\Factory\TableFactoryInterface;
 use Nours\TableBundle\Table\ResolvedType;
 use Nours\TableBundle\Table\Table;
+use Nours\TableBundle\Table\TableInterface;
 
 class TableBuilder
 {
@@ -41,9 +42,13 @@ class TableBuilder
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $name
+     * @param $type
+     * @param array $options
+     *
+     * @return $this
      */
-    public function add($name, $type = null, array $options = array())
+    public function add(string $name, $type = null, array $options = array()): TableBuilder
     {
         $this->fields[$name] = $this->factory->createField($name, $type, $options, $this->type->getExtensions());
 
@@ -51,13 +56,14 @@ class TableBuilder
     }
 
     /**
-     * {@inheritdoc}
+     * @return TableInterface
      */
-    public function getTable()
+    public function getTable(): TableInterface
     {
-        $options = $this->factory->normalizeTableOptions($this->options, $this->fields);
-        $table = new Table($this->type, $this->fields, $options);
-        
-        return $table;
+        return new Table(
+            $this->type,
+            $this->fields,
+            $this->factory->normalizeTableOptions($this->options, $this->fields)
+        );
     }
 }

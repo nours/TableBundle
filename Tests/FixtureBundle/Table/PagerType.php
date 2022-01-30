@@ -31,12 +31,12 @@ class PagerType extends AbstractType
         ;
     }
 
-    public function getExtension()
+    public function getExtension(): ?string
     {
         return 'core';
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pager';
     }

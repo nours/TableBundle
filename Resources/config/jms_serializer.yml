@@ -1,0 +1,4 @@
+services:
+  nours_table.serializer.handler.table_view:
+    class: Nours\TableBundle\Serializer\Handler\TableViewHandler
+    tags: [ { name: jms_serializer.subscribing_handler } ]

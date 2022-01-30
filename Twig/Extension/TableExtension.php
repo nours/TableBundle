@@ -12,14 +12,6 @@ use Twig\TwigFunction;
  */
 class TableExtension extends AbstractExtension
 {
-	/**
-     * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'nours_table';
-	}
-	
     /**
      * {@inheritdoc}
      */

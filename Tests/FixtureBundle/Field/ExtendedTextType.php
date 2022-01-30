@@ -32,7 +32,7 @@ class ExtendedTextType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }
@@ -40,7 +40,7 @@ class ExtendedTextType extends AbstractFieldType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'extended_text';
     }

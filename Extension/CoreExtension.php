@@ -119,7 +119,7 @@ class CoreExtension extends AbstractExtension
         ));
     }
 
-    private function buildBlockPrefixes(FieldInterface $field)
+    private function buildBlockPrefixes(FieldInterface $field): array
     {
         // Field name first
         $prefixes = array('field_' . $field->getType()->getBlockPrefix());
@@ -163,7 +163,7 @@ class CoreExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'core';
     }

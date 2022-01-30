@@ -83,7 +83,7 @@ abstract class AbstractExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function normalizeTableOptions(array $options, array $fields)
+    public function normalizeTableOptions(array $options, array $fields): array
     {
         return $options;
     }

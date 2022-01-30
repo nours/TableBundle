@@ -12,6 +12,7 @@ namespace Nours\TableBundle\Field;
 
 use Nours\TableBundle\Table\View;
 use Nours\TableBundle\Util\Inflector;
+use ReflectionClass;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * 
@@ -23,7 +24,7 @@ abstract class AbstractFieldType implements FieldTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function createField($name, array $options, array $ancestors)
+    public function createField($name, array $options, array $ancestors): FieldInterface
     {
         return new Field($name, $this, $options, $ancestors);
     }
@@ -46,7 +47,7 @@ abstract class AbstractFieldType implements FieldTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return null;
     }
@@ -54,27 +55,9 @@ abstract class AbstractFieldType implements FieldTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix(): string
     {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        // Backward compatibility
-        if ($name = $this->getName()) {
-            trigger_error(sprintf(
-                'Implementing getName function on field type %s is deprecated. Rename it to getBlockPrefix.',
-                get_class($this)
-            ), E_USER_DEPRECATED);
-
-            return $name;
-        }
-
-        $reflection = new \ReflectionClass($this);
+        $reflection = new ReflectionClass($this);
 
         return Inflector::prefixFromClass($reflection->getShortName());
     }

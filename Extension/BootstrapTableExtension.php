@@ -111,7 +111,7 @@ class BootstrapTableExtension extends AbstractExtension
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'bootstrap_table';
     }
