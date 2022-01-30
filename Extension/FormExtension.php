@@ -41,9 +41,9 @@ class FormExtension extends AbstractExtension
 
     /**
      * @param FormFactoryInterface $formFactory
-     * @param string $formTheme
+     * @param string|null $formTheme
      */
-    public function __construct(FormFactoryInterface $formFactory, string $formTheme)
+    public function __construct(FormFactoryInterface $formFactory, ?string $formTheme)
     {
         $this->formFactory = $formFactory;
         $this->formTheme   = $formTheme;

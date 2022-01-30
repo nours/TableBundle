@@ -30,7 +30,6 @@ class NoursTableExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('nours_table.themes', $config['themes']);
-        $container->setParameter('nours_table.form_theme', $config['form_theme']);
         $container->setParameter('nours_table.extension.core', $config['extensions']['core']);
 
         if ($config['extensions']['orm']) {
@@ -45,6 +44,8 @@ class NoursTableExtension extends Extension
             if (!class_exists(Form::class)) {
                 throw new LogicException('symfony/form must be installed to enable table form extension');
             }
+
+            $container->setParameter('nours_table.form_theme', $config['form_theme']);
 
             $loader->load('form.yml');
         }
