@@ -1,6 +1,4 @@
 services:
-#  _defaults: { public: true }
-
 ###################################################################
 ## Factory
 ###################################################################
@@ -10,6 +8,14 @@ services:
     arguments:
      - ~  # Table types service locator
      - ~  # Field types service locator
+
+  Nours\TableBundle\Factory\TableFactory:
+    alias: nours_table.factory
+    public: true
+
+  Nours\TableBundle\Factory\TableFactoryInterface:
+    alias: nours_table.factory
+    public: true
 
 ###################################################################
 ## Extensions
