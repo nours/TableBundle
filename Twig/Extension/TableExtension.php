@@ -15,7 +15,7 @@ class TableExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('render_table', array('Nours\TableBundle\Renderer\TwigRenderer', 'renderTable'), array('is_safe' => array('html'))),
@@ -26,7 +26,7 @@ class TableExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getTokenParsers()
+    public function getTokenParsers(): array
     {
         return array(
             new TableThemeTokenParser()
